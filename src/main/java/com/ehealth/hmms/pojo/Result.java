@@ -7,9 +7,10 @@ public class Result {
 
 	private Object value;
 	
-	private Character status;
+	private Character status;//login status
 	
 	private String hospitalName;
+
 	
 	/**
 	 * @return the hospitalName

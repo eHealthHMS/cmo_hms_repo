@@ -1,4 +1,4 @@
-package com.ehealth.hmms.folder;
+package com.ehealth.hmms.util;
 
 public class Constants {
 	

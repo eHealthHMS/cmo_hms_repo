@@ -15,6 +15,5 @@ public interface AuthenticationService {
 	
 	Result authenticate(Users user) throws Exception;
 	
-	Integer savePhcFuctionalComponents( MonthlyDataFhcChc dataFhcChc) throws Exception;
 	
 }

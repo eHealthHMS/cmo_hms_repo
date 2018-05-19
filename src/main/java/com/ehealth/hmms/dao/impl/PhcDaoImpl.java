@@ -23,11 +23,13 @@ public class PhcDaoImpl implements PhcDao {
 
 		
 		Session session = HibernatePersistence.getSessionFactory().openSession();
+		 int resultFlag = 0 ;
 		Users userResult=null;
 		Transaction transaction = null;
 		  try {
 		 transaction = session.beginTransaction();
-		 
+		 session.saveOrUpdate(dataFhcChc);
+		 resultFlag = 1 ;   
 //		 Criteria criteria = session.createCriteria(Users.class);
 //         criteria.add(Restrictions.eq("loginName", user.getLoginName()));
 //         
@@ -56,7 +58,7 @@ public class PhcDaoImpl implements PhcDao {
 		  finally {
          session.close(); 
       }
-		return null;
+		return resultFlag;
 	}
 	
 

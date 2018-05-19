@@ -22,13 +22,13 @@ public class PhcController {
 	
 	
 	@RequestMapping(value = "/saveFuctionalComponents", method = RequestMethod.POST,headers="Accept=application/json")
-	public Result savePhcFuctionalComponents( @RequestBody MonthlyDataFhcChc dataFhcChc) throws Exception{
+	public Result saveFuctionalComponents( @RequestBody MonthlyDataFhcChc dataFhcChc) throws Exception{
 		
 		 
 		PhcService phcService = new PhcServiceImpl();
-		Integer resultValue =  phcService.savePhcFuctionalComponents(dataFhcChc);
+		Result result =  phcService.saveFunctionalComponents(dataFhcChc);
 		
-		return userResult;
+		return result;
 
 	}
 	 

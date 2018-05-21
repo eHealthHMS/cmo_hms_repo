@@ -31,13 +31,13 @@ public class ServiceAreaOthers implements Serializable {
 	private Long operatnTheatre;
 	
 	@Column(name = "blood_bank")
-	private Long bloodBank;
+	private Boolean bloodBank;
 	
 	@Column(name = "bloodstorage_unit")
-	private Long bloodstorageUnit;
+	private Boolean bloodstorageUnit;
 
 	@Column(name = "ambulance")
-	private Long ambulance;
+	private Boolean ambulance;
 	
 	@Column(name = "medical_icu")
 	private Boolean medicalIcu;
@@ -73,7 +73,7 @@ public class ServiceAreaOthers implements Serializable {
 	private Boolean arvAvailability;
 	
 	@Column(name = "asv_availability")
-	private Long asvAvailability;
+	private Boolean asvAvailability;
 	
 	@Column(name = "last_hmc_meeting")
 	private Date lastHmcMeeting;
@@ -82,10 +82,10 @@ public class ServiceAreaOthers implements Serializable {
 	private String workStatus;
 	
 	@Column(name = "work_nature")
-	private String work_nature;
+	private String workNature;
 	
 	@Column(name = "work_start_date")
-	private Date work_start_date;
+	private Date workStartDate;
 
 	@Column(name = "idlingmajor_equipmt")
 	private String idlingMajorEquipmt;
@@ -122,27 +122,27 @@ public class ServiceAreaOthers implements Serializable {
 		this.operatnTheatre = operatnTheatre;
 	}
 
-	public Long getBloodBank() {
+	public Boolean getBloodBank() {
 		return bloodBank;
 	}
 
-	public void setBloodBank(Long bloodBank) {
+	public void setBloodBank(Boolean bloodBank) {
 		this.bloodBank = bloodBank;
 	}
 
-	public Long getBloodstorageUnit() {
+	public Boolean getBloodstorageUnit() {
 		return bloodstorageUnit;
 	}
 
-	public void setBloodstorageUnit(Long bloodstorageUnit) {
+	public void setBloodstorageUnit(Boolean bloodstorageUnit) {
 		this.bloodstorageUnit = bloodstorageUnit;
 	}
 
-	public Long getAmbulance() {
+	public Boolean getAmbulance() {
 		return ambulance;
 	}
 
-	public void setAmbulance(Long ambulance) {
+	public void setAmbulance(Boolean ambulance) {
 		this.ambulance = ambulance;
 	}
 
@@ -234,11 +234,11 @@ public class ServiceAreaOthers implements Serializable {
 		this.arvAvailability = arvAvailability;
 	}
 
-	public Long getAsvAvailability() {
+	public Boolean getAsvAvailability() {
 		return asvAvailability;
 	}
 
-	public void setAsvAvailability(Long asvAvailability) {
+	public void setAsvAvailability(Boolean asvAvailability) {
 		this.asvAvailability = asvAvailability;
 	}
 
@@ -259,19 +259,19 @@ public class ServiceAreaOthers implements Serializable {
 	}
 
 	public String getWork_nature() {
-		return work_nature;
+		return workNature;
 	}
 
 	public void setWork_nature(String work_nature) {
-		this.work_nature = work_nature;
+		this.workNature = work_nature;
 	}
 
 	public Date getWork_start_date() {
-		return work_start_date;
+		return workStartDate;
 	}
 
 	public void setWork_start_date(Date work_start_date) {
-		this.work_start_date = work_start_date;
+		this.workStartDate = work_start_date;
 	}
 
 	public String getIdlingMajorEquipmt() {

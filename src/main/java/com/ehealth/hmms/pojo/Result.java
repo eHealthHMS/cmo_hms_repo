@@ -10,6 +10,8 @@ public class Result {
 	private Character status;//login status
 	
 	private String hospitalName;
+	
+	private Boolean mode;// view mode or edit mode
 
 	
 	/**
@@ -93,6 +95,18 @@ public class Result {
 	public void setStatus(Character status) {
 		status = status;
 	}
+
+
+	public Boolean getMode() {
+		return mode;
+	}
+
+
+	public void setMode(Boolean mode) {
+		this.mode = mode;
+	}
+
+
 	
 
 	

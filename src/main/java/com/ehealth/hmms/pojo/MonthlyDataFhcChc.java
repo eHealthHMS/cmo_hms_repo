@@ -1,5 +1,6 @@
 package com.ehealth.hmms.pojo;
 
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -104,6 +105,26 @@ public class MonthlyDataFhcChc implements Serializable{
 	
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 
+//functionalComponents - 1
+	//fieldActivities - 2
+	
+	//subcentre - 3
+private Integer type;
+	
+	
+	/**
+ * @return the type
+ */
+public Integer getType() {
+	return type;
+}
+
+/**
+ * @param type the type to set
+ */
+public void setType(Integer type) {
+	this.type = type;
+}
 
 	public Long getId() {
 		return id;

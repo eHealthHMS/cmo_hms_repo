@@ -24,6 +24,7 @@ public class AuthenticationDaoImpl implements AuthenticationDao {
 		Transaction transaction = null;
 		  try {
 		 transaction = session.beginTransaction();
+		 
 //		Query query = session.createQuery("from User where loginName=:login and password=:password");
 //		query.setString("login", user.getLoginName());
 //		query.setString("password", user.getPassword());

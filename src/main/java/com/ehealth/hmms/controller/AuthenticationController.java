@@ -26,6 +26,21 @@ public class AuthenticationController {
 		AuthenticationService authenticationService = new AuthenticationServiceImpl();
 		Result userResult =  authenticationService.authenticate(user);
 		
+		
+		
+		return userResult;
+
+	}
+	
+	@RequestMapping(value = "/loginForDashboard", method = RequestMethod.POST,headers="Accept=application/json")
+	public Result authenticateUserForDashBoard( @RequestBody Users user) throws Exception{
+		
+		 
+		AuthenticationService authenticationService = new AuthenticationServiceImpl();
+		Result userResult =  authenticationService.authenticateUserForDashBoard(user);
+		
+		
+		
 		return userResult;
 
 	}

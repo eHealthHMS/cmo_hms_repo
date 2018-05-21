@@ -15,5 +15,7 @@ public interface AuthenticationService {
 	
 	Result authenticate(Users user) throws Exception;
 	
+	Result authenticateUserForDashBoard(Users user) throws Exception;
+	
 	
 }

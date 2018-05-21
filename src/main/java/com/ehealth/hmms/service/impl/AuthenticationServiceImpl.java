@@ -41,6 +41,33 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 			}
 	return result;
 	}
+	//for viewing dashboard
+	public Result authenticateUserForDashBoard(Users user)  throws Exception{
+		 Result result = new Result();
+		 authenticationDao = new AuthenticationDaoImpl();
+		try {
+		Users  userResult = authenticationDao.authenticate(user);
+		
+		if(userResult!=null ) 
+		{
+			
+//			authenticationDao
+//			HospitalMaster hospitalMaster = userResult.getHospital();
+//			result.setHospitalName(hospitalMaster.getHospitalName());
+			
+		}else	{
+			result.setStatus(Constants.FAILURE_STATUS);
+			result.setErrorMessage("Invalid Credentials");
+		}
+		
+		result.setStatus(Constants.SUCCESS_STATUS);
+		
+			}
+			catch(Exception e) {
+				result.setStatus(Constants.FAILURE_STATUS);
+			}
+	return result;
+	}
 	
 	
 	

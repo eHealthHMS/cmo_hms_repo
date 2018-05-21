@@ -31,7 +31,8 @@ public class HospitalMonthlyTracker implements Serializable{
 	private Date lastModified;
 	
 	private HospitalMaster hospital;
-
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -65,6 +66,7 @@ public class HospitalMonthlyTracker implements Serializable{
 	public void setHospital(HospitalMaster hospital) {
 		this.hospital = hospital;
 	}
+
 	
 	
 }

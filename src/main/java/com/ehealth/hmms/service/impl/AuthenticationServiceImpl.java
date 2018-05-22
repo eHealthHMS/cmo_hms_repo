@@ -1,5 +1,7 @@
 package com.ehealth.hmms.service.impl;
 
+
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.ehealth.hmms.dao.AuthenticationDao;
@@ -13,11 +15,13 @@ import com.ehealth.hmms.util.Constants;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService{
 
+	final static Logger logger = Logger.getLogger(AuthenticationServiceImpl.class);
 //	@Autowired
 	private AuthenticationDao authenticationDao ;
 
 	
 	public Result authenticate(Users user)  throws Exception{
+		logger.info("inside authenticate method");
 		 Result result = new Result();
 		 authenticationDao = new AuthenticationDaoImpl();
 		try {

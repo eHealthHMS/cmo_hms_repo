@@ -4,12 +4,13 @@ import java.util.List;
 
 import com.ehealth.hmms.pojo.CategoryDetails;
 import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
+import com.ehealth.hmms.pojo.Result;
 
 public interface PhcDao {
 
 
 	
-	Integer saveFunctionalComponents(MonthlyDataFhcChc dataFhcChc)  throws Exception;
+	Result saveFunctionalComponents(MonthlyDataFhcChc dataFhcChc)  throws Exception;
 	
 //	Hospital getMonthlyData(Integer hospitalId)  throws Exception;
 	

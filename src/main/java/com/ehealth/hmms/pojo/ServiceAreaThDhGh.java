@@ -232,12 +232,12 @@ public class ServiceAreaThDhGh implements Serializable {
 	}
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "gid")
-	public HospitalMonthlyTracker getHospital() {
+	@JoinColumn(name = "id")
+	public HospitalMonthlyTracker getHospitalMonthlyTracker() {
 		return hospitalMonthlyTracker;
 	}
 
-	public void setHospital(HospitalMonthlyTracker hospitalMonthlyTracker) {
+	public void setHospitalMonthlyTracker(HospitalMonthlyTracker hospitalMonthlyTracker) {
 		this.hospitalMonthlyTracker = hospitalMonthlyTracker;
 	}
 }

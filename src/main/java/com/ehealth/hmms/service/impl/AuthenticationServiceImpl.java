@@ -1,7 +1,5 @@
 package com.ehealth.hmms.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.stereotype.Service;
@@ -15,7 +13,6 @@ import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.Users;
 import com.ehealth.hmms.service.AuthenticationService;
 import com.ehealth.hmms.util.Constants;
-import com.fasterxml.jackson.annotation.JsonFormat.Value;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {

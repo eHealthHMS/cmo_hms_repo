@@ -76,6 +76,7 @@ public class PhcDaoImpl implements PhcDao {
 		return categoryDetails;
 	}
 	
+	// Fetch monthly record of PHC for getting data in android.
 	public MonthlyDataFhcChc fetchPhcRecord(Long hospitalId, int month) throws Exception {
 		Session session = HibernatePersistence.getSessionFactory().openSession();
 		Transaction transaction = null;

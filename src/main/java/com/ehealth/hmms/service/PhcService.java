@@ -11,8 +11,7 @@ public interface PhcService {
 //	List<Attendence> getTokens();
 	
 	Result saveFunctionalComponents(MonthlyDataFhcChc dataFhcChc) throws Exception;
-	
-	
+		
 	Result getPhcStaticData(String hospitalId) throws Exception;
 	
 }

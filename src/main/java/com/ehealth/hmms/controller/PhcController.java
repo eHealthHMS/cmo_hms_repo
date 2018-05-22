@@ -17,12 +17,12 @@ import com.ehealth.hmms.service.impl.PhcServiceImpl;
 public class PhcController {
 	
 	
-	@RequestMapping(value = "/saveFuctionalComponents", method = RequestMethod.POST,headers="Accept=application/json")
-	public Result savePhcFuctionalComponents( @RequestBody MonthlyDataFhcChc dataFhcChc) throws Exception{
+	@RequestMapping(value = "/saveTransactionalData", method = RequestMethod.POST,headers="Accept=application/json")
+	public Result savePhcTransactionalData( @RequestBody MonthlyDataFhcChc dataFhcChc) throws Exception{
 		
 		 
 		PhcService phcService = new PhcServiceImpl();
-		Result result =  phcService.saveFunctionalComponents(dataFhcChc);
+		Result result =  phcService.savePhcTransactionalData(dataFhcChc);
 		
 		return result;
 

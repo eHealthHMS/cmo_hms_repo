@@ -20,7 +20,7 @@ public class AuthenticationController {
 	
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST,headers="Accept=application/json")
-	public Result authenticateUser( @RequestBody Users user) throws Exception{
+	public Result authenticateUserForDataEntry( @RequestBody Users user) throws Exception{
 		
 		 
 		AuthenticationService authenticationService = new AuthenticationServiceImpl();
@@ -28,6 +28,22 @@ public class AuthenticationController {
 		
 		
 		
+<<<<<<< HEAD
+		return userResult;
+
+	}
+	
+	@RequestMapping(value = "/loginForDashboard", method = RequestMethod.POST,headers="Accept=application/json")
+	public Result authenticateUserForDashBoard( @RequestBody Users user) throws Exception{
+		
+		 
+		AuthenticationService authenticationService = new AuthenticationServiceImpl();
+		Result userResult =  authenticationService.authenticateUserForDashBoard(user);
+		
+		
+		
+=======
+>>>>>>> master
 		return userResult;
 
 	}
@@ -47,13 +63,13 @@ public class AuthenticationController {
 	
 	
 	
-	 
-	 @RequestMapping(value = "/test", method = RequestMethod.GET)
-		public void authenticateTest() {
-		//
-		 System.out.println("hai");//return "hai";
-	 } 
-	 
-	
+//	 
+//	 @RequestMapping(value = "/test", method = RequestMethod.GET)
+//		public void authenticateTest() {
+//		//
+//		 System.out.println("hai");//return "hai";
+//	 } 
+//	 
+//	
 	
 }

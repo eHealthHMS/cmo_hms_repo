@@ -18,6 +18,8 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 	final static Logger logger = Logger.getLogger(AuthenticationServiceImpl.class);
 //	@Autowired
 	private AuthenticationDao authenticationDao ;
+	
+	private PhcServiceImpl phcServiceImpl;
 
 	
 	public Result authenticate(Users user)  throws Exception{
@@ -29,6 +31,9 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 		
 		if(userResult!=null ) 
 		{
+			 phcServiceImpl = new PhcServiceImpl();
+			 
+			
 			HospitalMaster hospitalMaster = userResult.getHospital();
 			result.setHospitalName(hospitalMaster.getHospitalName());
 			
@@ -43,6 +48,8 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 			catch(Exception e) {
 				result.setStatus(Constants.FAILURE_STATUS);
 			}
+		
+		
 	return result;
 	}
 	//for viewing dashboard

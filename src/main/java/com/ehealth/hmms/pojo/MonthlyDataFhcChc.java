@@ -31,6 +31,12 @@ public class MonthlyDataFhcChc implements Serializable{
 	@Column(name = "afternoon_op")
 	private Long afternoonOp;
 	
+	@Column(name = "forenoon_op_tot")
+	private Long forenoonOpTotal;
+	
+	@Column(name = "afternoon_op_tot")
+	private Long afternoonOpTotal;
+	
 	@Column(name = "total_precheck")
 	private Long totalPrecheck;
 	
@@ -39,6 +45,9 @@ public class MonthlyDataFhcChc implements Serializable{
 	
 	@Column(name = "patient_labtest")
 	private Long patientLabTest;
+	
+	@Column(name = "total_lab_test")
+	private Long totallabTest;
 	
 	@Column(name = "swas_clinic")
 	private Long swasClinic;
@@ -351,6 +360,48 @@ public void setType(Integer type) {
 
 	public void setHospitalMonthlyTracker(HospitalMonthlyTracker hospitalMonthlyTracker) {
 		this.hospitalMonthlyTracker = hospitalMonthlyTracker;
+	}
+
+	/**
+	 * @return the forenoonOpTotal
+	 */
+	public Long getForenoonOpTotal() {
+		return forenoonOpTotal;
+	}
+
+	/**
+	 * @param forenoonOpTotal the forenoonOpTotal to set
+	 */
+	public void setForenoonOpTotal(Long forenoonOpTotal) {
+		this.forenoonOpTotal = forenoonOpTotal;
+	}
+
+	/**
+	 * @return the afternoonOpTotal
+	 */
+	public Long getAfternoonOpTotal() {
+		return afternoonOpTotal;
+	}
+
+	/**
+	 * @param afternoonOpTotal the afternoonOpTotal to set
+	 */
+	public void setAfternoonOpTotal(Long afternoonOpTotal) {
+		this.afternoonOpTotal = afternoonOpTotal;
+	}
+
+	/**
+	 * @return the totallabTest
+	 */
+	public Long getTotallabTest() {
+		return totallabTest;
+	}
+
+	/**
+	 * @param totallabTest the totallabTest to set
+	 */
+	public void setTotallabTest(Long totallabTest) {
+		this.totallabTest = totallabTest;
 	}
 	
 

@@ -91,7 +91,7 @@ public class Result {
 	 * @param status the status to set
 	 */
 	public void setStatus(Character status) {
-		status = status;
+		this.status = status;
 	}
 	
 

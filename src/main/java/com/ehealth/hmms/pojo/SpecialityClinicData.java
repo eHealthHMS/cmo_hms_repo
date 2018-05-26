@@ -33,6 +33,9 @@ public class SpecialityClinicData implements Serializable {
 	private Long total;
 	
 	private SpecialityClinic specialityClinic;
+	
+	private HospitalMonthlyTracker hospitalMonthlyTracker;
+	
 
 	public Long getId() {
 		return id;
@@ -76,4 +79,15 @@ public class SpecialityClinicData implements Serializable {
 		this.specialityClinic = specialityClinic;
 	}
 	
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id")
+	public HospitalMonthlyTracker getHospitalMonthlyTracker() {
+		return hospitalMonthlyTracker;
+	}
+
+	public void setHospitalMonthlyTracker(HospitalMonthlyTracker hospitalMonthlyTracker) {
+		this.hospitalMonthlyTracker = hospitalMonthlyTracker;
+	}
+
 }

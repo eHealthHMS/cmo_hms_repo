@@ -86,6 +86,36 @@ public class PhcDaoImpl implements PhcDao {
 		}
 		return categoryDetails;
 	}
+	
+	// Fetch monthly record of PHC for getting data in android.
+	public MonthlyDataFhcChc fetchPhcRecord(Long hospitalId, int month) throws Exception {
+		Session session = HibernatePersistence.getSessionFactory().openSession();
+		Transaction transaction = null;
+		MonthlyDataFhcChc MonthlyPhcResult = null;
+		  try {
+				 transaction = session.beginTransaction();
+				Query query = session.createSQLQuery("select m.forenoon_op, m.afternoon_op,m.total_precheck,m.total_postconsultncounsel, m.patient_labtest, m.swas_clinic,m.aswasam_clinic,m.ncd_clinic,m.tot_sc_immunizatnclinic, m.tot_other_sc_clinic, m.tot_other_sc_clinic, m.tot_outreach, m.tot_ncd_clinic,m.iec_healthpromo_activities,m.nutrition_committee_meetings,m.hospmonthlytrack_id, m.housevisit_mo, m.housevisit_hs, m.housevisit_phns, m.housevisit_hi, m.housevisit_phl, m.housevisit_jhi, m.housevisit_jphn from monthlydata_fhc_chc m inner join hospital_monthlytracker h on h.id = m.hospmonthlytrack_id where h.report_month =: month and h.hospital_id =: hospitalId;");
+				
+				List<MonthlyDataFhcChc> phcList = query.list();
+				if(phcList!=null && !phcList.isEmpty()) {
+					MonthlyPhcResult = phcList.get(0);
+				}			
+			 } catch (HibernateException e) {
+		         if (transaction!=null) { 
+		        	 transaction.rollback();
+		         }
+		        throw new HibernateException("Hibernate Exception : " +  e.getMessage() );
+		      } catch (Exception e) {
+		    	  if (transaction!=null) { 
+		         	 transaction.rollback();
+		          }
+		         throw new Exception("Exception : " +  e.getMessage() );
+		      }
+				  finally {
+		         session.close(); 
+		      }
+		return MonthlyPhcResult;
+	}
 
 	private Long castObjectToLong(Object object) {
 

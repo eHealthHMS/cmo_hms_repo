@@ -11,6 +11,7 @@ public interface PhcDao {
 
 	
 	Result saveFunctionalComponents(MonthlyDataFhcChc dataFhcChc)  throws Exception;
+	MonthlyDataFhcChc fetchPhcRecord(Long hospitalId, int month)throws Exception;
 	
 //	Hospital getMonthlyData(Integer hospitalId)  throws Exception;
 	

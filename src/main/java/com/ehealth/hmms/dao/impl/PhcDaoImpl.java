@@ -2,9 +2,9 @@ package com.ehealth.hmms.dao.impl;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -24,7 +24,6 @@ import com.ehealth.hmms.pojo.HospitalMaster;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
 import com.ehealth.hmms.pojo.Result;
-import com.ehealth.hmms.pojo.Users;
 import com.ehealth.hmms.util.Constants;
 
 @Repository
@@ -39,7 +38,7 @@ public class PhcDaoImpl implements PhcDao {
 
 		Transaction transaction = null;
 		List<CategoryDetails> categoryDetails = new ArrayList<CategoryDetails>();
-		List<Object> resultSet = new ArrayList<Object>();
+		//List<Object> resultSet = new ArrayList<Object>();
 		try {
 			transaction = session.beginTransaction();
 			String strQuery = "select cm.category_name,cd.sanctioned_post,in_position,nhm,contract,total_staff_available"
@@ -48,8 +47,8 @@ public class PhcDaoImpl implements PhcDao {
 
 			Query query = session.createSQLQuery(strQuery);
 			query.setLong("hospitalid", new Long(hospitalId));
-			resultSet = query.list();
-			Iterator iterator = resultSet.iterator();
+			//resultSet = query.list();
+			Iterator iterator = query.list().iterator();
 
 			while (iterator.hasNext()) {
 
@@ -179,7 +178,7 @@ public class PhcDaoImpl implements PhcDao {
 			hospitalMaster.setId(hospitalId);
 			trackerForCurrentMonth.setHospital(hospitalMaster);
 			trackerForCurrentMonth.setLastModified(Calendar.getInstance().getTime());
-			trackerForCurrentMonth.setReportMonth(new Long(Calendar.getInstance().get(Calendar.MONTH)));
+			trackerForCurrentMonth.setReport_date(getReportDate());//setReportMonth(new Long(Calendar.getInstance().get(Calendar.MONTH)));
 			trackerId = (Long) session.save(trackerForCurrentMonth);
 
 		} catch (HibernateException e) {
@@ -243,7 +242,62 @@ public class PhcDaoImpl implements PhcDao {
 		}
 		return hospitalMonthlyTracker;
 	}
+	
+	
+	/**
+	 * get hospital monthly tracker for a month
+	 * 
+	 * @param hospitalId
+	 * @param currentMonth
+	 * @return
+	 * @throws Exception
+	 */
+	private HospitalMonthlyTracker getMonthlyTrackerForTrend(Long hospitalId, int currentMonth)
+			throws Exception {
 
+		Session session = HibernatePersistence.getSessionFactory().openSession();
+		HospitalMonthlyTracker hospitalMonthlyTracker = null;
+		Transaction transaction = null;
+		try {
+			transaction = session.beginTransaction();
+
+			Query query = session.createQuery(
+					"from HospitalMonthlyTracker mt where mt.reportMonth=:month and mt.hospital.id=:hospitalId");
+			query.setLong("month", currentMonth);
+			query.setLong("hospitalId", hospitalId);
+
+			List<HospitalMonthlyTracker> hospitalMonthlyTrackers = query.list();
+
+			if (hospitalMonthlyTrackers != null && !hospitalMonthlyTrackers.isEmpty()) {
+				hospitalMonthlyTracker = hospitalMonthlyTrackers.get(0);
+			}
+
+		} catch (HibernateException e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw new Exception("Exception : " + e.getMessage());
+
+		} finally {
+			session.close();
+		}
+		return hospitalMonthlyTracker;
+	}
+	
+	
+	private Date getReportDate() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MONTH, -1);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		return calendar.getTime();
+	}
+	//for dashboard
+//coding done// testing pending
 	public List<MonthlyDataFhcChc> getPhcDynamicData(String hospitalId) throws Exception {
 		Session session = HibernatePersistence.getSessionFactory().openSession();
 
@@ -253,38 +307,68 @@ public class PhcDaoImpl implements PhcDao {
 		//List<Object> resultSet = new ArrayList<Object>();
 		try {
 			transaction = session.beginTransaction();
-			HospitalMonthlyTracker trackerForCurrentMonth = getMonthlyTrackerForCurrentMonth(new Long(hospitalId),
-					Calendar.getInstance().get(Calendar.MONTH));
+//			HospitalMonthlyTracker trackerForCurrentMonth = getMonthlyTrackerForCurrentMonth(new Long(hospitalId),
+//					Calendar.getInstance().get(Calendar.MONTH));
+//
+//			Long trackerid = -1L;
+//			int i=-1;
+//			if (trackerForCurrentMonth == null) {
+//				// to do
+//
+//			} 
+//			else {
 
-			Long trackerid = 0L;
-			if (trackerForCurrentMonth == null) {
-				// to do
+		//	Long	trackerid = trackerForCurrentMonth.getId();
 
-			} else {
+			String strQuery  = "select forenoonOpTotal,afternoonOpTotal,totalPrecheck,patientLabTest,totalLabTest,totalAttendee,"
+					+ "houseVisitMo,houseVisitHs,houseVisitPhns,houseVisitHi,houseVisitPhn,houseVisitJhi,houseVisitJphn,"
+					+ "houseVisitAsha,regularScClinic from MonthlyDataFhcChc m inner join  CategoryDetails cd on "
+					+ "cd.hospital.id=m.hospitalMonthlyTracker.hospital.id where m.hospitalMonthlyTracker.hospital.id=:hospitalid"
+					+ " and m.hospitalMonthlyTracker.report_date=:reportDate";
+			
+			Query query = session.createQuery(strQuery);
+			query.setDate("reportDate", getReportDate());
+			query.setString("hospitalCode", hospitalId);	
+			
+			//resultSet = query.list();
+			Iterator iterator = query.list().iterator();
 
-				trackerid = trackerForCurrentMonth.getId();
+			while (iterator.hasNext()) {
 
-				Criteria cr = session.createCriteria(MonthlyDataFhcChc.class, "MonthlyDataFhcChc")
-						.createCriteria("MonthlyDataFhcChc.hospitalMonthlyTracker", "trackerTable")
-						.add(Restrictions.eq("trackerTable.id", trackerid))
-						.setProjection(Projections.projectionList()
-								.add(Projections.property("forenoonOpTotal"), "forenoonOpTotal")
-								.add(Projections.property("afternoonOpTotal"), "afternoonOpTotal")
-								.add(Projections.property("totalPrecheck"), "totalPrecheck")
-								.add(Projections.property("patientLabTest"), "patientLabTest")
-								.add(Projections.property("totallabTest"), "totallabTest")
-								.add(Projections.property("housevisitMo"), "housevisitMo")
-								.add(Projections.property("housevisitHs"), "housevisitHs")
-								.add(Projections.property("housevisitPhns"), "housevisitPhns")
-								.add(Projections.property("housevisitHi"), "housevisitHi")
-								.add(Projections.property("housevisitPhl"), "housevisitPhl")
-								.add(Projections.property("housevisitJhi"), "housevisitJhi")
-								.add(Projections.property("housevisitJphn"), "housevisitJphn"))
-						.setResultTransformer(Transformers.aliasToBean(MonthlyDataFhcChc.class));
-
-				dataFhcChcs = cr.list();
-
+				// Map row = (Map) iterator.next();
+				Object[] row = (Object[]) iterator.next();
+				
+				
+				
+				
+				
 			}
+			//.get(Calendar.MONTH)
+			
+//				Criteria cr = session.createCriteria(MonthlyDataFhcChc.class, "MonthlyDataFhcChc")
+//						.createCriteria("MonthlyDataFhcChc.hospitalMonthlyTracker", "trackerTable")
+//					//	.createCriteria("trackerTable.hospital", "hospitalTable") //needs to nbe enabled
+//						.add(Restrictions.eq("trackerTable.id", new Long(hospitalId))) //needs to be commented
+//						//.add(Restrictions.eq("hospital.hospitalCode", hospitalId))//needs to nbe enabled
+//					//	.add(Restrictions.eq("trackerTable.report_date",getReportDate() ))
+//						.setProjection(Projections.projectionList()
+//								.add(Projections.property("forenoonOpTotal"), "forenoonOpTotal")
+//								.add(Projections.property("afternoonOpTotal"), "afternoonOpTotal")
+//								.add(Projections.property("totalPrecheck"), "totalPrecheck")
+//								.add(Projections.property("patientLabTest"), "patientLabTest")
+//								.add(Projections.property("totallabTest"), "totallabTest")
+//								.add(Projections.property("housevisitMo"), "housevisitMo")
+//								.add(Projections.property("housevisitHs"), "housevisitHs")
+//								.add(Projections.property("housevisitPhns"), "housevisitPhns")
+//								.add(Projections.property("housevisitHi"), "housevisitHi")
+//								.add(Projections.property("housevisitPhl"), "housevisitPhl")
+//								.add(Projections.property("housevisitJhi"), "housevisitJhi")
+//								.add(Projections.property("housevisitJphn"), "housevisitJphn"))
+//						.setResultTransformer(Transformers.aliasToBean(MonthlyDataFhcChc.class));
+				
+				//dataFhcChcs = cr.list();
+
+//			}
 		} catch (HibernateException e) {
 			if (transaction != null) {
 				transaction.rollback();
@@ -312,20 +396,32 @@ public class PhcDaoImpl implements PhcDao {
 		//List<Object> resultSet = new ArrayList<Object>();
 		try {
 			transaction = session.beginTransaction();
+			Calendar today = Calendar.getInstance();
 			HospitalMonthlyTracker trackerForCurrentMonth = getMonthlyTrackerForCurrentMonth(new Long(hospitalId),
-					Calendar.getInstance().get(Calendar.MONTH));
+					today.get(Calendar.MONTH));
 
 			Long trackerid = 0L;
+			 
+			for (int i=0;i<Constants.trendPeriod;i++) {
+				today.add(Calendar.MONTH, -1);
+			}
+			
+			List<Date> dates = new ArrayList<Date>();
+			
 			if (trackerForCurrentMonth == null) {
 				// to do
 
 			} else {
+				
+				String query="select forenoonOpTotal,afternoonOpTotal,totalPrecheck,patientLabTest,totallabTest,housevisitMo,housevisitHs,"
+						+ "housevisitPhns,housevisitHi,housevisitPhl,housevisitJhi,housevisitJphn from MonthlyDataFhcChc where hospitalMonthlyTracker.reportMonth in ()";
+				
 
 				trackerid = trackerForCurrentMonth.getId();
 
 				Criteria cr = session.createCriteria(MonthlyDataFhcChc.class, "MonthlyDataFhcChc")
 						.createCriteria("MonthlyDataFhcChc.hospitalMonthlyTracker", "trackerTable")
-						.add(Restrictions.eq("trackerTable.id", trackerid))
+					//	.add(Restrictions.in(propertyName, values)("trackerTable.id", trackerid))
 						.setProjection(Projections.projectionList()
 								.add(Projections.property("forenoonOpTotal"), "forenoonOpTotal")
 								.add(Projections.property("afternoonOpTotal"), "afternoonOpTotal")

@@ -24,8 +24,11 @@ public class HospitalMonthlyTracker implements Serializable{
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "report_month")
-	private Long reportMonth;
+	@Column(name = "created_date")
+	private Long createdDate;
+	
+	@Column(name = "report_date")
+	private Date report_date;
 	
 	@Column(name = "last_modified")
 	private Date lastModified;
@@ -41,13 +44,13 @@ public class HospitalMonthlyTracker implements Serializable{
 		this.id = id;
 	}
 
-	public Long getReportMonth() {
-		return reportMonth;
-	}
-
-	public void setReportMonth(Long reportMonth) {
-		this.reportMonth = reportMonth;
-	}
+//	public Long getReportMonth() {
+//		return reportMonth;
+//	}
+//
+//	public void setReportMonth(Long reportMonth) {
+//		this.reportMonth = reportMonth;
+//	}
 
 	public Date getLastModified() {
 		return lastModified;
@@ -65,6 +68,20 @@ public class HospitalMonthlyTracker implements Serializable{
 
 	public void setHospital(HospitalMaster hospital) {
 		this.hospital = hospital;
+	}
+
+	/**
+	 * @return the report_date
+	 */
+	public Date getReport_date() {
+		return report_date;
+	}
+
+	/**
+	 * @param report_date the report_date to set
+	 */
+	public void setReport_date(Date report_date) {
+		this.report_date = report_date;
 	}
 
 	

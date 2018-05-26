@@ -328,7 +328,7 @@ public class PhcDaoImpl implements PhcDao {
 	}
 	//for dashboard
 //coding done// testing pending
-	public List<MonthlyDataFhcChc> getPhcDynamicData(String hospitalId) throws Exception {
+	public List<MonthlyDataFhcChc> getPhcDynamicDataForDashboard(String hospitalId) throws Exception {
 		Session session = HibernatePersistence.getSessionFactory().openSession();
 
 		Transaction transaction = null;

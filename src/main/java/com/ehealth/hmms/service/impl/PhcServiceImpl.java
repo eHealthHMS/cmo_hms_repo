@@ -64,10 +64,10 @@ public class PhcServiceImpl implements PhcService {
 
 	}
 	
-	public Result getPhcDynamicData(String hospitalId) throws Exception {
+	public Result getPhcDynamicDataForDashboard(String hospitalId) throws Exception {
 		Result result = new Result();
 		try {
-			List<MonthlyDataFhcChc> dataFhcChcs = phcDao.getPhcDynamicData(hospitalId);
+			List<MonthlyDataFhcChc> dataFhcChcs = phcDao.getPhcDynamicDataForDashboard(hospitalId);
 
 			if (dataFhcChcs != null && !dataFhcChcs.isEmpty()) {
 				

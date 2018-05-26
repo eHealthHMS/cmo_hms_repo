@@ -37,7 +37,7 @@ public class PhcController {
 		return result;
 
 	}
-			 
+			 //coding done;testing pending
 	@RequestMapping(value = "/getDynamicData/{hospitalId}", method = RequestMethod.GET,headers="Accept=application/json")
 	public Result getPhcDynamicData(@PathVariable("hospitalId") String hospitalId) throws Exception{
 		

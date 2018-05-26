@@ -1,14 +1,10 @@
 package com.ehealth.hmms.service.impl;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import com.ehealth.hmms.dao.ThDao;
 import com.ehealth.hmms.dao.impl.ThDaoImpl;
-import com.ehealth.hmms.pojo.CategoryDetails;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
-import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.ServiceAreaThDhGh;
 import com.ehealth.hmms.service.ThService;

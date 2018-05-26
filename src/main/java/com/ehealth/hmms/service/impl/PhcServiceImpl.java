@@ -25,7 +25,7 @@ public class PhcServiceImpl implements PhcService {
 
 	public Result savePhcTransactionalData(MonthlyDataFhcChc dataFhcChc) throws Exception {
 		Result result = new Result();
-
+		
 		try {
 			Integer resultFlag = phcDao.saveFunctionalComponents(dataFhcChc);
 
@@ -35,10 +35,8 @@ public class PhcServiceImpl implements PhcService {
 																									// HospitalMonthlyTracker();
 			Long hospitalId = hospitalMonthlyTracker.getHospital().getId();
 		
-
 			result = phcDao.saveFunctionalComponents(dataFhcChc);
-
-			
+		
 		} catch (Exception e) {
 			result.setStatus(Constants.FAILURE_STATUS);
 		}
@@ -50,14 +48,39 @@ public class PhcServiceImpl implements PhcService {
 		try {
 			List<CategoryDetails> categoryDetailsList = phcDao.getPhcStaticData(hospitalId);
 
-			if (categoryDetailsList != null) {
+			if (categoryDetailsList != null && !categoryDetailsList.isEmpty()) {
 
 				result.setValue(categoryDetailsList);
 				result.setStatus(Constants.SUCCESS_STATUS);
 
 			} else {
 				result.setStatus(Constants.FAILURE_STATUS);
-				result.setErrorMessage("Invalid Credentials");
+				result.setErrorMessage("Data not available");
+			}
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+		}
+		return result;
+
+	}
+	
+	public Result getPhcDynamicData(String hospitalId) throws Exception {
+		Result result = new Result();
+		try {
+			List<MonthlyDataFhcChc> dataFhcChcs = phcDao.getPhcDynamicData(hospitalId);
+
+			if (dataFhcChcs != null && !dataFhcChcs.isEmpty()) {
+				
+				
+				
+				
+
+				result.setValue(dataFhcChcs);
+				result.setStatus(Constants.SUCCESS_STATUS);
+
+			} else {
+				result.setStatus(Constants.FAILURE_STATUS);
+				result.setErrorMessage("Data not available");
 			}
 		} catch (Exception e) {
 			result.setStatus(Constants.FAILURE_STATUS);

@@ -1,5 +1,6 @@
 package com.ehealth.hmms.controller;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,20 +17,31 @@ import com.ehealth.hmms.service.impl.AuthenticationServiceImpl;
 public class AuthenticationController {
 
 	
-
-	
-	
 	@RequestMapping(value = "/login", method = RequestMethod.POST,headers="Accept=application/json")
 	public Result authenticateUserForDataEntry( @RequestBody Users user) throws Exception{
 		
 		 
 		AuthenticationService authenticationService = new AuthenticationServiceImpl();
 		Result userResult =  authenticationService.authenticate(user);
-		
-		
-		
-<<<<<<< HEAD
 		return userResult;
+
+	}
+	
+	@RequestMapping(value = "/loginForDashboard", method = RequestMethod.POST,headers="Accept=application/json")
+	public Result authenticateUserForDashBoard( @RequestBody Users user) throws Exception{
+		 
+		AuthenticationService authenticationService = new AuthenticationServiceImpl();
+		Result userResult =  authenticationService.authenticateUserForDashBoard(user);
+		
+		return userResult;
+
+	}
+	
+	@RequestMapping(value = "/test/{hospitalId}", method = RequestMethod.GET,headers="Accept=application/json")
+	public String gettestData(@PathVariable("hospitalId") String hospitalId) throws Exception{
+		
+		
+		return "connected";
 
 	}
 	
@@ -42,34 +54,24 @@ public class AuthenticationController {
 		
 		
 		
-=======
->>>>>>> master
 		return userResult;
 
 	}
 	
-	@RequestMapping(value = "/loginForDashboard", method = RequestMethod.POST,headers="Accept=application/json")
-	public Result authenticateUserForDashBoard( @RequestBody Users user) throws Exception{
+	@RequestMapping(value = "/loginForTest", method = RequestMethod.POST,headers="Accept=application/json")
+	public Result authenticateUserForTest( @RequestBody Users user) throws Exception{
 		
 		 
 		AuthenticationService authenticationService = new AuthenticationServiceImpl();
-		Result userResult =  authenticationService.authenticateUserForDashBoard(user);
+		Result userResult = new Result();// authenticationService.authenticate(user);
 		
-		
+		userResult.setHospitalName("test Hos");
+		userResult.setStatus('S');
 		
 		return userResult;
 
 	}
 	
-	
-	
-//	 
-//	 @RequestMapping(value = "/test", method = RequestMethod.GET)
-//		public void authenticateTest() {
-//		//
-//		 System.out.println("hai");//return "hai";
-//	 } 
-//	 
-//	
+
 	
 }

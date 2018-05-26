@@ -2,16 +2,18 @@ package com.ehealth.hmms.dao.impl;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.ehealth.hmms.dao.HibernatePersistence;
@@ -22,7 +24,6 @@ import com.ehealth.hmms.pojo.HospitalMaster;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
 import com.ehealth.hmms.pojo.Result;
-import com.ehealth.hmms.pojo.Users;
 import com.ehealth.hmms.util.Constants;
 
 @Repository
@@ -37,31 +38,35 @@ public class PhcDaoImpl implements PhcDao {
 
 		Transaction transaction = null;
 		List<CategoryDetails> categoryDetails = new ArrayList<CategoryDetails>();
-		List<Object> resultSet = new ArrayList<Object>();
+		//List<Object> resultSet = new ArrayList<Object>();
 		try {
 			transaction = session.beginTransaction();
-			String query = "select cm.category_name,cd.sanctioned_post,in_position,nhm,contract,total_staff_available"
-					+ " from category_details cd inner join category_master cm on cd.category_master_id=cm.id"
-					+ "  where hospital_id:hospitalid";
-			resultSet = session.createSQLQuery(query).list();
-			Iterator iterator = resultSet.iterator();
+			String strQuery = "select cm.category_name,cd.sanctioned_post,in_position,nhm,contract,total_staff_available"
+					+ " from category_details cd inner join category_master cm on cd.category_id=cm.id"
+					+ "  where hospital_id=:hospitalid";
+
+			Query query = session.createSQLQuery(strQuery);
+			query.setLong("hospitalid", new Long(hospitalId));
+			//resultSet = query.list();
+			Iterator iterator = query.list().iterator();
 
 			while (iterator.hasNext()) {
 
-				Map row = (Map) iterator.next();
+				// Map row = (Map) iterator.next();
+				Object[] row = (Object[]) iterator.next();
 
 				CategoryMaster categoryMaster = new CategoryMaster();
 				CategoryDetails categoryDetailsResult = new CategoryDetails();
-				categoryMaster.setCategoryName((String) row.get("category_name"));
-				categoryDetailsResult.setSanctionedPost((Long) row.get("sanctioned_post"));
-				categoryDetailsResult.setInPosition((Long) row.get("in_position"));
-				categoryDetailsResult.setNhm((Long) row.get("nhm"));
-				categoryDetailsResult.setContract((Long) row.get("contract"));
-				categoryDetailsResult.setTotalStaffAvailable((Long) row.get("total_staff_available"));
+				categoryMaster.setCategoryName((String) row[0]);
 
+				// categoryDetailsResult.setSanctionedPost(castObjectToLong)
+				categoryDetailsResult.setSanctionedPost(castObjectToLong(row[1]));
+				categoryDetailsResult.setInPosition(castObjectToLong(row[2]));
+				categoryDetailsResult.setNhm(castObjectToLong(row[3]));
+				categoryDetailsResult.setContract(castObjectToLong(row[4]));
+				categoryDetailsResult.setTotalStaffAvailable(castObjectToLong(row[5]));
 				categoryDetailsResult.setCategoryMaster(categoryMaster);
 				categoryDetails.add(categoryDetailsResult);
-				// row.set(row.get("category_name"));
 
 			}
 
@@ -112,6 +117,12 @@ public class PhcDaoImpl implements PhcDao {
 		return MonthlyPhcResult;
 	}
 
+	private Long castObjectToLong(Object object) {
+
+		return new Long((Integer) ((object != null) ? object : 0));
+
+	}
+
 	/**
 	 * method to save phc functional components monthly
 	 */
@@ -126,18 +137,19 @@ public class PhcDaoImpl implements PhcDao {
 			HospitalMonthlyTracker hospitalMonthlyTracker = dataFhcChc.getHospitalMonthlyTracker();// new
 			Long hospitalId = hospitalMonthlyTracker.getHospital().getId();
 
-			HospitalMonthlyTracker trackerForCurrentMonth = getMonthlyTrackerForCurrentMonth(hospitalId, Calendar.getInstance().get(Calendar.MONTH));
+			HospitalMonthlyTracker trackerForCurrentMonth = getMonthlyTrackerForCurrentMonth(hospitalId,
+					Calendar.getInstance().get(Calendar.MONTH));
 			Long trackerid = 0L;
 			if (trackerForCurrentMonth == null) {
 				trackerid = saveHospitalMonthlyTracker(dataFhcChc);
 
 			}
-			 if(trackerid==0) {
-			 result.setStatus(Constants.FAILURE_STATUS);
-			 return result;
-			 }else {
+			if (trackerid == 0) {
+				result.setStatus(Constants.FAILURE_STATUS);
+				return result;
+			} else {
 				// Query query = "";
-			 }
+			}
 
 			// functionalComponents - 1//fieldActivities - 2//subcentre - 3
 			Integer type = dataFhcChc.getType();
@@ -157,9 +169,7 @@ public class PhcDaoImpl implements PhcDao {
 				return result;
 
 			}
-			} 
-
-			
+			}
 
 		} catch (HibernateException e) {
 			if (transaction != null) {
@@ -180,6 +190,7 @@ public class PhcDaoImpl implements PhcDao {
 
 	/**
 	 * save hospital monthly tracker
+	 * 
 	 * @param dataFhcChc
 	 * @return
 	 * @throws Exception
@@ -197,7 +208,7 @@ public class PhcDaoImpl implements PhcDao {
 			hospitalMaster.setId(hospitalId);
 			trackerForCurrentMonth.setHospital(hospitalMaster);
 			trackerForCurrentMonth.setLastModified(Calendar.getInstance().getTime());
-			trackerForCurrentMonth.setReportMonth(new Long(Calendar.getInstance().get(Calendar.MONTH)));
+			trackerForCurrentMonth.setReport_date(getReportDate());//setReportMonth(new Long(Calendar.getInstance().get(Calendar.MONTH)));
 			trackerId = (Long) session.save(trackerForCurrentMonth);
 
 		} catch (HibernateException e) {
@@ -219,12 +230,14 @@ public class PhcDaoImpl implements PhcDao {
 
 	/**
 	 * get hospital monthly tracker for a month
+	 * 
 	 * @param hospitalId
 	 * @param currentMonth
 	 * @return
 	 * @throws Exception
 	 */
-	private HospitalMonthlyTracker getMonthlyTrackerForCurrentMonth(Long hospitalId, int currentMonth) throws Exception {
+	private HospitalMonthlyTracker getMonthlyTrackerForCurrentMonth(Long hospitalId, int currentMonth)
+			throws Exception {
 
 		Session session = HibernatePersistence.getSessionFactory().openSession();
 		HospitalMonthlyTracker hospitalMonthlyTracker = null;
@@ -258,6 +271,220 @@ public class PhcDaoImpl implements PhcDao {
 			session.close();
 		}
 		return hospitalMonthlyTracker;
+	}
+	
+	
+	/**
+	 * get hospital monthly tracker for a month
+	 * 
+	 * @param hospitalId
+	 * @param currentMonth
+	 * @return
+	 * @throws Exception
+	 */
+	private HospitalMonthlyTracker getMonthlyTrackerForTrend(Long hospitalId, int currentMonth)
+			throws Exception {
+
+		Session session = HibernatePersistence.getSessionFactory().openSession();
+		HospitalMonthlyTracker hospitalMonthlyTracker = null;
+		Transaction transaction = null;
+		try {
+			transaction = session.beginTransaction();
+
+			Query query = session.createQuery(
+					"from HospitalMonthlyTracker mt where mt.reportMonth=:month and mt.hospital.id=:hospitalId");
+			query.setLong("month", currentMonth);
+			query.setLong("hospitalId", hospitalId);
+
+			List<HospitalMonthlyTracker> hospitalMonthlyTrackers = query.list();
+
+			if (hospitalMonthlyTrackers != null && !hospitalMonthlyTrackers.isEmpty()) {
+				hospitalMonthlyTracker = hospitalMonthlyTrackers.get(0);
+			}
+
+		} catch (HibernateException e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw new Exception("Exception : " + e.getMessage());
+
+		} finally {
+			session.close();
+		}
+		return hospitalMonthlyTracker;
+	}
+	
+	
+	private Date getReportDate() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MONTH, -1);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		return calendar.getTime();
+	}
+	//for dashboard
+//coding done// testing pending
+	public List<MonthlyDataFhcChc> getPhcDynamicData(String hospitalId) throws Exception {
+		Session session = HibernatePersistence.getSessionFactory().openSession();
+
+		Transaction transaction = null;
+		List<MonthlyDataFhcChc> dataFhcChcs = null;
+		// List<CategoryDetails> categoryDetails = new ArrayList<CategoryDetails>();
+		//List<Object> resultSet = new ArrayList<Object>();
+		try {
+			transaction = session.beginTransaction();
+//			HospitalMonthlyTracker trackerForCurrentMonth = getMonthlyTrackerForCurrentMonth(new Long(hospitalId),
+//					Calendar.getInstance().get(Calendar.MONTH));
+//
+//			Long trackerid = -1L;
+//			int i=-1;
+//			if (trackerForCurrentMonth == null) {
+//				// to do
+//
+//			} 
+//			else {
+
+		//	Long	trackerid = trackerForCurrentMonth.getId();
+
+			String strQuery  = "select forenoonOpTotal,afternoonOpTotal,totalPrecheck,patientLabTest,totalLabTest,totalAttendee,"
+					+ "houseVisitMo,houseVisitHs,houseVisitPhns,houseVisitHi,houseVisitPhn,houseVisitJhi,houseVisitJphn,"
+					+ "houseVisitAsha,regularScClinic from MonthlyDataFhcChc m inner join  CategoryDetails cd on "
+					+ "cd.hospital.id=m.hospitalMonthlyTracker.hospital.id where m.hospitalMonthlyTracker.hospital.id=:hospitalid"
+					+ " and m.hospitalMonthlyTracker.report_date=:reportDate";
+			
+			Query query = session.createQuery(strQuery);
+			query.setDate("reportDate", getReportDate());
+			query.setString("hospitalCode", hospitalId);	
+			
+			//resultSet = query.list();
+			Iterator iterator = query.list().iterator();
+
+			while (iterator.hasNext()) {
+
+				// Map row = (Map) iterator.next();
+				Object[] row = (Object[]) iterator.next();
+				
+				
+				
+				
+				
+			}
+			//.get(Calendar.MONTH)
+			
+//				Criteria cr = session.createCriteria(MonthlyDataFhcChc.class, "MonthlyDataFhcChc")
+//						.createCriteria("MonthlyDataFhcChc.hospitalMonthlyTracker", "trackerTable")
+//					//	.createCriteria("trackerTable.hospital", "hospitalTable") //needs to nbe enabled
+//						.add(Restrictions.eq("trackerTable.id", new Long(hospitalId))) //needs to be commented
+//						//.add(Restrictions.eq("hospital.hospitalCode", hospitalId))//needs to nbe enabled
+//					//	.add(Restrictions.eq("trackerTable.report_date",getReportDate() ))
+//						.setProjection(Projections.projectionList()
+//								.add(Projections.property("forenoonOpTotal"), "forenoonOpTotal")
+//								.add(Projections.property("afternoonOpTotal"), "afternoonOpTotal")
+//								.add(Projections.property("totalPrecheck"), "totalPrecheck")
+//								.add(Projections.property("patientLabTest"), "patientLabTest")
+//								.add(Projections.property("totallabTest"), "totallabTest")
+//								.add(Projections.property("housevisitMo"), "housevisitMo")
+//								.add(Projections.property("housevisitHs"), "housevisitHs")
+//								.add(Projections.property("housevisitPhns"), "housevisitPhns")
+//								.add(Projections.property("housevisitHi"), "housevisitHi")
+//								.add(Projections.property("housevisitPhl"), "housevisitPhl")
+//								.add(Projections.property("housevisitJhi"), "housevisitJhi")
+//								.add(Projections.property("housevisitJphn"), "housevisitJphn"))
+//						.setResultTransformer(Transformers.aliasToBean(MonthlyDataFhcChc.class));
+				
+				//dataFhcChcs = cr.list();
+
+//			}
+		} catch (HibernateException e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw new Exception("Exception : " + e.getMessage());
+
+		} finally {
+			session.close();
+		}
+		return dataFhcChcs;
+	}
+	
+	
+	public List<MonthlyDataFhcChc> getPhcDynamicDataTrend(String hospitalId) throws Exception {
+		Session session = HibernatePersistence.getSessionFactory().openSession();
+
+		Transaction transaction = null;
+		List<MonthlyDataFhcChc> dataFhcChcs = null;
+		// List<CategoryDetails> categoryDetails = new ArrayList<CategoryDetails>();
+		//List<Object> resultSet = new ArrayList<Object>();
+		try {
+			transaction = session.beginTransaction();
+			Calendar today = Calendar.getInstance();
+			HospitalMonthlyTracker trackerForCurrentMonth = getMonthlyTrackerForCurrentMonth(new Long(hospitalId),
+					today.get(Calendar.MONTH));
+
+			Long trackerid = 0L;
+			 
+			for (int i=0;i<Constants.trendPeriod;i++) {
+				today.add(Calendar.MONTH, -1);
+			}
+			
+			List<Date> dates = new ArrayList<Date>();
+			
+			if (trackerForCurrentMonth == null) {
+				// to do
+
+			} else {
+				
+				String query="select forenoonOpTotal,afternoonOpTotal,totalPrecheck,patientLabTest,totallabTest,housevisitMo,housevisitHs,"
+						+ "housevisitPhns,housevisitHi,housevisitPhl,housevisitJhi,housevisitJphn from MonthlyDataFhcChc where hospitalMonthlyTracker.reportMonth in ()";
+				
+
+				trackerid = trackerForCurrentMonth.getId();
+
+				Criteria cr = session.createCriteria(MonthlyDataFhcChc.class, "MonthlyDataFhcChc")
+						.createCriteria("MonthlyDataFhcChc.hospitalMonthlyTracker", "trackerTable")
+					//	.add(Restrictions.in(propertyName, values)("trackerTable.id", trackerid))
+						.setProjection(Projections.projectionList()
+								.add(Projections.property("forenoonOpTotal"), "forenoonOpTotal")
+								.add(Projections.property("afternoonOpTotal"), "afternoonOpTotal")
+								.add(Projections.property("totalPrecheck"), "totalPrecheck")
+								.add(Projections.property("patientLabTest"), "patientLabTest")
+								.add(Projections.property("totallabTest"), "totallabTest")
+								.add(Projections.property("housevisitMo"), "housevisitMo")
+								.add(Projections.property("housevisitHs"), "housevisitHs")
+								.add(Projections.property("housevisitPhns"), "housevisitPhns")
+								.add(Projections.property("housevisitHi"), "housevisitHi")
+								.add(Projections.property("housevisitPhl"), "housevisitPhl")
+								.add(Projections.property("housevisitJhi"), "housevisitJhi")
+								.add(Projections.property("housevisitJphn"), "housevisitJphn"))
+						.setResultTransformer(Transformers.aliasToBean(MonthlyDataFhcChc.class));
+
+				dataFhcChcs = cr.list();
+
+			}
+		} catch (HibernateException e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw new Exception("Exception : " + e.getMessage());
+
+		} finally {
+			session.close();
+		}
+		return dataFhcChcs;
 	}
 
 }

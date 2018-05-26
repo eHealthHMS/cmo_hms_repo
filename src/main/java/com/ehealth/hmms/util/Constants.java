@@ -8,5 +8,6 @@ public static final Character FAILURE_STATUS = 'F';
 
 public static final int ENDDATE = 5;
 
+public static final int trendPeriod = 6;
 }
 

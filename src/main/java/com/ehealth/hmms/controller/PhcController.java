@@ -27,30 +27,27 @@ public class PhcController {
 		return result;
 
 	}
-		
+		//tested
 	@RequestMapping(value = "/getStaticData/{hospitalId}", method = RequestMethod.GET,headers="Accept=application/json")
 	public Result getPhcStaticData(@PathVariable("hospitalId") String hospitalId) throws Exception{
-		
-		 
+		//System.out.println("123");
 		PhcService phcService = new PhcServiceImpl();
 		Result result =  phcService.getPhcStaticData(hospitalId);
 		
 		return result;
 
 	}
-	
-	
-	 
-//	@RequestMapping(value = "/getDashboardData/{hospitalId}", method = RequestMethod.GET,headers="Accept=application/json")
-//	public Result getPhcStaticData(@PathVariable("hospitalId") String hospitalId) throws Exception{
-//		
-//		 
-//		PhcService phcService = new PhcServiceImpl();
-//		Result result =  phcService.getPhcStaticData(hospitalId);
-//		
-//		return result;
-//
-//	}
+			 //coding done;testing pending
+	@RequestMapping(value = "/getDynamicData/{hospitalId}", method = RequestMethod.GET,headers="Accept=application/json")
+	public Result getPhcDynamicData(@PathVariable("hospitalId") String hospitalId) throws Exception{
+		
+		 
+		PhcService phcService = new PhcServiceImpl();
+		Result result =  phcService.getPhcDynamicData(hospitalId);
+		
+		return result;
+
+	}
 	
 
 	

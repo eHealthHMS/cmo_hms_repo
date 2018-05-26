@@ -17,7 +17,7 @@ public interface PhcDao {
 	
 	List<CategoryDetails> getPhcStaticData(String hospitalId) throws Exception;
 	
-	List<MonthlyDataFhcChc> getPhcDynamicData(String hospitalId) throws Exception;
+	List<MonthlyDataFhcChc> getPhcDynamicDataForDashboard(String hospitalId) throws Exception;
 	
 	
 	

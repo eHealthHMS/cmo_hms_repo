@@ -47,18 +47,18 @@ public class AuthenticationController {
 //
 //	}
 	
-	@RequestMapping(value = "/loginForDashboard", method = RequestMethod.POST,headers="Accept=application/json")
-	public Result authenticateUserForDashBoard( @RequestBody Users user) throws Exception{
-		
-		 
-		AuthenticationService authenticationService = new AuthenticationServiceImpl();
-		Result userResult =  authenticationService.authenticateUserForDashBoard(user);
-		
-		
-		
-		return userResult;
-
-	}
+//	@RequestMapping(value = "/loginForDashboard", method = RequestMethod.POST,headers="Accept=application/json")
+//	public Result authenticateUserForDashBoard( @RequestBody Users user) throws Exception{
+//		
+//		 
+//		AuthenticationService authenticationService = new AuthenticationServiceImpl();
+//		Result userResult =  authenticationService.authenticateUserForDashBoard(user);
+//		
+//		
+//		
+//		return userResult;
+//
+//	}
 	
 	@RequestMapping(value = "/loginForTest", method = RequestMethod.POST,headers="Accept=application/json")
 	public Result authenticateUserForTest( @RequestBody Users user) throws Exception{

@@ -12,7 +12,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
@@ -141,7 +140,7 @@ public class PhcDaoImpl implements PhcDao {
 					Calendar.getInstance().get(Calendar.MONTH));
 			Long trackerid = 0L;
 			if (trackerForCurrentMonth == null) {
-				trackerid = saveHospitalMonthlyTracker(dataFhcChc);
+				trackerid = saveHospitalMonthlyTracker(hospitalId);
 
 			}
 			if (trackerid == 0) {
@@ -195,14 +194,13 @@ public class PhcDaoImpl implements PhcDao {
 	 * @return
 	 * @throws Exception
 	 */
-	private Long saveHospitalMonthlyTracker(MonthlyDataFhcChc dataFhcChc) throws Exception {
+	public Long saveHospitalMonthlyTracker(Long hospitalId) throws Exception {
 		Session session = HibernatePersistence.getSessionFactory().openSession();
 		Long trackerId = 0L;
 		Transaction transaction = null;
 		try {
 			transaction = session.beginTransaction();
-			HospitalMonthlyTracker hospitalMonthlyTracker = dataFhcChc.getHospitalMonthlyTracker();
-			Long hospitalId = hospitalMonthlyTracker.getHospital().getId();
+			
 			HospitalMonthlyTracker trackerForCurrentMonth = new HospitalMonthlyTracker();
 			HospitalMaster hospitalMaster = new HospitalMaster();
 			hospitalMaster.setId(hospitalId);

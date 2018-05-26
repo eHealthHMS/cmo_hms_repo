@@ -11,12 +11,13 @@ public interface PhcDao {
 
 	
 	Result saveFunctionalComponents(MonthlyDataFhcChc dataFhcChc)  throws Exception;
+	MonthlyDataFhcChc fetchPhcRecord(Long hospitalId, int month)throws Exception;
 	
 //	Hospital getMonthlyData(Integer hospitalId)  throws Exception;
 	
 	List<CategoryDetails> getPhcStaticData(String hospitalId) throws Exception;
 	
-	List<MonthlyDataFhcChc> getPhcDynamicData(String hospitalId) throws Exception;
+	List<MonthlyDataFhcChc> getPhcDynamicDataForDashboard(String hospitalId) throws Exception;
 	
 	
 	

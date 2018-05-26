@@ -1,5 +1,6 @@
 package com.ehealth.hmms.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import com.ehealth.hmms.service.impl.PhcServiceImpl;
 @RequestMapping("/phc")
 public class PhcController {
 	
+	final static Logger logger = Logger.getLogger(AuthenticationController.class);
 	
 	@RequestMapping(value = "/saveTransactionalData", method = RequestMethod.POST,headers="Accept=application/json")
 	public Result savePhcTransactionalData( @RequestBody MonthlyDataFhcChc dataFhcChc) throws Exception{
@@ -39,11 +41,10 @@ public class PhcController {
 	}
 			 //coding done;testing pending
 	@RequestMapping(value = "/getDynamicData/{hospitalId}", method = RequestMethod.GET,headers="Accept=application/json")
-	public Result getPhcDynamicData(@PathVariable("hospitalId") String hospitalId) throws Exception{
-		
-		 
+	public Result getPhcDynamicDataForDashboard(@PathVariable("hospitalId") String hospitalId) throws Exception{
+				 
 		PhcService phcService = new PhcServiceImpl();
-		Result result =  phcService.getPhcDynamicData(hospitalId);
+		Result result =  phcService.getPhcDynamicDataForDashboard(hospitalId);
 		
 		return result;
 

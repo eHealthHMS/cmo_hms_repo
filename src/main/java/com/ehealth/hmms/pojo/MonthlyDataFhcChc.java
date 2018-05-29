@@ -165,8 +165,6 @@ public class MonthlyDataFhcChc implements Serializable{
 	
 	/*---------------------------field activities  ends---------------------------------------------*/
 	
-	
-	
 
 	@Column(name = "created_date")
 	private Date createdDate;

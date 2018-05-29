@@ -29,7 +29,7 @@ public class AuthenticationDaoImpl implements AuthenticationDao {
 //		query.setString("login", user.getLoginName());
 //		query.setString("password", user.getPassword());
 //		List<User> users = query.list();
-		 
+	  	 
 		 Criteria criteria = session.createCriteria(Users.class);
          criteria.add(Restrictions.eq("loginName", user.getLoginName()));
          

@@ -72,8 +72,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 			 phcServiceImpl = new PhcServiceImpl();
 			 
 			
-			HospitalMaster hospitalMaster = userResult.getHospital();
-			result.setHospitalName(hospitalMaster.getHospitalName());
+			//HospitalMaster hospitalMaster = userResult.getHospital();
+			//result.setHospitalName(hospitalMaster.getHospitalName());
 			
 //			authenticationDao
 //			HospitalMaster hospitalMaster = userResult.getHospital();

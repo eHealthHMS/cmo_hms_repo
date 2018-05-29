@@ -5,10 +5,12 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -35,7 +37,9 @@ public class Users implements Serializable {
 
 	private HospitalMaster hospital;
 	
-	private Role role;
+	@ManyToOne(targetEntity=Role.class, fetch=FetchType.EAGER)
+	@JoinColumn(name = "id", insertable=false, updatable=false)
+	private Role roleid;
 
 	/**
 	 * @return the id
@@ -90,17 +94,15 @@ public class Users implements Serializable {
 		this.status = status;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
 	public Role getRoleid() {
-		return role;
+		return roleid;
 	}
 
 	public void setRoleid(Role roleid) {
-		this.role = roleid;
+		this.roleid = roleid;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "gid")
 	public HospitalMaster getHospital() {
 		return hospital;

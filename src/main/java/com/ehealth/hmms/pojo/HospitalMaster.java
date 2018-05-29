@@ -37,7 +37,7 @@ public class HospitalMaster implements Serializable {
 		private String lac;
 		
 		@Column(name = "geometry")
-		private Point geometry;
+		private transient Point geometry;
 		
 		@Column(name = "hospital_code")
 		private String hospitalCode;

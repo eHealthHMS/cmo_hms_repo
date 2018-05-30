@@ -24,7 +24,7 @@ public class SpecialityClinic  implements Serializable{
 	private Long id;
 
 	@Column(name = "clinic")
-	private Long clinic;
+	private String clinic;
 
 
 	public Long getId() {
@@ -35,11 +35,11 @@ public class SpecialityClinic  implements Serializable{
 		this.id = id;
 	}
 
-	public Long getClinic() {
+	public String getClinic() {
 		return clinic;
 	}
 
-	public void setClinic(Long clinic) {
+	public void setClinic(String clinic) {
 		this.clinic = clinic;
 	}
 

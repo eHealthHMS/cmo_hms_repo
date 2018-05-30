@@ -6,6 +6,7 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,7 +42,26 @@ public class HospitalMaster implements Serializable {
 		
 		@Column(name = "hospital_code")
 		private String hospitalCode;
+		
+		@Column(name = "operation_theatre_count")
+		private Long operationtheatreCount;
+		
+		@Column(name = "dialysis_machines_count")
+		private Long dialysisMachinesCount;
+		
+		@Column(name = "ward_count")
+		private Long wardCount;
+		
+		@Column(name = "subcenter_count")
+		private Long subCenterCount;
+		
+		@Column(name = "houshold_gramapanchyt_count")
+		private Long housholdGpCount;
 				
+		@OneToOne(cascade = CascadeType.ALL)
+		@JoinColumn(name = "district_id",referencedColumnName="id")
+		@Column(name = "nin")
+		private Long nin;
 		private DistrictMaster districtMaster;
 		
 		public Long getId() {
@@ -100,14 +120,88 @@ public class HospitalMaster implements Serializable {
 			this.hospitalCode = hospitalCode;
 		}
 
-		@OneToOne(cascade = CascadeType.ALL)
-		@JoinColumn(name = "id")
+		public Long getNin() {
+			return nin;
+		}
+		public void setNin(Long nin) {
+			this.nin = nin;
+		}
 		public DistrictMaster getDistrictMaster() {
 			return districtMaster;
 		}
 
 		public void setDistrictMaster(DistrictMaster districtMaster) {
 			this.districtMaster = districtMaster;
+		}
+
+		/**
+		 * @return the operationtheatreCount
+		 */
+		public Long getOperationtheatreCount() {
+			return operationtheatreCount;
+		}
+
+		/**
+		 * @param operationtheatreCount the operationtheatreCount to set
+		 */
+		public void setOperationtheatreCount(Long operationtheatreCount) {
+			this.operationtheatreCount = operationtheatreCount;
+		}
+
+		/**
+		 * @return the dialysisMachinesCount
+		 */
+		public Long getDialysisMachinesCount() {
+			return dialysisMachinesCount;
+		}
+
+		/**
+		 * @param dialysisMachinesCount the dialysisMachinesCount to set
+		 */
+		public void setDialysisMachinesCount(Long dialysisMachinesCount) {
+			this.dialysisMachinesCount = dialysisMachinesCount;
+		}
+
+		/**
+		 * @return the wardCount
+		 */
+		public Long getWardCount() {
+			return wardCount;
+		}
+
+		/**
+		 * @param wardCount the wardCount to set
+		 */
+		public void setWardCount(Long wardCount) {
+			this.wardCount = wardCount;
+		}
+
+		/**
+		 * @return the housholdGpCount
+		 */
+		public Long getHousholdGpCount() {
+			return housholdGpCount;
+		}
+
+		/**
+		 * @param housholdGpCount the housholdGpCount to set
+		 */
+		public void setHousholdGpCount(Long housholdGpCount) {
+			this.housholdGpCount = housholdGpCount;
+		}
+
+		/**
+		 * @return the subCenterCount
+		 */
+		public Long getSubCenterCount() {
+			return subCenterCount;
+		}
+
+		/**
+		 * @param subCenterCount the subCenterCount to set
+		 */
+		public void setSubCenterCount(Long subCenterCount) {
+			this.subCenterCount = subCenterCount;
 		}
 
 }

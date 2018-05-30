@@ -25,44 +25,17 @@ public class ServiceAreaOthers implements Serializable {
 	private Long id;
 
 	@Column(name = "dental_procedures")
-	private Long dental_procedures;
+	private Long dentalProcedures;
 	
-	@Column(name = "operatn_theatre")
-	private Long operatnTheatre;
+	@Column(name = "og_normal_delivery_count")
+	private Long ogNormalDeliveryCount;
 	
-	@Column(name = "blood_bank")
-	private Boolean bloodBank;
+	@Column(name = "og_lscs_count")
+	private Long ogLscsCount;
 	
-	@Column(name = "bloodstorage_unit")
-	private Boolean bloodstorageUnit;
+	@Column(name = "og_maternal_death_count")
+	private Long ogMaternalDeathCount;
 
-	@Column(name = "ambulance")
-	private Boolean ambulance;
-	
-	@Column(name = "medical_icu")
-	private Boolean medicalIcu;
-	
-	@Column(name = "medical_icu_count")
-	private Long medicalIcuCount;
-	
-	@Column(name = "xrayunitsCount")
-	private Long xrayunitsCount;
-	
-	@Column(name = "montly_xraycount")
-	private Long montlyXrayCount;
-	
-	@Column(name = "anti_natal_count")
-	private Long antiNatalCount;
-	
-	@Column(name = "normal_delivery_count")
-	private Long normalDeliveryCount;
-	
-	@Column(name = "lscs_count")
-	private Long lscsCount;
-	
-	@Column(name = "maternal_death_reasn")
-	private Long maternalDeathReasn;
-	
 	@Column(name = "drugs_availability")
 	private Long drugsAvailability;
 	
@@ -72,31 +45,38 @@ public class ServiceAreaOthers implements Serializable {
 	@Column(name = "arv_availability")
 	private Boolean arvAvailability;
 	
+	@Column(name = "last_hmc_meeting")
+	private Date lasthmcMeeting;
+	
 	@Column(name = "asv_availability")
 	private Boolean asvAvailability;
 	
-	@Column(name = "last_hmc_meeting")
-	private Date lastHmcMeeting;
+	@Column(name = "ambulance")
+	private Boolean ambulance;
 	
-	@Column(name = "work_status")
-	private String workStatus;
+	@Column(name = "blood_bank")
+	private Boolean bloodBank;
 	
-	@Column(name = "work_nature")
-	private String workNature;
+	@Column(name = "bloodstorage_unit")
+	private Boolean bloodstorageUnit;
 	
-	@Column(name = "work_start_date")
-	private Date workStartDate;
-
-	@Column(name = "idlingmajor_equipmt")
-	private String idlingMajorEquipmt;
+	@Column(name = "og_referred_cases_count")
+	private Long ogReferredCasesCount;
 	
-	@Column(name = "relevant_issues")
-	private String relevantIssues;
+	@Column(name = "major_surgery_count")
+	private Long majorSurgeryCount;
 	
-	@Column(name = "signed_by")
-	private String signedBy;
+	@Column(name = "sc_high_dependency_unit")
+	private Boolean scHighDependencyUnit;
+	
+	@Column(name = "sc_patients_treated_count")
+	private Long scPatientsTreatedCount;
+	
+	@Column(name = "other_relevant_info")
+	private String otherRelevantInfo;
 
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
+	
 	
 	public Long getId() {
 		return id;
@@ -106,108 +86,36 @@ public class ServiceAreaOthers implements Serializable {
 		this.id = id;
 	}
 
-	public Long getDental_procedures() {
-		return dental_procedures;
+	public Long getDentalProcedures() {
+		return dentalProcedures;
 	}
 
-	public void setDental_procedures(Long dental_procedures) {
-		this.dental_procedures = dental_procedures;
+	public void setDentalProcedures(Long dentalProcedures) {
+		this.dentalProcedures = dentalProcedures;
 	}
 
-	public Long getOperatnTheatre() {
-		return operatnTheatre;
+	public Long getOgNormalDeliveryCount() {
+		return ogNormalDeliveryCount;
 	}
 
-	public void setOperatnTheatre(Long operatnTheatre) {
-		this.operatnTheatre = operatnTheatre;
+	public void setOgNormalDeliveryCount(Long ogNormalDeliveryCount) {
+		this.ogNormalDeliveryCount = ogNormalDeliveryCount;
 	}
 
-	public Boolean getBloodBank() {
-		return bloodBank;
+	public Long getOgLscsCount() {
+		return ogLscsCount;
 	}
 
-	public void setBloodBank(Boolean bloodBank) {
-		this.bloodBank = bloodBank;
+	public void setOgLscsCount(Long ogLscsCount) {
+		this.ogLscsCount = ogLscsCount;
 	}
 
-	public Boolean getBloodstorageUnit() {
-		return bloodstorageUnit;
+	public Long getOgMaternalDeathCount() {
+		return ogMaternalDeathCount;
 	}
 
-	public void setBloodstorageUnit(Boolean bloodstorageUnit) {
-		this.bloodstorageUnit = bloodstorageUnit;
-	}
-
-	public Boolean getAmbulance() {
-		return ambulance;
-	}
-
-	public void setAmbulance(Boolean ambulance) {
-		this.ambulance = ambulance;
-	}
-
-	public Boolean getMedicalIcu() {
-		return medicalIcu;
-	}
-
-	public void setMedicalIcu(Boolean medicalIcu) {
-		this.medicalIcu = medicalIcu;
-	}
-
-	public Long getMedicalIcuCount() {
-		return medicalIcuCount;
-	}
-
-	public void setMedicalIcuCount(Long medicalIcuCount) {
-		this.medicalIcuCount = medicalIcuCount;
-	}
-
-	public Long getXrayunitsCount() {
-		return xrayunitsCount;
-	}
-
-	public void setXrayunitsCount(Long xrayunitsCount) {
-		this.xrayunitsCount = xrayunitsCount;
-	}
-
-	public Long getMontlyXrayCount() {
-		return montlyXrayCount;
-	}
-
-	public void setMontlyXrayCount(Long montlyXrayCount) {
-		this.montlyXrayCount = montlyXrayCount;
-	}
-
-	public Long getAntiNatalCount() {
-		return antiNatalCount;
-	}
-
-	public void setAntiNatalCount(Long antiNatalCount) {
-		this.antiNatalCount = antiNatalCount;
-	}
-
-	public Long getNormalDeliveryCount() {
-		return normalDeliveryCount;
-	}
-
-	public void setNormalDeliveryCount(Long normalDeliveryCount) {
-		this.normalDeliveryCount = normalDeliveryCount;
-	}
-
-	public Long getLscsCount() {
-		return lscsCount;
-	}
-
-	public void setLscsCount(Long lscsCount) {
-		this.lscsCount = lscsCount;
-	}
-
-	public Long getMaternalDeathReasn() {
-		return maternalDeathReasn;
-	}
-
-	public void setMaternalDeathReasn(Long maternalDeathReasn) {
-		this.maternalDeathReasn = maternalDeathReasn;
+	public void setOgMaternalDeathCount(Long ogMaternalDeathCount) {
+		this.ogMaternalDeathCount = ogMaternalDeathCount;
 	}
 
 	public Long getDrugsAvailability() {
@@ -234,6 +142,14 @@ public class ServiceAreaOthers implements Serializable {
 		this.arvAvailability = arvAvailability;
 	}
 
+	public Date getLasthmcMeeting() {
+		return lasthmcMeeting;
+	}
+
+	public void setLasthmcMeeting(Date lasthmcMeeting) {
+		this.lasthmcMeeting = lasthmcMeeting;
+	}
+
 	public Boolean getAsvAvailability() {
 		return asvAvailability;
 	}
@@ -242,60 +158,68 @@ public class ServiceAreaOthers implements Serializable {
 		this.asvAvailability = asvAvailability;
 	}
 
-	public Date getLastHmcMeeting() {
-		return lastHmcMeeting;
+	public Boolean getAmbulance() {
+		return ambulance;
 	}
 
-	public void setLastHmcMeeting(Date lastHmcMeeting) {
-		this.lastHmcMeeting = lastHmcMeeting;
+	public void setAmbulance(Boolean ambulance) {
+		this.ambulance = ambulance;
 	}
 
-	public String getWorkStatus() {
-		return workStatus;
+	public Boolean getBloodBank() {
+		return bloodBank;
 	}
 
-	public void setWorkStatus(String workStatus) {
-		this.workStatus = workStatus;
+	public void setBloodBank(Boolean bloodBank) {
+		this.bloodBank = bloodBank;
 	}
 
-	public String getWork_nature() {
-		return workNature;
+	public Boolean getBloodstorageUnit() {
+		return bloodstorageUnit;
 	}
 
-	public void setWork_nature(String work_nature) {
-		this.workNature = work_nature;
+	public void setBloodstorageUnit(Boolean bloodstorageUnit) {
+		this.bloodstorageUnit = bloodstorageUnit;
 	}
 
-	public Date getWork_start_date() {
-		return workStartDate;
+	public Boolean getScHighDependencyUnit() {
+		return scHighDependencyUnit;
 	}
 
-	public void setWork_start_date(Date work_start_date) {
-		this.workStartDate = work_start_date;
+	public void setScHighDependencyUnit(Boolean scHighDependencyUnit) {
+		this.scHighDependencyUnit = scHighDependencyUnit;
 	}
 
-	public String getIdlingMajorEquipmt() {
-		return idlingMajorEquipmt;
+	public Long getScPatientsTreatedCount() {
+		return scPatientsTreatedCount;
 	}
 
-	public void setIdlingMajorEquipmt(String idlingMajorEquipmt) {
-		this.idlingMajorEquipmt = idlingMajorEquipmt;
+	public void setScPatientsTreatedCount(Long scPatientsTreatedCount) {
+		this.scPatientsTreatedCount = scPatientsTreatedCount;
 	}
 
-	public String getRelevantIssues() {
-		return relevantIssues;
+	public String getOtherRelevantInfo() {
+		return otherRelevantInfo;
 	}
 
-	public void setRelevantIssues(String relevantIssues) {
-		this.relevantIssues = relevantIssues;
+	public void setOtherRelevantInfo(String otherRelevantInfo) {
+		this.otherRelevantInfo = otherRelevantInfo;
 	}
 
-	public String getSignedBy() {
-		return signedBy;
+	public Long getOgReferredCasesCount() {
+		return ogReferredCasesCount;
 	}
 
-	public void setSignedBy(String signedBy) {
-		this.signedBy = signedBy;
+	public void setOgReferredCasesCount(Long ogReferredCasesCount) {
+		this.ogReferredCasesCount = ogReferredCasesCount;
+	}
+
+	public Long getMajorSurgeryCount() {
+		return majorSurgeryCount;
+	}
+
+	public void setMajorSurgeryCount(Long majorSurgeryCount) {
+		this.majorSurgeryCount = majorSurgeryCount;
 	}
 
 	@OneToOne(cascade = CascadeType.ALL)

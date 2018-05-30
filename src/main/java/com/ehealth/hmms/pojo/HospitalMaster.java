@@ -42,6 +42,8 @@ public class HospitalMaster implements Serializable {
 		@Column(name = "hospital_code")
 		private String hospitalCode;
 				
+		@OneToOne(cascade = CascadeType.ALL)
+		@JoinColumn(name = "district_id",referencedColumnName="id")
 		private DistrictMaster districtMaster;
 		
 		public Long getId() {
@@ -100,8 +102,6 @@ public class HospitalMaster implements Serializable {
 			this.hospitalCode = hospitalCode;
 		}
 
-		@OneToOne(cascade = CascadeType.ALL)
-		@JoinColumn(name = "id")
 		public DistrictMaster getDistrictMaster() {
 			return districtMaster;
 		}

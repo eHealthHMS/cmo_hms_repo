@@ -20,6 +20,8 @@
 
         <mapping class="com.ehealth.hmms.pojo.Users"/>
          <mapping class="com.ehealth.hmms.pojo.MonthlyDataFhcChc"/>
+         <mapping class="com.ehealth.hmms.pojo.Role"/>
+         
         
     </session-factory>
 </hibernate-configuration>

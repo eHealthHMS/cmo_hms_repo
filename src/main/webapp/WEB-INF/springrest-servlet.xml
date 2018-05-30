@@ -55,9 +55,12 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
     
     <bean id="phcDao" class="com.ehealth.hmms.dao.impl.PhcDaoImpl"></bean>
     <bean id="phcService" class="com.ehealth.hmms.service.impl.PhcServiceImpl"></bean>
+    <bean id="authenticationService" class="com.ehealth.hmms.service.impl.AuthenticationServiceImpl"></bean>
+    <bean id="thDao" class="com.ehealth.hmms.dao.impl.ThDaoImpl"></bean>
+     <bean id="thService" class="com.ehealth.hmms.service.impl.ThServiceImpl"></bean>
      
-<!--     <bean id="employeeDAO" class="com.howtodoinjava.dao.EmployeeDaoImpl"></bean> -->
-<!--     <bean id="employeeManager" class="com.howtodoinjava.service.EmployeeManagerImpl"></bean> -->
+    
+    
   
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <bean id="transactionManager"
@@ -83,68 +86,8 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
 
 
-<!--  <bean id="propertyConfigurer" -->
-<!--         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" -->
-<!--         p:location="/WEB-INF/jdbc.properties"></bean> -->
-<!--         	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" -->
-<!-- 		destroy-method="close"> -->
-<!-- 		<property name="driverClassName" value="org.postgresql.Driver" /> -->
-<!-- 		<property name="url" value="jdbc:postgresql://192.168.20.43:5432/hmp_latest" /> -->
-<!-- 		<property name="username" value="postgres" /> -->
-<!-- 		<property name="password" value="postgres" /> -->
-<!-- 	</bean> -->
 
-
-<!-- Hibernate 4 SessionFactory Bean definition -->
-<!-- <bean id="hibernate4AnnotatedSessionFactory" -->
-<!-- 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"> -->
-<!-- 		<property name="dataSource" ref="dataSource" /> -->
-<!-- 		<property name="annotatedClasses"> -->
-<!-- 			<list> -->
-<!-- 				<value>com.journaldev.model.Person</value> -->
-<!-- 			</list> -->
-<!-- 		</property> -->
-<!-- 		<property name="hibernateProperties"> -->
-<!-- 			<props> -->
-<!-- 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop> -->
-<!-- 				<prop key="hibernate.current_session_context_class">thread</prop> -->
-<!-- 				<prop key="hibernate.show_sql">false</prop> -->
-<!-- 			</props> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
 
 	
-<!-- 	<bean id="personDAO" class="com.journaldev.dao.PersonDAOImpl"> -->
-<!-- 		<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" /> -->
-<!-- 	</bean> -->
-<!-- </beans> -->
-<!--     <bean id="dataSource" -->
-<!--         class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" -->
-<!--         p:driverClassName="${jdbc.driverClassName}" -->
-<!--         p:url="${jdbc.databaseurl}" p:username="${jdbc.username}" -->
-<!--         p:password="${jdbc.password}"></bean> -->
-<!--     <bean id="sessionFactory" -->
-<!--         class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"> -->
-<!--         <property name="dataSource" ref="dataSource"></property> -->
-<!--         <property name="configLocation"> -->
-<!--             <value>classpath:hibernate.cfg.xml</value> -->
-<!--         </property> -->
-<!--         <property name="configurationClass"> -->
-<!--             <value>org.hibernate.cfg.AnnotationConfiguration</value> -->
-<!--         </property> -->
-<!--         <property name="hibernateProperties"> -->
-<!--             <props> -->
-<!--                 <prop key="hibernate.dialect">${jdbc.dialect}</prop> -->
-<!--                 <prop key="hibernate.show_sql">true</prop> -->
-<!--             </props> -->
-<!--         </property> -->
-<!--     </bean> -->
-<!--      <bean id="employeeDAO" class="com.howtodoinjava.dao.EmployeeDaoImpl"></bean> --> 
-<!--     <bean id="employeeManager" class="com.howtodoinjava.service.EmployeeManagerImpl"></bean> --> 
-<!--     <tx:annotation-driven /> -->
-<!--     <bean id="transactionManager" -->
-<!--         class="org.springframework.orm.hibernate5.HibernateTransactionManager"> -->
-<!--         <property name="sessionFactory" ref="sessionFactory"></property> -->
-<!--     </bean> -->
-<!-- </beans> -->
+
 

@@ -4,34 +4,57 @@ package com.ehealth.hmms.service.impl;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ehealth.hmms.dao.AuthenticationDao;
 import com.ehealth.hmms.dao.PhcDao;
-import com.ehealth.hmms.dao.impl.AuthenticationDaoImpl;
 import com.ehealth.hmms.pojo.HospitalMaster;
 import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.Users;
 import com.ehealth.hmms.service.AuthenticationService;
+import com.ehealth.hmms.service.PhcService;
 import com.ehealth.hmms.util.Constants;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
 	final static Logger logger = Logger.getLogger(AuthenticationServiceImpl.class);
-//	@Autowired
+	@Autowired
 	private AuthenticationDao authenticationDao ;
 	
-	private PhcServiceImpl phcServiceImpl;
+	@Autowired
+	private PhcService phcService;
 	
+	@Autowired
 	private PhcDao phcDao;
 
-	
+	/**
+	 * @param phcService the phcService to set
+	 */
+	public void setPhcService(PhcService phcService) {
+		this.phcService = phcService;
+	}
 
+	/**
+	 * @param authenticationDao the authenticationDao to set
+	 */
+	public void setAuthenticationDao(AuthenticationDao authenticationDao) {
+		this.authenticationDao = authenticationDao;
+	}
+	
+	/**
+	 * @param phcDao the phcDao to set
+	 */
+	public void setPhcDao(PhcDao phcDao) {
+		this.phcDao = phcDao;
+	}
+	
+	
 	public Result authenticate(Users user) throws Exception {
 		Result result = new Result();
-		authenticationDao = new AuthenticationDaoImpl();
+	//	authenticationDao = new AuthenticationDaoImpl();
 		try {
 			Users userResult = authenticationDao.authenticate(user);
 			if (userResult != null) {
@@ -63,13 +86,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	//for viewing dashboard
 	public Result authenticateUserForDashBoard(Users user)  throws Exception{
 		 Result result = new Result();
-		 authenticationDao = new AuthenticationDaoImpl();
+		// authenticationDao = new AuthenticationDaoImpl();
 		try {
 		Users  userResult = authenticationDao.authenticate(user);
 		
 		if(userResult!=null ) 
 		{
-			 phcServiceImpl = new PhcServiceImpl();
+			// phcServiceImpl = new PhcServiceImpl();
 			 
 			
 			//HospitalMaster hospitalMaster = userResult.getHospital();

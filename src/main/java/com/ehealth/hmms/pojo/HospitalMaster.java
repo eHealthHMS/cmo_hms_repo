@@ -57,6 +57,8 @@ public class HospitalMaster implements Serializable {
 		@Column(name = "houshold_gramapanchyt_count")
 		private Long housholdGpCount;
 				
+		@OneToOne(cascade = CascadeType.ALL)
+		@JoinColumn(name = "district_id",referencedColumnName="id")
 		private DistrictMaster districtMaster;
 		
 		public Long getId() {
@@ -115,8 +117,6 @@ public class HospitalMaster implements Serializable {
 			this.hospitalCode = hospitalCode;
 		}
 
-		@OneToOne(cascade = CascadeType.ALL)
-		@JoinColumn(name = "id")
 		public DistrictMaster getDistrictMaster() {
 			return districtMaster;
 		}

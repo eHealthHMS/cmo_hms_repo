@@ -13,7 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "lab_dialysis")
+@Table(name = "lab_dialysis_xray_pharmacy")
 public class LabDialysis implements Serializable{
 	
 	private static final long serialVersionUID = -3042387409531442341L;
@@ -35,9 +35,6 @@ public class LabDialysis implements Serializable{
 	@Column(name = "lab_usg_count")
 	private Long labUsgCount;
 	
-	@Column(name = "lab_ecgmachine")
-	private Long labEcgMachine;
-	
 	@Column(name = "lab_ecg_count")
 	private Long labEcgCount;
 
@@ -47,10 +44,36 @@ public class LabDialysis implements Serializable{
 	@Column(name = "dia_patient_count")
 	private Long diaPatientCount; 	
 	
-	@Column(name = "dia_count")
-	private Long diaCount; 
+	@Column(name = "dia_total_count")
+	private Long diaTotalCount;
+	
+	@Column(name = "dia_patient_waiting")
+	private Long diaPatientWaiting;
+	
+	@Column(name = "xray_units_functioning")
+	private Long xrayUnitsFunctioning;
+	
+	@Column(name = "total_xray_taken")
+	private Long totalXrayTaken;
+	
+	@Column(name = "ph_arv_availability")
+	private Boolean phArvAvailability;
+	
+	@Column(name = "ph_asv_availability")
+	private Boolean phAsvAvailability;
+	
+	@Column(name = "blood_bank")
+	private Boolean bloodBank;
+	
+	@Column(name = "blood_storage_unit")
+	private Boolean bloodStorageUnit;
+	
+	@Column(name = "ph_shortage_details")
+	private Boolean phShortageDetails;
 	
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
+	
+	private DrugAvailabilityStatus drugAvailabilityStatus;
 
 	public Long getId() {
 		return id;
@@ -92,14 +115,6 @@ public class LabDialysis implements Serializable{
 		this.labUsgCount = labUsgCount;
 	}
 
-	public Long getLabEcgMachine() {
-		return labEcgMachine;
-	}
-
-	public void setLabEcgMachine(Long labEcgMachine) {
-		this.labEcgMachine = labEcgMachine;
-	}
-
 	public Long getLabEcgCount() {
 		return labEcgCount;
 	}
@@ -124,12 +139,86 @@ public class LabDialysis implements Serializable{
 		this.diaPatientCount = diaPatientCount;
 	}
 
-	public Long getDiaCount() {
-		return diaCount;
+	public Long getDiaTotalCount() {
+		return diaTotalCount;
 	}
 
-	public void setDiaCount(Long diaCount) {
-		this.diaCount = diaCount;
+	public void setDiaTotalCount(Long diaTotalCount) {
+		this.diaTotalCount = diaTotalCount;
+	}
+
+	public Long getDiaPatientWaiting() {
+		return diaPatientWaiting;
+	}
+
+	public void setDiaPatientWaiting(Long diaPatientWaiting) {
+		this.diaPatientWaiting = diaPatientWaiting;
+	}
+
+	public Long getXrayUnitsFunctioning() {
+		return xrayUnitsFunctioning;
+	}
+
+	public void setXrayUnitsFunctioning(Long xrayUnitsFunctioning) {
+		this.xrayUnitsFunctioning = xrayUnitsFunctioning;
+	}
+
+	public Long getTotalXrayTaken() {
+		return totalXrayTaken;
+	}
+
+	public void setTotalXrayTaken(Long totalXrayTaken) {
+		this.totalXrayTaken = totalXrayTaken;
+	}
+
+	public Boolean getPhArvAvailability() {
+		return phArvAvailability;
+	}
+
+	public void setPhArvAvailability(Boolean phArvAvailability) {
+		this.phArvAvailability = phArvAvailability;
+	}
+
+	public Boolean getPhAsvAvailability() {
+		return phAsvAvailability;
+	}
+
+	public void setPhAsvAvailability(Boolean phAsvAvailability) {
+		this.phAsvAvailability = phAsvAvailability;
+	}
+
+	public Boolean getBloodBank() {
+		return bloodBank;
+	}
+
+	public void setBloodBank(Boolean bloodBank) {
+		this.bloodBank = bloodBank;
+	}
+
+	public Boolean getBloodStorageUnit() {
+		return bloodStorageUnit;
+	}
+
+	public void setBloodStorageUnit(Boolean bloodStorageUnit) {
+		this.bloodStorageUnit = bloodStorageUnit;
+	}
+
+	public Boolean getPhShortageDetails() {
+		return phShortageDetails;
+	}
+
+	public void setPhShortageDetails(Boolean phShortageDetails) {
+		this.phShortageDetails = phShortageDetails;
+	}
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id")
+	public DrugAvailabilityStatus getDrugAvailabilityStatus() {
+		return drugAvailabilityStatus;
+	}
+
+	public void setDrugAvailabilityStatus(DrugAvailabilityStatus drugAvailabilityStatus) {
+		this.drugAvailabilityStatus = drugAvailabilityStatus;
 	}
 
 	@OneToOne(cascade = CascadeType.ALL)
@@ -141,5 +230,4 @@ public class LabDialysis implements Serializable{
 	public void setHospitalMonthlyTracker(HospitalMonthlyTracker hospitalMonthlyTracker) {
 		this.hospitalMonthlyTracker = hospitalMonthlyTracker;
 	}
-
 }

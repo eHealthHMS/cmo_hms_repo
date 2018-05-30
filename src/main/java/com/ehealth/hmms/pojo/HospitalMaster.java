@@ -6,6 +6,7 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -59,6 +60,8 @@ public class HospitalMaster implements Serializable {
 				
 		@OneToOne(cascade = CascadeType.ALL)
 		@JoinColumn(name = "district_id",referencedColumnName="id")
+		@Column(name = "nin")
+		private Long nin;
 		private DistrictMaster districtMaster;
 		
 		public Long getId() {
@@ -117,6 +120,12 @@ public class HospitalMaster implements Serializable {
 			this.hospitalCode = hospitalCode;
 		}
 
+		public Long getNin() {
+			return nin;
+		}
+		public void setNin(Long nin) {
+			this.nin = nin;
+		}
 		public DistrictMaster getDistrictMaster() {
 			return districtMaster;
 		}

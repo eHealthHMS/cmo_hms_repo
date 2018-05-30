@@ -29,6 +29,9 @@ public class SpecialityClinicData implements Serializable {
 	@Column(name = "femalecount")
 	private Long femalCount;
 	
+	@Column(name = "tgcount")
+	private Long tgCount;
+	
 	@Column(name = "total")
 	private Long total;
 	
@@ -69,6 +72,14 @@ public class SpecialityClinicData implements Serializable {
 		this.total = total;
 	}
 	
+	public Long getTgCount() {
+		return tgCount;
+	}
+
+	public void setTgCount(Long tgCount) {
+		this.tgCount = tgCount;
+	}
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id")
 	public SpecialityClinic getSpecialityClinic() {
@@ -78,7 +89,6 @@ public class SpecialityClinicData implements Serializable {
 	public void setSpecialityClinic(SpecialityClinic specialityClinic) {
 		this.specialityClinic = specialityClinic;
 	}
-	
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id")

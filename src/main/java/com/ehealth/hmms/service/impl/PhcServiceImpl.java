@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ehealth.hmms.dao.PhcDao;
-import com.ehealth.hmms.dao.impl.PhcDaoImpl;
 import com.ehealth.hmms.pojo.CategoryDetails;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.MonthlyDataFhcChc;

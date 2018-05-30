@@ -2,9 +2,6 @@ package com.ehealth.hmms.pojo;
 
 public class Result {
 
-	
-	
-
 	private Object value;
 	
 	private Character status;//login status
@@ -48,23 +45,6 @@ public class Result {
 		this.errorMessage = errorMessage;
 	}
 
-
-//	/**
-//	 * @return the userName
-//	 */
-//	public String getUserName() {
-//		return hospitalName;
-//	}
-//
-//
-//	/**
-//	 * @param userName the userName to set
-//	 */
-//	public void setUserName(String userName) {
-//		this.hospitalName = userName;
-//	}
-
-
 	/**
 	 * @return the value
 	 */
@@ -106,8 +86,4 @@ public class Result {
 		this.mode = mode;
 	}
 
-
-	
-
-	
 }

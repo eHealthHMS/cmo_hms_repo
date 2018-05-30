@@ -3,22 +3,30 @@ package com.ehealth.hmms.dao.impl;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.ehealth.hmms.dao.HibernatePersistence;
+//import com.ehealth.hmms.dao.HibernatePersistence;
 import com.ehealth.hmms.dao.ThDao;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.ServiceAreaThDhGh;
 import com.ehealth.hmms.pojo.SpecialityClinicData;
 
+@Repository
+@Transactional
 public class ThDaoImpl implements ThDao{
+	
+	 @Autowired
+	    private SessionFactory sessionFactory;
 
 	// Saving or updating the OP and IP details of taluk hospital.
 	
 	public Boolean saveAndUpdateOpIpDetails(ServiceAreaThDhGh OpIpDetails) throws Exception {
 		
-		Session session = HibernatePersistence.getSessionFactory().openSession();
-		Transaction transaction = null;
+		Session session = this.sessionFactory.getCurrentSession();
+		//Transaction transaction = null;
 		Boolean resultFlag = false;
 		HospitalMonthlyTracker hospitalMonthlyTracker = OpIpDetails.getHospitalMonthlyTracker();
 		Long hospitalId = hospitalMonthlyTracker.getHospital().getId();
@@ -26,7 +34,7 @@ public class ThDaoImpl implements ThDao{
 		Long hospTrackId = phcDaoImpl.saveHospitalMonthlyTracker(hospitalId);
 		  try {
 			  	
-				transaction = session.beginTransaction();
+			//	transaction = session.beginTransaction();
 				Long totOutPatients = OpIpDetails.getTotOutPatients();
 				Long totInPatients = OpIpDetails.getTotInPatients();
 				Long patientsDischarged = OpIpDetails.getPatientsDischarged();
@@ -45,14 +53,14 @@ public class ThDaoImpl implements ThDao{
 	
 			 }
 		  catch (HibernateException e) {
-			if (transaction != null) {
-				transaction.rollback();
-			}
+//			if (transaction != null) {
+//				transaction.rollback();
+//			}
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
-			if (transaction != null) {
-				transaction.rollback();
-			}
+//			if (transaction != null) {
+//				transaction.rollback();
+//			}
 			throw new Exception("Exception : " + e.getMessage());
 	
 		} finally {
@@ -66,8 +74,8 @@ public class ThDaoImpl implements ThDao{
 	
 		public Boolean saveAndUpdateSpecialityClinicData(SpecialityClinicData specialityClinicData) throws Exception {
 			
-			Session session = HibernatePersistence.getSessionFactory().openSession();
-			Transaction transaction = null;
+			Session session = this.sessionFactory.getCurrentSession();//HibernatePersistence.getSessionFactory().openSession();
+	//		Transaction transaction = null;
 			Boolean resultFlag = false;
 			HospitalMonthlyTracker hospitalMonthlyTracker = specialityClinicData.getHospitalMonthlyTracker();
 			Long hospitalId = hospitalMonthlyTracker.getHospital().getId();
@@ -76,7 +84,7 @@ public class ThDaoImpl implements ThDao{
 	
 			  try {
 				  	
-					transaction = session.beginTransaction();
+				//	transaction = session.beginTransaction();
 					Long maleCount = specialityClinicData.getMaleCount();
 					Long femalCount = specialityClinicData.getFemalCount();
 					Long total = specialityClinicData.getTotal();
@@ -87,14 +95,14 @@ public class ThDaoImpl implements ThDao{
 					 resultFlag = true;
 				 }
 			  catch (HibernateException e) {
-				if (transaction != null) {
-					transaction.rollback();
-				}
+//				if (transaction != null) {
+//					transaction.rollback();
+//				}
 				throw new HibernateException("Hibernate Exception : " + e.getMessage());
 			} catch (Exception e) {
-				if (transaction != null) {
-					transaction.rollback();
-				}
+//				if (transaction != null) {
+//					transaction.rollback();
+//				}
 				throw new Exception("Exception : " + e.getMessage());
 		
 			} finally {

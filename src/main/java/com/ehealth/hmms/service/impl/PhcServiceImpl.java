@@ -2,6 +2,7 @@ package com.ehealth.hmms.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ehealth.hmms.dao.PhcDao;
@@ -16,11 +17,30 @@ import com.ehealth.hmms.util.Constants;
 @Service
 public class PhcServiceImpl implements PhcService {
 
-	// @Autowired
+	 @Autowired
 	private PhcDao phcDao;
 
-	public PhcServiceImpl() {
-		phcDao = new PhcDaoImpl();
+//	public PhcServiceImpl() {
+//		phcDao = new PhcDaoImpl();
+//	}
+
+	 
+//	 public void setEmployeeDAO(EmployeeDAO employeeDAO) {
+//			this.employeeDAO = employeeDAO;
+//		}
+	 
+//	/**
+//	 * @return the phcDao
+//	 */
+//	public PhcDao getPhcDao() {
+//		return phcDao;
+//	}
+
+	/**
+	 * @param phcDao the phcDao to set
+	 */
+	public void setPhcDao(PhcDao phcDao) {
+		this.phcDao = phcDao;
 	}
 
 	public Result savePhcTransactionalData(MonthlyDataFhcChc dataFhcChc) throws Exception {
@@ -72,10 +92,6 @@ public class PhcServiceImpl implements PhcService {
 
 			if (dataFhcChcs != null && !dataFhcChcs.isEmpty()) {
 				
-				
-				
-				
-
 				result.setValue(dataFhcChcs);
 				result.setStatus(Constants.SUCCESS_STATUS);
 

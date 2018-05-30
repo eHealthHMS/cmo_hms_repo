@@ -164,24 +164,7 @@ public class MonthlyDataFhcChc implements Serializable{
 	private Boolean idspMeetingConductd;
 	
 	/*---------------------------field activities  ends---------------------------------------------*/
-	
 
-//	@Column(name = "created_date")
-//	private Date createdDate;
-	
-	
-//format should be 01 for date;previous month and year : time 00;
-//	@Column(name = "report_date")
-//	private Date reportDate;
-//	
-//	@Column(name = "last_modified")
-//	private String lastModified;
-//	
-//	@Column(name = "wardhealth_sanitation")
-//	private Long wardhealthSanitation;
-	
-
-	
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 
 //phc hospitals - 1
@@ -621,22 +604,6 @@ public void setType(Integer type) {
 		this.id = id;
 	}
 
-//	public Long getForenoonOp() {
-//		return forenoonOp;
-//	}
-//
-//	public void setForenoonOp(Long forenoonOp) {
-//		this.forenoonOp = forenoonOp;
-//	}
-//
-//	public Long getAfternoonOp() {
-//		return afternoonOp;
-//	}
-//
-//	public void setAfternoonOp(Long afternoonOp) {
-//		this.afternoonOp = afternoonOp;
-//	}
-
 	public Long getTotalPrecheck() {
 		return totalPrecheck;
 	}
@@ -660,30 +627,6 @@ public void setType(Integer type) {
 	public void setPatientLabTest(Long patientLabTest) {
 		this.patientLabTest = patientLabTest;
 	}
-
-//	public Long getSwasClinic() {
-//		return swasClinic;
-//	}
-//
-//	public void setSwasClinic(Long swasClinic) {
-//		this.swasClinic = swasClinic;
-//	}
-//
-//	public Long getAswasamClinic() {
-//		return aswasamClinic;
-//	}
-//
-//	public void setAswasamClinic(Long aswasamClinic) {
-//		this.aswasamClinic = aswasamClinic;
-//	}
-//
-//	public Long getNcdClinic() {
-//		return ncdClinic;
-//	}
-//
-//	public void setNcdClinic(Long ncdClinic) {
-//		this.ncdClinic = ncdClinic;
-//	}
 
 	public Long getTotScImmunizatnClinic() {
 		return totScImmunizatnClinic;
@@ -723,121 +666,6 @@ public void setType(Integer type) {
 
 	public void setIecHealthpromoActivities(Long iecHealthpromoActivities) {
 		this.iecHealthpromoActivities = iecHealthpromoActivities;
-	}
-
-//	public Long getHousevisitMo() {
-//		return housevisitMo;
-//	}
-//
-//	public void setHousevisitMo(Long housevisitMo) {
-//		this.housevisitMo = housevisitMo;
-//	}
-//
-//	public Long getHousevisitHs() {
-//		return housevisitHs;
-//	}
-//
-//	public void setHousevisitHs(Long housevisitHs) {
-//		this.housevisitHs = housevisitHs;
-//	}
-//
-//	public Long getHousevisitPhns() {
-//		return housevisitPhns;
-//	}
-//
-//	public void setHousevisitPhns(Long housevisitPhns) {
-//		this.housevisitPhns = housevisitPhns;
-//	}
-//
-//	public Long getHousevisitHi() {
-//		return housevisitHi;
-//	}
-//
-//	public void setHousevisitHi(Long housevisitHi) {
-//		this.housevisitHi = housevisitHi;
-//	}
-//
-//	public Long getHousevisitPhl() {
-//		return housevisitPhl;
-//	}
-//
-//	public void setHousevisitPhl(Long housevisitPhl) {
-//		this.housevisitPhl = housevisitPhl;
-//	}
-//
-//	public Long getHousevisitJhi() {
-//		return housevisitJhi;
-//	}
-//
-//	public void setHousevisitJhi(Long housevisitJhi) {
-//		this.housevisitJhi = housevisitJhi;
-//	}
-//
-//	public Long getHousevisitJphn() {
-//		return housevisitJphn;
-//	}
-//
-//	public void setHousevisitJphn(Long housevisitJphn) {
-//		this.housevisitJphn = housevisitJphn;
-//	}
-//
-//	public Boolean getFhcMeetingConductd() {
-//		return fhcMeetingConductd;
-//	}
-//
-//	public void setFhcMeetingConductd(Boolean fhcMeetingConductd) {
-//		this.fhcMeetingConductd = fhcMeetingConductd;
-//	}
-
-//	public Date getCreatedDate() {
-//		return createdDate;
-//	}
-//
-//	public void setCreatedDate(Date createdDate) {
-//		this.createdDate = createdDate;
-//	}
-//
-//	public Date getReportDate() {
-//		return reportDate;
-//	}
-//
-//	public void setReportDate(Date reportDate) {
-//		this.reportDate = reportDate;
-//	}
-//
-//	public String getLastModified() {
-//		return lastModified;
-//	}
-//
-//	public void setLastModified(String lastModified) {
-//		this.lastModified = lastModified;
-//	}
-
-//	public Long getWardhealthSanitation() {
-//		return wardhealthSanitation;
-//	}
-//
-//	public void setWardhealthSanitation(Long wardhealthSanitation) {
-//		this.wardhealthSanitation = wardhealthSanitation;
-//	}
-//
-//	public Long getNutritionCommitteeMeetings() {
-//		return nutritionCommitteeMeetings;
-//	}
-//
-//	public void setNutritionCommitteeMeetings(Long nutritionCommitteeMeetings) {
-//		this.nutritionCommitteeMeetings = nutritionCommitteeMeetings;
-//	}
-
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
-	public HospitalMonthlyTracker getHospitalMonthlyTracker() {
-		return hospitalMonthlyTracker;
-	}
-
-	public void setHospitalMonthlyTracker(HospitalMonthlyTracker hospitalMonthlyTracker) {
-		this.hospitalMonthlyTracker = hospitalMonthlyTracker;
 	}
 
 	/**
@@ -896,19 +724,16 @@ public void setType(Integer type) {
 		this.jagrathaActivities = jagrathaActivities;
 	}
 
-	/**
-	 * @return the totallabTest
-	 */
-//	public Long getTotallabTest() {
-//		return totallabTest;
-//	}
-//
-//	/**
-//	 * @param totallabTest the totallabTest to set
-//	 */
-//	public void setTotallabTest(Long totallabTest) {
-//		this.totallabTest = totallabTest;
-//	}
 	
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id")
+	public HospitalMonthlyTracker getHospitalMonthlyTracker() {
+		return hospitalMonthlyTracker;
+	}
+
+	public void setHospitalMonthlyTracker(HospitalMonthlyTracker hospitalMonthlyTracker) {
+		this.hospitalMonthlyTracker = hospitalMonthlyTracker;
+	}
 
 }

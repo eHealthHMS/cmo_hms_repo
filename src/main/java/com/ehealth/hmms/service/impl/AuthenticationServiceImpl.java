@@ -58,7 +58,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		try {
 			Users userResult = authenticationDao.authenticate(user);
 			if (userResult != null) {
-				HospitalMaster hospitalMaster = userResult.getHospital();			
+				HospitalMaster hospitalMaster = userResult.getHospitalid();			
 				Date date = new Date();
 				if (date.getDate() <= Constants.ENDDATE) {
 					result.setMode(true);							

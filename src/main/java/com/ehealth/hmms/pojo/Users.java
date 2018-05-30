@@ -35,7 +35,9 @@ public class Users implements Serializable {
 	private String status;
 
 
-	private HospitalMaster hospital;
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "hospitalid", referencedColumnName="gid")
+	private HospitalMaster hospitalid;
 	
 	@ManyToOne(targetEntity=Role.class, fetch=FetchType.EAGER)
 	@JoinColumn(name = "id", insertable=false, updatable=false)
@@ -102,14 +104,11 @@ public class Users implements Serializable {
 		this.roleid = roleid;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name = "gid")
-	public HospitalMaster getHospital() {
-		return hospital;
+	public HospitalMaster getHospitalid() {
+		return hospitalid;
 	}
 
-	public void setHospital(HospitalMaster hospital) {
-		this.hospital = hospital;
+	public void setHospitalid(HospitalMaster hospitalid) {
+		this.hospitalid = hospitalid;
 	}
-
 }

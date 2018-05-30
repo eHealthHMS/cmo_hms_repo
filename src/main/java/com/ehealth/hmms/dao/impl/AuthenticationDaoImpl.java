@@ -19,7 +19,7 @@ import com.ehealth.hmms.pojo.Users;
 @Transactional
 public class AuthenticationDaoImpl implements AuthenticationDao {
 	 @Autowired
-	    private SessionFactory sessionFactory;
+	 private SessionFactory sessionFactory;
 
 	public Users authenticate(Users user) throws Exception {
 
@@ -34,8 +34,10 @@ public class AuthenticationDaoImpl implements AuthenticationDao {
 //		query.setString("login", user.getLoginName());
 //		query.setString("password", user.getPassword());
 //		List<User> users = query.list();
+
 		 
 		 Criteria criteria = session .createCriteria(Users.class);
+
          criteria.add(Restrictions.eq("loginName", user.getLoginName()));
          
          criteria.add(Restrictions.eq("password", user.getPassword()));

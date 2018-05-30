@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.service.PhcService;
-import com.ehealth.hmms.service.impl.PhcServiceImpl;
 
 
 @RestController
@@ -23,12 +22,7 @@ public class PhcController {
 	@Autowired
 	private PhcService phcService ;
 	
-	/**
-	 * @return the phcService
-	 */
-//	public PhcService getPhcService() {
-//		return phcService;
-//	}
+
 	/**
 	 * @param phcService the phcService to set
 	 */

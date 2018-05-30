@@ -84,6 +84,20 @@ public class HospitalMonthlyTracker implements Serializable{
 		this.report_date = report_date;
 	}
 
+	/**
+	 * @return the createdDate
+	 */
+	public Long getCreatedDate() {
+		return createdDate;
+	}
+
+	/**
+	 * @param createdDate the createdDate to set
+	 */
+	public void setCreatedDate(Long createdDate) {
+		this.createdDate = createdDate;
+	}
+
 	
 	
 }

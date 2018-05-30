@@ -6,24 +6,29 @@
 <hibernate-configuration>
     <session-factory>
 
-<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/hmp
-		</property>
+<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/hmp</property>
 		<property name="hibernate.connection.driver_class">
 			org.postgresql.Driver
 		</property>
 		<property name="hibernate.connection.username">postgres</property>
 		<property name="hibernate.connection.password">postgres
 		</property>
+<!-- <property name="hibernate.connection.url">jdbc:postgresql://192.168.20.43:5432/hmp_latest -->
+<!-- 		</property> -->
+<!-- 		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property> -->
+<!-- 		<property name="hibernate.connection.username">postgres</property> -->
+<!-- 		<property name="hibernate.connection.password">postgres</property> -->
 		
-		<property name="dialect">
-			org.hibernate.dialect.PostgreSQLDialect
-		</property>
-<!-- 		<property name="hbm2ddl.auto">update</property> -->
-		<property name="hibernate.show_sql">true</property>
+<!-- 		<property name="dialect"> -->
+<!-- 			org.hibernate.dialect.PostgreSQLDialect -->
+<!-- 		</property> -->
+<!-- 		<property name="hbm2ddl.auto">update</property> --> 
+<!-- 		<property name="hibernate.show_sql">true</property> -->
 
         <mapping class="com.ehealth.hmms.pojo.Users"/>
         <mapping class="com.ehealth.hmms.pojo.Role"/>
         <mapping class="com.ehealth.hmms.pojo.HospitalMaster"/>
         <mapping class="com.ehealth.hmms.pojo.DistrictMaster"/>
+         <mapping class="com.ehealth.hmms.pojo.MonthlyDataFhcChc"/>
     </session-factory>
 </hibernate-configuration>

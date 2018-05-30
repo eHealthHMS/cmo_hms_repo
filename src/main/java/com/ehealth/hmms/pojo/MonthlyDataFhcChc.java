@@ -166,17 +166,17 @@ public class MonthlyDataFhcChc implements Serializable{
 	/*---------------------------field activities  ends---------------------------------------------*/
 	
 
-	@Column(name = "created_date")
-	private Date createdDate;
+//	@Column(name = "created_date")
+//	private Date createdDate;
 	
 	
 //format should be 01 for date;previous month and year : time 00;
-	@Column(name = "report_date")
-	private Date reportDate;
-	
-	@Column(name = "last_modified")
-	private String lastModified;
-	
+//	@Column(name = "report_date")
+//	private Date reportDate;
+//	
+//	@Column(name = "last_modified")
+//	private String lastModified;
+//	
 //	@Column(name = "wardhealth_sanitation")
 //	private Long wardhealthSanitation;
 	
@@ -185,8 +185,10 @@ public class MonthlyDataFhcChc implements Serializable{
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 
 //phc hospitals - 1
-	//phc subcentre - 2
-	//phc field work - 3
+	//phc meeting -2
+	//phc subcentre - 3
+	//phc field work - 4
+	//
 	
 private Integer type;
 	
@@ -787,29 +789,29 @@ public void setType(Integer type) {
 //		this.fhcMeetingConductd = fhcMeetingConductd;
 //	}
 
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public Date getReportDate() {
-		return reportDate;
-	}
-
-	public void setReportDate(Date reportDate) {
-		this.reportDate = reportDate;
-	}
-
-	public String getLastModified() {
-		return lastModified;
-	}
-
-	public void setLastModified(String lastModified) {
-		this.lastModified = lastModified;
-	}
+//	public Date getCreatedDate() {
+//		return createdDate;
+//	}
+//
+//	public void setCreatedDate(Date createdDate) {
+//		this.createdDate = createdDate;
+//	}
+//
+//	public Date getReportDate() {
+//		return reportDate;
+//	}
+//
+//	public void setReportDate(Date reportDate) {
+//		this.reportDate = reportDate;
+//	}
+//
+//	public String getLastModified() {
+//		return lastModified;
+//	}
+//
+//	public void setLastModified(String lastModified) {
+//		this.lastModified = lastModified;
+//	}
 
 //	public Long getWardhealthSanitation() {
 //		return wardhealthSanitation;

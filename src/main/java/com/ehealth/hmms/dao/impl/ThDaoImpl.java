@@ -63,9 +63,7 @@ public class ThDaoImpl implements ThDao{
 //			}
 			throw new Exception("Exception : " + e.getMessage());
 	
-		} finally {
-			session.close();
-		}
+		} 
 		return resultFlag;
 			
 		}
@@ -105,9 +103,7 @@ public class ThDaoImpl implements ThDao{
 //				}
 				throw new Exception("Exception : " + e.getMessage());
 		
-			} finally {
-				session.close();
-			}
+			} 
 			return resultFlag;
 				
 			}

@@ -36,7 +36,7 @@ public class Users implements Serializable {
 
 
 	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name = "hospitalid", referencedColumnName="gid")
+	@JoinColumn(name = "hospital_id", referencedColumnName="gid")
 	private HospitalMaster hospitalid;
 	
 	@ManyToOne(targetEntity=Role.class, fetch=FetchType.EAGER)

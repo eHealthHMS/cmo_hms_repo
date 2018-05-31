@@ -42,23 +42,11 @@ public class ServiceAreaOthers implements Serializable {
 	@Column(name = "critical_shortage_details")
 	private Long criticalShortageDetails;
 	
-	@Column(name = "arv_availability")
-	private Boolean arvAvailability;
-	
 	@Column(name = "last_hmc_meeting")
 	private Date lasthmcMeeting;
-	
-	@Column(name = "asv_availability")
-	private Boolean asvAvailability;
-	
+
 	@Column(name = "ambulance")
 	private Boolean ambulance;
-	
-	@Column(name = "blood_bank")
-	private Boolean bloodBank;
-	
-	@Column(name = "bloodstorage_unit")
-	private Boolean bloodstorageUnit;
 	
 	@Column(name = "og_referred_cases_count")
 	private Long ogReferredCasesCount;
@@ -134,14 +122,6 @@ public class ServiceAreaOthers implements Serializable {
 		this.criticalShortageDetails = criticalShortageDetails;
 	}
 
-	public Boolean getArvAvailability() {
-		return arvAvailability;
-	}
-
-	public void setArvAvailability(Boolean arvAvailability) {
-		this.arvAvailability = arvAvailability;
-	}
-
 	public Date getLasthmcMeeting() {
 		return lasthmcMeeting;
 	}
@@ -150,36 +130,12 @@ public class ServiceAreaOthers implements Serializable {
 		this.lasthmcMeeting = lasthmcMeeting;
 	}
 
-	public Boolean getAsvAvailability() {
-		return asvAvailability;
-	}
-
-	public void setAsvAvailability(Boolean asvAvailability) {
-		this.asvAvailability = asvAvailability;
-	}
-
 	public Boolean getAmbulance() {
 		return ambulance;
 	}
 
 	public void setAmbulance(Boolean ambulance) {
 		this.ambulance = ambulance;
-	}
-
-	public Boolean getBloodBank() {
-		return bloodBank;
-	}
-
-	public void setBloodBank(Boolean bloodBank) {
-		this.bloodBank = bloodBank;
-	}
-
-	public Boolean getBloodstorageUnit() {
-		return bloodstorageUnit;
-	}
-
-	public void setBloodstorageUnit(Boolean bloodstorageUnit) {
-		this.bloodstorageUnit = bloodstorageUnit;
 	}
 
 	public Boolean getScHighDependencyUnit() {

@@ -69,7 +69,7 @@ public class LabDialysis implements Serializable{
 	private Boolean bloodStorageUnit;
 	
 	@Column(name = "ph_shortage_details")
-	private Boolean phShortageDetails;
+	private String phShortageDetails;
 	
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 	
@@ -203,11 +203,11 @@ public class LabDialysis implements Serializable{
 		this.bloodStorageUnit = bloodStorageUnit;
 	}
 
-	public Boolean getPhShortageDetails() {
+	public String getPhShortageDetails() {
 		return phShortageDetails;
 	}
 
-	public void setPhShortageDetails(Boolean phShortageDetails) {
+	public void setPhShortageDetails(String phShortageDetails) {
 		this.phShortageDetails = phShortageDetails;
 	}
 

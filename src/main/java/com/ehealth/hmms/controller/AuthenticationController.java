@@ -1,6 +1,7 @@
 package com.ehealth.hmms.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.Users;
 import com.ehealth.hmms.service.AuthenticationService;
-import com.ehealth.hmms.service.impl.AuthenticationServiceImpl;
 
 
 @RestController
@@ -19,10 +19,20 @@ public class AuthenticationController {
 	final static Logger logger = Logger.getLogger(AuthenticationController.class);
 
 	
+	@Autowired
+	private AuthenticationService authenticationService;
+
+	/**
+	 * @param authenticationService the authenticationService to set
+	 */
+	public void setAuthenticationService(AuthenticationService authenticationService) {
+		this.authenticationService = authenticationService;
+	}
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST,headers="Accept=application/json")
 	public Result authenticateUserForDataEntry( @RequestBody Users user) throws Exception{
 		
-		AuthenticationService authenticationService = new AuthenticationServiceImpl();
+		//AuthenticationService authenticationService = new AuthenticationServiceImpl();
 		Result userResult =  authenticationService.authenticate(user);
 		return userResult;
 
@@ -31,7 +41,7 @@ public class AuthenticationController {
 	@RequestMapping(value = "/loginForDashboard", method = RequestMethod.POST,headers="Accept=application/json")
 	public Result authenticateUserForDashBoard( @RequestBody Users user) throws Exception{
 		 
-		AuthenticationService authenticationService = new AuthenticationServiceImpl();
+		//AuthenticationService authenticationService = new AuthenticationServiceImpl();
 		Result userResult =  authenticationService.authenticateUserForDashBoard(user);
 		
 		return userResult;
@@ -63,7 +73,7 @@ public class AuthenticationController {
 	public Result authenticateUserForTest( @RequestBody Users user) throws Exception{
 		
 		 
-		AuthenticationService authenticationService = new AuthenticationServiceImpl();
+		//AuthenticationService authenticationService = new AuthenticationServiceImpl();
 		Result userResult = new Result();// authenticationService.authenticate(user);
 		
 		userResult.setHospitalName("test Hos");

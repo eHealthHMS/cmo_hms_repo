@@ -22,12 +22,7 @@ public class PhcController {
 	@Autowired
 	private PhcService phcService ;
 	
-	/**
-	 * @return the phcService
-	 */
-//	public PhcService getPhcService() {
-//		return phcService;
-//	}
+
 	/**
 	 * @param phcService the phcService to set
 	 */

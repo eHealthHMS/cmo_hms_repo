@@ -31,7 +31,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
  <mvc:annotation-driven/>
 <context:component-scan base-package="com.ehealth.hmms.controller" />
  <bean id="dataSource"
-        class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource" 
         p:driverClassName="${jdbc.driverClassName}"
         p:url="${jdbc.databaseurl}" p:username="${jdbc.username}"
         p:password="${jdbc.password}" />
@@ -58,6 +58,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
     <bean id="authenticationService" class="com.ehealth.hmms.service.impl.AuthenticationServiceImpl"></bean>
     <bean id="thDao" class="com.ehealth.hmms.dao.impl.ThDaoImpl"></bean>
      <bean id="thService" class="com.ehealth.hmms.service.impl.ThServiceImpl"></bean>
+       <bean id="authenticationDao" class="com.ehealth.hmms.dao.impl.AuthenticationDaoImpl"></bean>
      
     
     

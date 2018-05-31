@@ -85,9 +85,7 @@ public class PhcDaoImpl implements PhcDao {
 //			}
 			throw new Exception("Exception : " + e.getMessage());
 
-		} finally {
-			session.close();
-		}
+		} 
 		return categoryDetails;
 	}
 	
@@ -115,9 +113,7 @@ public class PhcDaoImpl implements PhcDao {
 //		          }
 		         throw new Exception("Exception : " +  e.getMessage() );
 		      }
-				  finally {
-		         session.close(); 
-		      }
+		
 		return MonthlyPhcResult;
 	}
 
@@ -186,9 +182,7 @@ public class PhcDaoImpl implements PhcDao {
 //			}
 			throw new Exception("Exception : " + e.getMessage());
 
-		} finally {
-			session.close();
-		}
+		} 
 		return result;
 	}
 
@@ -225,9 +219,8 @@ public class PhcDaoImpl implements PhcDao {
 //			}
 			throw new Exception("Exception : " + e.getMessage());
 
-		} finally {
-			session.close();
-		}
+		} 
+
 		return trackerId;
 	}
 
@@ -270,8 +263,6 @@ public class PhcDaoImpl implements PhcDao {
 //			}
 			throw new Exception("Exception : " + e.getMessage());
 
-		} finally {
-			session.close();
 		}
 		return hospitalMonthlyTracker;
 	}
@@ -316,9 +307,7 @@ public class PhcDaoImpl implements PhcDao {
 //			}
 			throw new Exception("Exception : " + e.getMessage());
 
-		} finally {
-			session.close();
-		}
+		} 
 		return hospitalMonthlyTracker;
 	}
 	
@@ -436,9 +425,7 @@ public class PhcDaoImpl implements PhcDao {
 //			}
 			throw new Exception("Exception : " + e.getMessage());
 
-		} finally {
-			session.close();
-		}
+		} 
 		return dataFhcChcs;
 	}
 	
@@ -507,9 +494,7 @@ public class PhcDaoImpl implements PhcDao {
 //			}
 			throw new Exception("Exception : " + e.getMessage());
 
-		} finally {
-			session.close();
-		}
+		} 
 		return dataFhcChcs;
 	}
 

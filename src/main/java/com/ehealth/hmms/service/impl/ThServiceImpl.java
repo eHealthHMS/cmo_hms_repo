@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.ehealth.hmms.dao.ThDao;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
+import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.Result;
-import com.ehealth.hmms.pojo.ServiceAreaThDhGh;
 import com.ehealth.hmms.service.ThService;
 import com.ehealth.hmms.util.Constants;
 
@@ -30,16 +30,14 @@ public class ThServiceImpl implements ThService{
 		this.thDao = thDao;
 	}
 
-
-
-	public Result saveAndUpdateOpIpDetails(ServiceAreaThDhGh OpIpDetails) throws Exception {
+	public Result saveAndUpdateOpIpDetails(OpIpDetails opIpDetails) throws Exception {
 		Result result = new Result();
 		try {
 
-			HospitalMonthlyTracker hospitalMonthlyTracker = OpIpDetails.getHospitalMonthlyTracker();
+			HospitalMonthlyTracker hospitalMonthlyTracker = opIpDetails.getHospitalMonthlyTracker();
 			Long hospitalId = hospitalMonthlyTracker.getHospital().getId();
 
-			Boolean resultFlag = thDao.saveAndUpdateOpIpDetails(OpIpDetails);
+			Boolean resultFlag = thDao.saveAndUpdateOpIpDetails(opIpDetails);
 
 			if (resultFlag.equals(true)) {
 				result.setStatus(Constants.SUCCESS_STATUS);

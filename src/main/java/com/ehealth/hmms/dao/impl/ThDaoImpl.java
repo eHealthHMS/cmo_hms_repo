@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 //import com.ehealth.hmms.dao.HibernatePersistence;
 import com.ehealth.hmms.dao.ThDao;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
-import com.ehealth.hmms.pojo.ServiceAreaThDhGh;
+import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.SpecialityClinicData;
 
 @Repository
@@ -23,30 +23,30 @@ public class ThDaoImpl implements ThDao{
 
 	// Saving or updating the OP and IP details of taluk hospital.
 	
-	public Boolean saveAndUpdateOpIpDetails(ServiceAreaThDhGh OpIpDetails) throws Exception {
+	public Boolean saveAndUpdateOpIpDetails(OpIpDetails opIpDetails) throws Exception {
 		
 		Session session = this.sessionFactory.getCurrentSession();
 		//Transaction transaction = null;
 		Boolean resultFlag = false;
-		HospitalMonthlyTracker hospitalMonthlyTracker = OpIpDetails.getHospitalMonthlyTracker();
+		HospitalMonthlyTracker hospitalMonthlyTracker = opIpDetails.getHospitalMonthlyTracker();
 		Long hospitalId = hospitalMonthlyTracker.getHospital().getId();
 		PhcDaoImpl phcDaoImpl = new PhcDaoImpl();
 		Long hospTrackId = phcDaoImpl.saveHospitalMonthlyTracker(hospitalId);
 		  try {
 			  	
 			//	transaction = session.beginTransaction();
-				Long totOutPatients = OpIpDetails.getTotOutPatients();
-				Long totInPatients = OpIpDetails.getTotInPatients();
-				Long patientsDischarged = OpIpDetails.getPatientsDischarged();
-				Long patientsExpired = OpIpDetails.getPatientsExpired();
-				Long patientsReferred = OpIpDetails.getPatientsReferred();
-				Long emergencyCare = OpIpDetails.getEmergencyCare();
-				Long medEmergency = OpIpDetails.getMedEmergency();
-				Long surgEmergency = OpIpDetails.getSurgEmergency();
-				Long emrRta = OpIpDetails.getEmrRta();
-				Long emrPatinetTreated = OpIpDetails.getEmrPatinetTreated();
-				Long emrPatientAdmited = OpIpDetails.getEmrPatientAdmited();
-				Long emrPatientReferred = OpIpDetails.getEmrPatientReferred();
+/*				Long totOutPatients = opIpDetails.getTotOutPatients();
+				Long totInPatients = opIpDetails.getTotInPatients();
+				Long patientsDischarged = opIpDetails.getPatientsDischarged();
+				Long patientsExpired = opIpDetails.getPatientsExpired();
+				Long patientsReferred = opIpDetails.getPatientsReferred();
+				Long emergencyCare = opIpDetails.getEmergencyCare();
+				Long medEmergency = opIpDetails.getMedEmergency();
+				Long surgEmergency = opIpDetails.getSurgEmergency();
+				Long emrRta = opIpDetails.getEmrRta();
+				Long emrPatinetTreated = opIpDetails.getEmrPatinetTreated();
+				Long emrPatientAdmited = opIpDetails.getEmrPatientAdmited();
+				Long emrPatientReferred = opIpDetails.getEmrPatientReferred();*/
 				
 				Query query = session.createSQLQuery("update service_area_th_gh_dh set totOutPatients =:totOutPatients, totInPatients=:totInPatients, patientsDischarged=:patientsDischarged, patientsExpired=: patientsExpired, patientsReferred =:patientsReferred, medEmergency =:medEmergency, surgEmergency =:surgEmergency, emrPatinetTreated =:emrPatinetTreated,emrPatientAdmited =:emrPatientAdmited, emrPatientReferred=:emrPatientReferred, emergencyCare=:emergencyCare, emrRta=:emrRta where hospmonthlytrack_id =:hospTrackId;");
 				 resultFlag = true;

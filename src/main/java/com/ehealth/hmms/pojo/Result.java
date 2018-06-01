@@ -6,25 +6,9 @@ public class Result {
 	
 	private Character status;//login status
 	
-	private String hospitalName;
+	private HospitalMaster hospitalMaster;
 	
-	private Boolean mode;// view mode or edit mode
-
-	
-	/**
-	 * @return the hospitalName
-	 */
-	public String getHospitalName() {
-		return hospitalName;
-	}
-
-
-	/**
-	 * @param hospitalName the hospitalName to set
-	 */
-	public void setHospitalName(String hospitalName) {
-		this.hospitalName = hospitalName;
-	}
+	private Boolean editable;// view mode or edit mode
 
 
 	private String errorMessage;
@@ -77,13 +61,25 @@ public class Result {
 	}
 
 
-	public Boolean getMode() {
-		return mode;
+	public Boolean getEditable() {
+		return editable;
 	}
 
 
-	public void setMode(Boolean mode) {
-		this.mode = mode;
+	public void setEditable(Boolean editable) {
+		this.editable = editable;
 	}
+
+
+	public HospitalMaster getHospitalMaster() {
+		return hospitalMaster;
+	}
+
+
+	public void setHospitalMaster(HospitalMaster hospitalMaster) {
+		this.hospitalMaster = hospitalMaster;
+	}
+
+	
 
 }

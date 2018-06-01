@@ -33,7 +33,7 @@ public class MonthlyDataFhcChc implements Serializable{
 	private Long forenoonOpFemale;
 	
 	@Column(name = "forenoon_op_tg")
-	private Long forenoonOpMaleTg;
+	private Long forenoonOpTg;
 	
 	@Column(name = "forenoon_op_tot")
 	private Long forenoonOpTotal;
@@ -45,7 +45,7 @@ public class MonthlyDataFhcChc implements Serializable{
 	private Long afternoonOpFemale;
 	
 	@Column(name = "afternoon_op_tg")
-	private Long afternoonOpMaleTg;
+	private Long afternoonOpTg;
 	
 	@Column(name = "afternoon_op_tot")
 	private Long afternoonOpTotal;
@@ -167,13 +167,12 @@ public class MonthlyDataFhcChc implements Serializable{
 
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 
-//phc hospitals - 1
+	//phc hospitals - 1
 	//phc meeting -2
 	//phc subcentre - 3
 	//phc field work - 4
-	//
 	
-private Integer type;
+	private Integer type;
 	
 	
 
@@ -206,17 +205,17 @@ public void setForenoonOpFemale(Long forenoonOpFemale) {
 }
 
 /**
- * @return the forenoonOpMaleTg
+ * @return the forenoonOpTg
  */
-public Long getForenoonOpMaleTg() {
-	return forenoonOpMaleTg;
+public Long getForenoonOpTg() {
+	return forenoonOpTg;
 }
 
 /**
- * @param forenoonOpMaleTg the forenoonOpMaleTg to set
+ * @param forenoonOpTg the forenoonOpTg to set
  */
-public void setForenoonOpMaleTg(Long forenoonOpMaleTg) {
-	this.forenoonOpMaleTg = forenoonOpMaleTg;
+public void setForenoonOpTg(Long forenoonOpTg) {
+	this.forenoonOpTg = forenoonOpTg;
 }
 
 /**
@@ -248,17 +247,17 @@ public void setAfternoonOpFemale(Long afternoonOpFemale) {
 }
 
 /**
- * @return the afternoonOpMaleTg
+ * @return the afternoonOpTg
  */
-public Long getAfternoonOpMaleTg() {
-	return afternoonOpMaleTg;
+public Long getAfternoonOpTg() {
+	return afternoonOpTg;
 }
 
 /**
- * @param afternoonOpMaleTg the afternoonOpMaleTg to set
+ * @param afternoonOpTg the afternoonOpTg to set
  */
-public void setAfternoonOpMaleTg(Long afternoonOpMaleTg) {
-	this.afternoonOpMaleTg = afternoonOpMaleTg;
+public void setAfternoonOpTg(Long afternoonOpTg) {
+	this.afternoonOpTg = afternoonOpTg;
 }
 
 /**
@@ -735,5 +734,6 @@ public void setType(Integer type) {
 	public void setHospitalMonthlyTracker(HospitalMonthlyTracker hospitalMonthlyTracker) {
 		this.hospitalMonthlyTracker = hospitalMonthlyTracker;
 	}
+
 
 }

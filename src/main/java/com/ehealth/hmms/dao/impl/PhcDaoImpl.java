@@ -90,17 +90,68 @@ public class PhcDaoImpl implements PhcDao {
 	}
 	
 	// Fetch monthly record of PHC for getting data in android.
-	public MonthlyDataFhcChc fetchPhcRecord(Long hospitalId, int month) throws Exception {
+	public MonthlyDataFhcChc fetchPhcRecord(Long hospitalId, String date) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();;//HibernatePersistence.getSessionFactory().openSession();
 	//	Transaction transaction = null;
-		MonthlyDataFhcChc MonthlyPhcResult = null;
+		MonthlyDataFhcChc monthlyDataFhcChc = new MonthlyDataFhcChc();
 		  try {
 			//	 transaction = session.beginTransaction();
-				Query query = session.createSQLQuery("select m.forenoon_op, m.afternoon_op,m.total_precheck,m.total_postconsultncounsel, m.patient_labtest, m.swas_clinic,m.aswasam_clinic,m.ncd_clinic,m.tot_sc_immunizatnclinic, m.tot_other_sc_clinic, m.tot_other_sc_clinic, m.tot_outreach, m.tot_ncd_clinic,m.iec_healthpromo_activities,m.nutrition_committee_meetings,m.hospmonthlytrack_id, m.housevisit_mo, m.housevisit_hs, m.housevisit_phns, m.housevisit_hi, m.housevisit_phl, m.housevisit_jhi, m.housevisit_jphn from monthlydata_fhc_chc m inner join hospital_monthlytracker h on h.id = m.hospmonthlytrack_id where h.report_month =: month and h.hospital_id =: hospitalId;");
+				//Query query = session.createSQLQuery("select m.forenoon_op_male,m.forenoon_op_female,m.forenoon_op_tg,m.forenoon_op_tot,m.afternoon_op_male,m.afternoon_op_female,m.afternoon_op_tg,m.afternoon_op_tot,m.total_precheck,m.total_postconsultncounsel,m.patient_lab_test,m.total_lab_test,m.swas_clinic_new,m.aswasam_clinic_new,m.swas_clinic_followup,m.aswasam_clinic_followup,m.ncd_clinic_new,m.ncd_clinic_followup,m.tot_sc_immunizatnclinic,m.tot_other_sc_clinic,m.tot_outreach,m.tot_ncd_clinic,m.iec_healthpromo_activities,m.whsnc_meeting,m.regular_sc_clinic,m.jagratha_activities,m.total_attendee,m.houseVisitMo,m.housevisit_hs,m.housevisit_phns,m.housevisit_hi,m.housevisit_phn,m.housevisit_jhi,m.housevisit_jphn,m.housevisit_asha,m.last_hmc_meeting,m.monthly_staff_conf,m.post_dmo_conf,m.half_day_zonal,m.full_day_zonal,m.idsp_meetingconductd from monthlydata_fhc_chc m inner join hospital_monthlytracker h on h.id = m.hospmonthlytrack_id where h.report_date =:to_date(date,'yyyy-mm-dd') and h.hospital_id =:hospitalId;");
+			  String sql ="select m.forenoon_op_male,m.forenoon_op_female,m.forenoon_op_tg,m.forenoon_op_tot,m.afternoon_op_male,m.afternoon_op_female,m.afternoon_op_tg,m.afternoon_op_tot,m.total_precheck,m.total_postconsultncounsel,m.patient_lab_test,m.total_lab_test,m.swas_clinic_new,m.aswasam_clinic_new,m.swas_clinic_followup,m.aswasam_clinic_followup,m.ncd_clinic_new,m.ncd_clinic_followup,m.tot_sc_immunizatnclinic,m.tot_other_sc_clinic,m.tot_outreach,m.tot_ncd_clinic,m.iec_healthpromo_activities,m.whsnc_meeting,m.regular_sc_clinic,m.jagratha_activities,m.total_attendee,m.housevisit_mo,m.housevisit_hs,m.housevisit_phns,m.housevisit_hi,m.housevisit_phn,m.housevisit_jhi,m.housevisit_jphn,m.housevisit_asha,m.last_hmc_meeting,m.monthly_staff_conf,m.post_dmo_conf,m.half_day_zonal,m.full_day_zonal,m.idsp_meetingconductd from monthlydata_fhc_chc m inner join hospital_monthlytracker h on h.id = m.hospmonthlytrack_id where h.report_date =to_date(:date,'yyyy-mm-dd') and h.hospital_id =:hospitalId";
+			  Query query = session.createSQLQuery(sql);
+			  	query.setParameter("hospitalId", hospitalId);
+				query.setParameter("date", date);
 				
 				List<MonthlyDataFhcChc> phcList = query.list();
+				
 				if(phcList!=null && !phcList.isEmpty()) {
-					MonthlyPhcResult = phcList.get(0);
+					Iterator iterator = phcList.iterator();
+					
+					while (iterator.hasNext()) {
+						Object[] row = (Object[]) iterator.next();
+
+						monthlyDataFhcChc.setForenoonOpMale(castObjectToLong(row[0]));
+						monthlyDataFhcChc.setForenoonOpFemale(castObjectToLong(row[1]));
+						monthlyDataFhcChc.setForenoonOpTg(castObjectToLong(row[2]));
+						monthlyDataFhcChc.setForenoonOpTotal(castObjectToLong(row[3]));
+						monthlyDataFhcChc.setAfternoonOpMale(castObjectToLong(row[4]));
+						monthlyDataFhcChc.setAfternoonOpFemale(castObjectToLong(row[5]));
+						monthlyDataFhcChc.setAfternoonOpTg(castObjectToLong(row[6]));
+						monthlyDataFhcChc.setAfternoonOpTotal(castObjectToLong(row[7]));
+						monthlyDataFhcChc.setTotalPrecheck(castObjectToLong(row[8]));
+						monthlyDataFhcChc.setTotalPostConsultnCounsel(castObjectToLong(row[9]));
+						monthlyDataFhcChc.setPatientLabTest(castObjectToLong(row[10]));
+						monthlyDataFhcChc.setTotalLabTest(castObjectToLong(row[11]));
+						monthlyDataFhcChc.setSwasClinicNew(castObjectToLong(row[12]));
+						monthlyDataFhcChc.setAswasamClinicNew(castObjectToLong(row[13]));
+						monthlyDataFhcChc.setSwasClinicFollowup(castObjectToLong(row[14]));
+						monthlyDataFhcChc.setAswasamClinicFollowup(castObjectToLong(row[15]));
+						monthlyDataFhcChc.setNcdClinicNew(castObjectToLong(row[16]));
+						monthlyDataFhcChc.setNcdClinicFollowup(castObjectToLong(row[17]));
+						monthlyDataFhcChc.setTotScImmunizatnClinic(castObjectToLong(row[18]));
+						monthlyDataFhcChc.setTotOtherScClinic(castObjectToLong(row[19]));
+						monthlyDataFhcChc.setTotOutreach(castObjectToLong(row[20]));
+						monthlyDataFhcChc.setTotNcdClinic(castObjectToLong(row[21]));
+						monthlyDataFhcChc.setIecHealthpromoActivities(castObjectToLong(row[22]));
+						monthlyDataFhcChc.setWhsncMeeting(castObjectToLong(row[23]));
+						monthlyDataFhcChc.setRegularScClinic(castObjectToLong(row[24]));
+						monthlyDataFhcChc.setJagrathaActivities(castObjectToLong(row[25]));
+						monthlyDataFhcChc.setTotalAttendee(castObjectToLong(row[26]));
+						monthlyDataFhcChc.setHouseVisitMo(castObjectToLong(row[27]));
+						monthlyDataFhcChc.setHouseVisitHs(castObjectToLong(row[28]));
+						monthlyDataFhcChc.setHouseVisitPhns(castObjectToLong(row[29]));
+						monthlyDataFhcChc.setHouseVisitHi(castObjectToLong(row[30]));
+						monthlyDataFhcChc.setHouseVisitPhn(castObjectToLong(row[31]));
+						monthlyDataFhcChc.setHouseVisitJhi(castObjectToLong(row[32]));
+						monthlyDataFhcChc.setHouseVisitJphn(castObjectToLong(row[33]));
+						monthlyDataFhcChc.setHouseVisitAsha(castObjectToLong(row[34]));
+						monthlyDataFhcChc.setLastHmcMeeting((Date)row[35]);
+						monthlyDataFhcChc.setMonthlyStaffConf(castObjectToBoolean(row[36]));
+						monthlyDataFhcChc.setPostDmoConf(castObjectToBoolean(row[37]));
+						monthlyDataFhcChc.setHalfDayZonal(castObjectToBoolean(row[38]));
+						monthlyDataFhcChc.setFullDayZonal(castObjectToBoolean(row[39]));
+						monthlyDataFhcChc.setIdspMeetingConductd(castObjectToBoolean(row[40]));
+					}
 				}			
 			 } catch (HibernateException e) {
 //		         if (transaction!=null) { 
@@ -114,7 +165,7 @@ public class PhcDaoImpl implements PhcDao {
 		         throw new Exception("Exception : " +  e.getMessage() );
 		      }
 		
-		return MonthlyPhcResult;
+		return monthlyDataFhcChc;
 	}
 
 	private Long castObjectToLong(Object object) {
@@ -123,6 +174,13 @@ public class PhcDaoImpl implements PhcDao {
 
 	}
 
+	private Boolean castObjectToBoolean(Object object) {
+
+		return new Boolean((Boolean) ((object != null) ? object : 0));
+
+	}
+
+	
 	/**
 	 * method to save phc functional components monthly
 	 */

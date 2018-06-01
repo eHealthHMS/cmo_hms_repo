@@ -62,9 +62,6 @@ public class AuthenticationDaoImpl implements AuthenticationDao {
          throw new Exception("Exception : " +  e.getMessage() );
 
       }
-		  finally {
-         session.close(); 
-      }
 		return userResult;
 	}
 	
@@ -109,9 +106,7 @@ public class AuthenticationDaoImpl implements AuthenticationDao {
 //         throw new Exception("Exception : " +  e.getMessage() );
 //
 //      }
-//		  finally {
-//         session.close(); 
-//      }
+//		 
 //		return userResult;
 //	}
 //

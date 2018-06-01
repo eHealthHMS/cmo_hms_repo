@@ -29,6 +29,7 @@
         <mapping class="com.ehealth.hmms.pojo.Role"/>
         <mapping class="com.ehealth.hmms.pojo.HospitalMaster"/>
         <mapping class="com.ehealth.hmms.pojo.DistrictMaster"/>
-         <mapping class="com.ehealth.hmms.pojo.MonthlyDataFhcChc"/>
+        <mapping class="com.ehealth.hmms.pojo.MonthlyDataFhcChc"/>
+        <mapping class="com.ehealth.hmms.pojo.HospitalTypeMaster"/>
     </session-factory>
 </hibernate-configuration>

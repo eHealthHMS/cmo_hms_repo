@@ -1,6 +1,8 @@
 package com.ehealth.hmms.service.impl;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -58,17 +60,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		try {
 			Users userResult = authenticationDao.authenticate(user);
 			if (userResult != null) {
-				HospitalMaster hospitalMaster = userResult.getHospitalid();			
-				Date date = new Date();
-				if (date.getDate() <= Constants.ENDDATE) {
-					result.setMode(true);							
+				HospitalMaster hospitalMaster = userResult.getHospitalid();		
+				result.setHospitalMaster(hospitalMaster);
+				Date todaysDate = new Date();
+				SimpleDateFormat dmyFormat = new SimpleDateFormat("yyyy-MM-dd");
+				   String date = dmyFormat.format(todaysDate);
+				if (todaysDate.getDate() <= Constants.ENDDATE) {
+					result.setEditable(true);							
 				} else {
-					result.setMode(false);	
+					result.setEditable(false);	
 				} 
-				result.setHospitalName(hospitalMaster.getHospitalName());
+				//result.setHospitalName(hospitalMaster.getHospitalName());
 				Long hospitalId = hospitalMaster.getId();
-				int month =  date.getMonth();	
-				MonthlyDataFhcChc MonthlyPhcResult = phcDao.fetchPhcRecord(hospitalId,month);
+				//int month =  date.getMonth();	
+				MonthlyDataFhcChc MonthlyPhcResult = phcDao.fetchPhcRecord(hospitalId,date);
 				result.setValue(MonthlyPhcResult);
 
 			} else {

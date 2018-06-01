@@ -1,5 +1,6 @@
 package com.ehealth.hmms.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.ehealth.hmms.pojo.CategoryDetails;
@@ -11,7 +12,7 @@ public interface PhcDao {
 
 	
 	Result saveFunctionalComponents(MonthlyDataFhcChc dataFhcChc)  throws Exception;
-	MonthlyDataFhcChc fetchPhcRecord(Long hospitalId, int month)throws Exception;
+	MonthlyDataFhcChc fetchPhcRecord(Long hospitalId, String date)throws Exception;
 	
 //	Hospital getMonthlyData(Integer hospitalId)  throws Exception;
 	

@@ -60,7 +60,7 @@ public class FundExpenditure implements Serializable{
 	private Boolean progressAsperPlan;
 	
 	@Column(name = "delay_reason")
-	private Long delayReason;
+	private String delayReason;
 	
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 
@@ -168,11 +168,11 @@ public class FundExpenditure implements Serializable{
 		this.progressAsperPlan = progressAsperPlan;
 	}
 
-	public Long getDelayReason() {
+	public String getDelayReason() {
 		return delayReason;
 	}
 
-	public void setDelayReason(Long delayReason) {
+	public void setDelayReason(String delayReason) {
 		this.delayReason = delayReason;
 	}
 

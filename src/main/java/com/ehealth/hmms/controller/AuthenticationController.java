@@ -76,7 +76,7 @@ public class AuthenticationController {
 		//AuthenticationService authenticationService = new AuthenticationServiceImpl();
 		Result userResult = new Result();// authenticationService.authenticate(user);
 		
-		userResult.setHospitalName("test Hos");
+	//	userResult.setHospitalName("test Hos");
 		userResult.setStatus('S');
 		
 		return userResult;

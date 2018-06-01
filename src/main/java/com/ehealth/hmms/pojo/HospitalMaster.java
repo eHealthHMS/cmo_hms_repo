@@ -61,6 +61,10 @@ public class HospitalMaster implements Serializable {
 		private Long nin;
 		
 		@OneToOne(cascade = CascadeType.ALL)
+		@JoinColumn(name = "hospitaltype_id",referencedColumnName="id")
+		private HospitalTypeMaster hospitalTypeMaster;
+		
+		@OneToOne(cascade = CascadeType.ALL)
 		@JoinColumn(name = "district_id",referencedColumnName="id")
 		private DistrictMaster districtMaster;
 		
@@ -202,6 +206,14 @@ public class HospitalMaster implements Serializable {
 		 */
 		public void setSubCenterCount(Long subCenterCount) {
 			this.subCenterCount = subCenterCount;
+		}
+
+		public HospitalTypeMaster getHospitalTypeMaster() {
+			return hospitalTypeMaster;
+		}
+
+		public void setHospitalTypeMaster(HospitalTypeMaster hospitalTypeMaster) {
+			this.hospitalTypeMaster = hospitalTypeMaster;
 		}
 
 }

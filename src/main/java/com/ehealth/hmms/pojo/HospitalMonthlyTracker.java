@@ -25,7 +25,7 @@ public class HospitalMonthlyTracker implements Serializable{
 	private Long id;
 
 	@Column(name = "created_date")
-	private Long createdDate;
+	private Date createdDate;
 	
 	@Column(name = "report_date")
 	private Date report_date;
@@ -78,14 +78,14 @@ public class HospitalMonthlyTracker implements Serializable{
 	/**
 	 * @return the createdDate
 	 */
-	public Long getCreatedDate() {
+	public Date getCreatedDate() {
 		return createdDate;
 	}
 
 	/**
 	 * @param createdDate the createdDate to set
 	 */
-	public void setCreatedDate(Long createdDate) {
+	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
 

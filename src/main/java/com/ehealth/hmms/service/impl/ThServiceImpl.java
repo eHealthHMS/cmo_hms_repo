@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ehealth.hmms.dao.ThDao;
-import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.service.ThService;
@@ -17,11 +16,6 @@ public class ThServiceImpl implements ThService{
 	@Autowired
 	private ThDao thDao;
 	
-	
-
-//	public ThServiceImpl() {
-//		thDao = new ThDaoImpl();
-//	}
 
 	/**
 	 * @param thDao the thDao to set
@@ -33,9 +27,6 @@ public class ThServiceImpl implements ThService{
 	public Result saveAndUpdateOpIpDetails(OpIpDetails opIpDetails) throws Exception {
 		Result result = new Result();
 		try {
-
-			HospitalMonthlyTracker hospitalMonthlyTracker = opIpDetails.getHospitalMonthlyTracker();
-			Long hospitalId = hospitalMonthlyTracker.getHospital().getId();
 
 			Boolean resultFlag = thDao.saveAndUpdateOpIpDetails(opIpDetails);
 

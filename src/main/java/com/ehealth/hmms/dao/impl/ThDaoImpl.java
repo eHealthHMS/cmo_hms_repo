@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 //import com.ehealth.hmms.dao.HibernatePersistence;
 import com.ehealth.hmms.dao.ThDao;
+import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.SpecialityClinicData;
@@ -21,6 +22,12 @@ public class ThDaoImpl implements ThDao{
 	 @Autowired
 	    private SessionFactory sessionFactory;
 
+	public Boolean saveOrUpdateDeptWiseIpOpDetails(DepartmentWiseOpIp departmentWiseOpIp) throws Exception{
+		
+		Session session = this.sessionFactory.getCurrentSession();
+		session.saveOrUpdate(departmentWiseOpIp);
+		return true;
+	}
 	// Saving or updating the OP and IP details of taluk hospital.
 	
 	public Boolean saveAndUpdateOpIpDetails(OpIpDetails opIpDetails) throws Exception {

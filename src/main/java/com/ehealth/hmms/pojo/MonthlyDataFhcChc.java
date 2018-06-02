@@ -174,7 +174,10 @@ public class MonthlyDataFhcChc implements Serializable{
 	
 	private Integer type;
 	
-	
+	/*---------------------------for tab---------------------------------------------*/
+	@Column(name = "device_id")
+	private String deviceId;
+
 
 /**
  * @return the forenoonOpMale
@@ -576,10 +579,10 @@ public Boolean getIdspMeetingConductd() {
 }
 
 /**
- * @param idspMeetingConductd the idspMeetingConductd to set
+ * @param boolean1 the idspMeetingConductd to set
  */
-public void setIdspMeetingConductd(Boolean idspMeetingConductd) {
-	this.idspMeetingConductd = idspMeetingConductd;
+public void setIdspMeetingConductd(Boolean boolean1) {
+	this.idspMeetingConductd = boolean1;
 }
 	/**
  * @return the type
@@ -733,6 +736,14 @@ public void setType(Integer type) {
 
 	public void setHospitalMonthlyTracker(HospitalMonthlyTracker hospitalMonthlyTracker) {
 		this.hospitalMonthlyTracker = hospitalMonthlyTracker;
+	}
+
+	public String getDeviceId() {
+		return deviceId;
+	}
+
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
 	}
 
 

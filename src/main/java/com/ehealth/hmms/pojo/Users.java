@@ -33,6 +33,9 @@ public class Users implements Serializable {
 
 	@Column(name = "status")
 	private String status;
+	
+	@Column(name = "app_version")
+	private String appVersion;
 
 
 	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
@@ -111,4 +114,13 @@ public class Users implements Serializable {
 	public void setHospitalid(HospitalMaster hospitalid) {
 		this.hospitalid = hospitalid;
 	}
+
+	public String getAppVersion() {
+		return appVersion;
+	}
+
+	public void setAppVersion(String appVersion) {
+		this.appVersion = appVersion;
+	}
+	
 }

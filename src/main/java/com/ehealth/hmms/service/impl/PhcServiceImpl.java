@@ -104,29 +104,7 @@ public class PhcServiceImpl implements PhcService {
 		return result;
 
 	}
-	
-	public Result getPhcDynamicDataFromHospitalId(Long hospitalId)  throws Exception {
-		Result result = new Result();
-		try {
-			MonthlyDataFhcChc dataFhcChc = phcDao.getPhcDynamicDataFromHospitalId(hospitalId);
 
-			if (dataFhcChc != null ) {
-				
-				result.setValue(dataFhcChc);
-				result.setStatus(Constants.SUCCESS_STATUS);
-
-			} else {
-				result.setStatus(Constants.FAILURE_STATUS);
-				result.setErrorMessage("Data not available");
-			}
-		} catch (Exception e) {
-			result.setStatus(Constants.FAILURE_STATUS);
-		}
-		return result;
-
-	}
 	
-	
-		
 
 }

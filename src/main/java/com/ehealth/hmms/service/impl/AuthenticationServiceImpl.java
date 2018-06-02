@@ -1,7 +1,6 @@
 package com.ehealth.hmms.service.impl;
 
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -97,15 +96,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		
 		if(userResult!=null ) 
 		{
+			// phcServiceImpl = new PhcServiceImpl();
+			 
 			
-			
-			HospitalMaster hospitalMaster = userResult.getHospitalid();
-			if(hospitalMaster!=null) {
-			phcService.getPhcDynamicDataFromHospitalId(hospitalMaster.getId());//DataForDashboard(hospitalMaster.getId());
-			}else {
-				result.setStatus(Constants.FAILURE_STATUS);
-				//result.setErrorMessage("Invalid Credentials");
-			}
+			//HospitalMaster hospitalMaster = userResult.getHospital();
 			//result.setHospitalName(hospitalMaster.getHospitalName());
 			
 //			authenticationDao

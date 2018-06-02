@@ -91,16 +91,20 @@ public class PhcDaoImpl implements PhcDao {
 	
 	// Fetch monthly record of PHC for getting data in android.
 	public MonthlyDataFhcChc fetchPhcRecord(Long hospitalId, String date) throws Exception {
-		Session session = this.sessionFactory.getCurrentSession();;//HibernatePersistence.getSessionFactory().openSession();
+		Session session = this.sessionFactory.getCurrentSession();//HibernatePersistence.getSessionFactory().openSession();
 	//	Transaction transaction = null;
 		MonthlyDataFhcChc monthlyDataFhcChc = new MonthlyDataFhcChc();
 		  try {
 			//	 transaction = session.beginTransaction();
 				//Query query = session.createSQLQuery("select m.forenoon_op_male,m.forenoon_op_female,m.forenoon_op_tg,m.forenoon_op_tot,m.afternoon_op_male,m.afternoon_op_female,m.afternoon_op_tg,m.afternoon_op_tot,m.total_precheck,m.total_postconsultncounsel,m.patient_lab_test,m.total_lab_test,m.swas_clinic_new,m.aswasam_clinic_new,m.swas_clinic_followup,m.aswasam_clinic_followup,m.ncd_clinic_new,m.ncd_clinic_followup,m.tot_sc_immunizatnclinic,m.tot_other_sc_clinic,m.tot_outreach,m.tot_ncd_clinic,m.iec_healthpromo_activities,m.whsnc_meeting,m.regular_sc_clinic,m.jagratha_activities,m.total_attendee,m.houseVisitMo,m.housevisit_hs,m.housevisit_phns,m.housevisit_hi,m.housevisit_phn,m.housevisit_jhi,m.housevisit_jphn,m.housevisit_asha,m.last_hmc_meeting,m.monthly_staff_conf,m.post_dmo_conf,m.half_day_zonal,m.full_day_zonal,m.idsp_meetingconductd from monthlydata_fhc_chc m inner join hospital_monthlytracker h on h.id = m.hospmonthlytrack_id where h.report_date =:to_date(date,'yyyy-mm-dd') and h.hospital_id =:hospitalId;");
-			  String sql ="select m.forenoon_op_male,m.forenoon_op_female,m.forenoon_op_tg,m.forenoon_op_tot,m.afternoon_op_male,m.afternoon_op_female,m.afternoon_op_tg,m.afternoon_op_tot,m.total_precheck,m.total_postconsultncounsel,m.patient_lab_test,m.total_lab_test,m.swas_clinic_new,m.aswasam_clinic_new,m.swas_clinic_followup,m.aswasam_clinic_followup,m.ncd_clinic_new,m.ncd_clinic_followup,m.tot_sc_immunizatnclinic,m.tot_other_sc_clinic,m.tot_outreach,m.tot_ncd_clinic,m.iec_healthpromo_activities,m.whsnc_meeting,m.regular_sc_clinic,m.jagratha_activities,m.total_attendee,m.housevisit_mo,m.housevisit_hs,m.housevisit_phns,m.housevisit_hi,m.housevisit_phn,m.housevisit_jhi,m.housevisit_jphn,m.housevisit_asha,m.last_hmc_meeting,m.monthly_staff_conf,m.post_dmo_conf,m.half_day_zonal,m.full_day_zonal,m.idsp_meetingconductd from monthlydata_fhc_chc m inner join hospital_monthlytracker h on h.id = m.hospmonthlytrack_id where h.report_date =to_date(:date,'yyyy-mm-dd') and h.hospital_id =:hospitalId";
-			  Query query = session.createSQLQuery(sql);
-			  	query.setParameter("hospitalId", hospitalId);
-				query.setParameter("date", date);
+			  String sql ="select m.forenoon_op_male,m.forenoon_op_female,m.forenoon_op_tg,m.forenoon_op_tot,m.afternoon_op_male,m.afternoon_op_female,m.afternoon_op_tg,m.afternoon_op_tot,m.total_precheck,m.total_postconsultncounsel,m.patient_lab_test,m.total_lab_test,m.swas_clinic_new,m.aswasam_clinic_new,m.swas_clinic_followup,m.aswasam_clinic_followup,m.ncd_clinic_new,m.ncd_clinic_followup,m.tot_sc_immunizatnclinic,m.tot_other_sc_clinic,m.tot_outreach,m.tot_ncd_clinic,m.iec_healthpromo_activities,m.whsnc_meeting,m.regular_sc_clinic,m.jagratha_activities,m.total_attendee,m.housevisit_mo,m.housevisit_hs,m.housevisit_phns,m.housevisit_hi,m.housevisit_phn,m.housevisit_jhi,m.housevisit_jphn,m.housevisit_asha,m.last_hmc_meeting,m.monthly_staff_conf,m.post_dmo_conf,m.half_day_zonal,m.full_day_zonal,m.idsp_meetingconductd,m.hospmonthlytrack_id from monthlydata_fhc_chc m inner join hospital_monthlytracker h on h.id = m.hospmonthlytrack_id where h.report_date =to_date(:date,'yyyy-mm-dd') and h.hospital_id =:hospitalId";
+			  
+		        Query query = session.createSQLQuery(sql);
+		 
+		          query.setParameter("hospitalId", hospitalId);
+		 
+		        query.setParameter("date", date);
+		 
 				
 				List<MonthlyDataFhcChc> phcList = query.list();
 				
@@ -151,6 +155,8 @@ public class PhcDaoImpl implements PhcDao {
 						monthlyDataFhcChc.setHalfDayZonal(castObjectToBoolean(row[38]));
 						monthlyDataFhcChc.setFullDayZonal(castObjectToBoolean(row[39]));
 						monthlyDataFhcChc.setIdspMeetingConductd(castObjectToBoolean(row[40]));
+						monthlyDataFhcChc.setHospitalMonthlyTracker(castObjectToHmt(row[41]));
+						 
 					}
 				}			
 			 } catch (HibernateException e) {
@@ -179,6 +185,13 @@ public class PhcDaoImpl implements PhcDao {
 		return new Boolean((Boolean) ((object != null) ? object : 0));
 
 	}
+	  
+	  private HospitalMonthlyTracker castObjectToHmt(Object object) {
+	    HospitalMonthlyTracker hospMonTrack = new HospitalMonthlyTracker();
+	    hospMonTrack.setId(new Long((Integer) ((object != null) ? object : 0)));
+	    return hospMonTrack;
+
+	  }
 
 	
 	/**

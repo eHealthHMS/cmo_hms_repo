@@ -15,6 +15,7 @@ public interface PhcService {
 	
 	Result getPhcStaticData(String hospitalId) throws Exception;
 	Result getPhcDynamicDataForDashboard(String hospitalId) throws Exception;
+	Result getPhcDynamicDataFromHospitalId(Long hospitalId) throws Exception;
 	
 	
 }

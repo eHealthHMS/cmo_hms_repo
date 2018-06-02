@@ -556,4 +556,64 @@ public class PhcDaoImpl implements PhcDao {
 		return dataFhcChcs;
 	}
 
+	
+	public MonthlyDataFhcChc getPhcDynamicDataFromHospitalId(Long hospitalId) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();//HibernatePersistence.getSessionFactory().openSession();
+
+		MonthlyDataFhcChc dataFhcChc = null;
+		try {
+
+			String strQuery  = "select forenoon_op_tot,afternoon_op_tot,total_precheck,patient_lab_test,total_lab_test,total_attendee,"
+					+ "housevisit_mo,housevisit_hs,housevisit_phns,housevisit_hi,housevisit_phn,housevisit_jhi,housevisit_jphn,"
+					+ "housevisit_asha,regular_sc_clinic from monthlydata_fhc_chc md inner join hospital_monthlytracker mt "
+					+ " on md.hospmonthlytrack_id  = mt.id inner join  hospital_master hm  on mt.hospital_id=hm.gid where "
+					+ "hm.hospital_code=:hospitalCode and mt.report_date=:reportDate";
+			Query query = session.createSQLQuery(strQuery);
+			//query.setDate("reportDate", getReportDate());
+		//	query.setString("hospitalCode", hospitalId);	
+			
+			//resultSet = query.list();
+			Iterator iterator = query.list().iterator();
+
+			while (iterator.hasNext()) {
+
+				// Map row = (Map) iterator.next();
+				Object[] row = (Object[]) iterator.next();
+				MonthlyDataFhcChc monthlyDataFhcChc = new MonthlyDataFhcChc();
+				monthlyDataFhcChc.setForenoonOpTotal(castObjectToLong(row[0]));
+				monthlyDataFhcChc.setAfternoonOpTotal(castObjectToLong(row[1]));
+				monthlyDataFhcChc.setTotalPrecheck(castObjectToLong(row[2]));
+				monthlyDataFhcChc.setPatientLabTest(castObjectToLong(row[3]));
+				monthlyDataFhcChc.setTotalLabTest(castObjectToLong(row[4]));
+				
+				monthlyDataFhcChc.setTotalAttendee(castObjectToLong(row[5]));
+				monthlyDataFhcChc.setHouseVisitMo(castObjectToLong(row[6]));
+				monthlyDataFhcChc.setHouseVisitHs(castObjectToLong(row[7]));
+				
+				monthlyDataFhcChc.setHouseVisitPhns(castObjectToLong(row[8]));
+				monthlyDataFhcChc.setHouseVisitHi(castObjectToLong(row[9]));
+				monthlyDataFhcChc.setHouseVisitPhn(castObjectToLong(row[10]));
+				monthlyDataFhcChc.setHouseVisitJhi(castObjectToLong(row[11]));
+				monthlyDataFhcChc.setHouseVisitJphn(castObjectToLong(row[12]));
+				monthlyDataFhcChc.setHouseVisitAsha(castObjectToLong(row[13]));
+				monthlyDataFhcChc.setRegularScClinic(castObjectToLong(row[14]));
+				
+				
+				
+			}
+		
+		} catch (HibernateException e) {
+			
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			
+			throw new Exception("Exception : " + e.getMessage());
+
+		} finally {
+			session.close();
+		}
+		return dataFhcChc;
+	}
+	
+	
 }

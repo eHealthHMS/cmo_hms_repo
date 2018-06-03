@@ -174,7 +174,12 @@ public class MonthlyDataFhcChc implements Serializable{
 	
 	private Integer type;
 	
-	
+	  /*---------------------------for tab---------------------------------------------*/
+	 
+	 @Column(name = "device_id")
+	 
+	  private String deviceId;
+	 
 
 /**
  * @return the forenoonOpMale
@@ -733,6 +738,14 @@ public void setType(Integer type) {
 
 	public void setHospitalMonthlyTracker(HospitalMonthlyTracker hospitalMonthlyTracker) {
 		this.hospitalMonthlyTracker = hospitalMonthlyTracker;
+	}
+
+	public String getDeviceId() {
+		return deviceId;
+	}
+
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
 	}
 
 

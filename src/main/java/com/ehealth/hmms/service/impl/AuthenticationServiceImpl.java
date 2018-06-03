@@ -97,10 +97,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		
 		if(userResult!=null ) 
 		{
-			// phcServiceImpl = new PhcServiceImpl();
-			 
 			
-			//HospitalMaster hospitalMaster = userResult.getHospital();
+			
+			HospitalMaster hospitalMaster = userResult.getHospitalid();
+			if(hospitalMaster!=null) {
+			phcService.getPhcDynamicDataFromHospitalId(hospitalMaster.getId());//DataForDashboard(hospitalMaster.getId());
+			}else {
+				result.setStatus(Constants.FAILURE_STATUS);
+				//result.setErrorMessage("Invalid Credentials");
+			}
 			//result.setHospitalName(hospitalMaster.getHospitalName());
 			
 //			authenticationDao

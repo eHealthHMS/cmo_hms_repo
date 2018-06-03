@@ -1,6 +1,8 @@
 package com.ehealth.hmms.dao.impl;
 
+
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -55,30 +57,49 @@ public class ThDaoImpl implements ThDao{
 	public Boolean saveAndUpdateOpIpDetails(OpIpDetails opIpDetails) throws Exception {
 		
 		Session session = this.sessionFactory.getCurrentSession();
-		//Transaction transaction = null;
+
 		Boolean resultFlag = false;
-		HospitalMonthlyTracker hospitalMonthlyTracker = opIpDetails.getHospitalMonthlyTracker();
-		Long hospitalId = hospitalMonthlyTracker.getHospital().getId();
-		PhcDaoImpl phcDaoImpl = new PhcDaoImpl();
-		Long hospTrackId = phcDaoImpl.saveHospitalMonthlyTracker(hospitalId);
+
 		  try {
 			  	
-			//	transaction = session.beginTransaction();
-/*				Long totOutPatients = opIpDetails.getTotOutPatients();
-				Long totInPatients = opIpDetails.getTotInPatients();
-				Long patientsDischarged = opIpDetails.getPatientsDischarged();
-				Long patientsExpired = opIpDetails.getPatientsExpired();
-				Long patientsReferred = opIpDetails.getPatientsReferred();
-				Long emergencyCare = opIpDetails.getEmergencyCare();
-				Long medEmergency = opIpDetails.getMedEmergency();
-				Long surgEmergency = opIpDetails.getSurgEmergency();
-				Long emrRta = opIpDetails.getEmrRta();
-				Long emrPatinetTreated = opIpDetails.getEmrPatinetTreated();
-				Long emrPatientAdmited = opIpDetails.getEmrPatientAdmited();
-				Long emrPatientReferred = opIpDetails.getEmrPatientReferred();*/
-				
-				Query query = session.createSQLQuery("update service_area_th_gh_dh set totOutPatients =:totOutPatients, totInPatients=:totInPatients, patientsDischarged=:patientsDischarged, patientsExpired=: patientsExpired, patientsReferred =:patientsReferred, medEmergency =:medEmergency, surgEmergency =:surgEmergency, emrPatinetTreated =:emrPatinetTreated,emrPatientAdmited =:emrPatientAdmited, emrPatientReferred=:emrPatientReferred, emergencyCare=:emergencyCare, emrRta=:emrRta where hospmonthlytrack_id =:hospTrackId;");
-				 resultFlag = true;
+			  Long forenoonOpMale = opIpDetails.getForenoonOpMale(); 
+			    Long forenoonOpFemale = opIpDetails.getAfternoonOpMale(); 
+			    Long forenoonOpTg = opIpDetails.getForenoonOpTg(); 
+			    Long forenoonOpTotal = opIpDetails.getForenoonOpTotal(); 
+			    Long afternoonOpMale = opIpDetails.getAfternoonOpMale(); 
+			    Long afternoonOpFemale = opIpDetails.getAfternoonOpFemale(); 
+			    Long afternoonOpTg = opIpDetails.getAfternoonOpTg(); 
+			    Long afternoonOpTotal = opIpDetails.getAfternoonOpTotal(); 
+			    Long ipPatientsDischarged = opIpDetails.getIpPatientsDischarged(); 
+			    Long ipPatientsExpired = opIpDetails.getIpPatientsExpired(); 
+			    Long ipPatientsReferred = opIpDetails.getIpPatientsReferred(); 
+			    Long ipAdmissionsMale = opIpDetails.getIpAdmissionsMale(); 
+			    Long ipAdmissionsFemale = opIpDetails.getIpAdmissionsFemale(); 
+			    Long ipAdmissionsTotal = opIpDetails.getIpAdmissionsTotal(); 
+			    Long ipAdmissionsTg = opIpDetails.getIpAdmissionsTg(); 
+			    Long emrPatientReferred = opIpDetails.getEmrPatientReferred(); 
+			    Long emrRtaTrauma = opIpDetails.getEmrRtaTrauma(); 
+			    Long emrPatinetAttended = opIpDetails.getEmrPatinetAttended(); 
+			    Long hospTrackId = opIpDetails.getHospitalMonthlyTracker().getId(); 
+			     
+			   
+			        String sql ="select * from op_ip_th_gh_dh op where op.hospmonthlytrack_id =:hospTrackId"; 
+			        Query query = session.createSQLQuery(sql); 
+			        query.setParameter("hospTrackId", hospTrackId); 
+			        List<OpIpDetails> opIpQueryDetails = query.list(); 
+			        
+			        if (opIpQueryDetails != null && !opIpQueryDetails.isEmpty()) { 
+			          if(opIpQueryDetails.get(0) != null) 
+			          { 
+			        	  Query query1 = session.createSQLQuery("update op_ip_th_gh_dh set forenoon_op_male =:forenoonOpMale,forenoon_op_female=:forenoonOpFemale,forenoon_op_tg=:forenoonOpTg,forenoon_op_total=:forenoonOpTotal,afternoon_op_male=:afternoonOpMale,afternoon_op_tg=:afternoonOpTg,afternoon_op_total=:afternoonOpTotal,afternoon_op_female=:afternoonOpFemale,ip_admissions_male=:ipAdmissionsMale,ip_admissions_female=:ipAdmissionsFemale,ip_admissions_tg=:ipAdmissionsTg,ip_admissions_total=:ipAdmissionsTotal,ip_patients_discharged=:ipPatientsDischarged,ip_patients_expired=:ipPatientsExpired ,ip_patients_referred =:ipPatientsReferred,emr_patinet_attended =:emrPatinetAttended,emr_patient_admited =:emrPatientAdmited,emr_patient_referred =:emrPatientReferred,emr_rta_trauma =:emrRtaTrauma where hospmonthlytrack_id =:hospTrackId"); 
+			        	  resultFlag = true; 
+			          } 
+			        } 
+			          else 
+			          { 
+			            session.save(opIpQueryDetails); 
+			            resultFlag = true; 
+			          } 
 	
 			 }
 		  catch (HibernateException e) {

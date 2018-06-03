@@ -17,14 +17,15 @@ import com.ehealth.hmms.dao.ThDao;
 import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.OpIpDetails;
+import com.ehealth.hmms.pojo.ServiceAreaOthers;
 import com.ehealth.hmms.pojo.SpecialityClinicData;
 
 @Repository
 @Transactional
 public class ThDaoImpl implements ThDao{
 	
-	 @Autowired
-	    private SessionFactory sessionFactory;
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	public Boolean saveOrUpdateDeptWiseIpOpDetails(DepartmentWiseOpIp departmentWiseOpIp) throws Exception{
 		
@@ -36,6 +37,19 @@ public class ThDaoImpl implements ThDao{
 			session.saveOrUpdate(hospitalMonthlyTracker);
 		}
 		session.saveOrUpdate(departmentWiseOpIp);
+		return true;
+	}
+	
+	public Boolean saveOrUpdateServiceAreaOthers(ServiceAreaOthers serviceAreaOthers) throws Exception{
+		
+		Session session = this.sessionFactory.getCurrentSession();
+		HospitalMonthlyTracker hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, serviceAreaOthers.getHospitalMonthlyTracker().getId());
+		if(hospitalMonthlyTracker == null) {
+			hospitalMonthlyTracker = serviceAreaOthers.getHospitalMonthlyTracker();
+			hospitalMonthlyTracker.setReport_date(new Date());
+			session.saveOrUpdate(hospitalMonthlyTracker);
+		}
+		session.saveOrUpdate(serviceAreaOthers);
 		return true;
 	}
 	// Saving or updating the OP and IP details of taluk hospital.

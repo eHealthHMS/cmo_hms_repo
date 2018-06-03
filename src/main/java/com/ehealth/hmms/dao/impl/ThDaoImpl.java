@@ -1,5 +1,7 @@
 package com.ehealth.hmms.dao.impl;
 
+import java.util.Date;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -25,6 +27,12 @@ public class ThDaoImpl implements ThDao{
 	public Boolean saveOrUpdateDeptWiseIpOpDetails(DepartmentWiseOpIp departmentWiseOpIp) throws Exception{
 		
 		Session session = this.sessionFactory.getCurrentSession();
+		HospitalMonthlyTracker hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, departmentWiseOpIp.getHospitalMonthlyTrackerId().getId());
+		if(hospitalMonthlyTracker == null) {
+			hospitalMonthlyTracker = departmentWiseOpIp.getHospitalMonthlyTrackerId();
+			hospitalMonthlyTracker.setReport_date(new Date());
+			session.saveOrUpdate(hospitalMonthlyTracker);
+		}
 		session.saveOrUpdate(departmentWiseOpIp);
 		return true;
 	}

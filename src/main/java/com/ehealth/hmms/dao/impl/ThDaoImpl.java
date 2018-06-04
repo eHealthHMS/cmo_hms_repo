@@ -33,7 +33,12 @@ public class ThDaoImpl implements ThDao{
 		HospitalMonthlyTracker hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, departmentWiseOpIp.getHospitalMonthlyTrackerId().getId());
 		if(hospitalMonthlyTracker == null) {
 			hospitalMonthlyTracker = departmentWiseOpIp.getHospitalMonthlyTrackerId();
+			//hospitalMonthlyTracker.setId(id)
+			hospitalMonthlyTracker.setLastModified(new Date());
 			hospitalMonthlyTracker.setReport_date(new Date());
+			session.saveOrUpdate(hospitalMonthlyTracker);
+		} else {			
+			hospitalMonthlyTracker.setLastModified(new Date());
 			session.saveOrUpdate(hospitalMonthlyTracker);
 		}
 		session.saveOrUpdate(departmentWiseOpIp);
@@ -47,6 +52,9 @@ public class ThDaoImpl implements ThDao{
 		if(hospitalMonthlyTracker == null) {
 			hospitalMonthlyTracker = serviceAreaOthers.getHospitalMonthlyTracker();
 			hospitalMonthlyTracker.setReport_date(new Date());
+			session.saveOrUpdate(hospitalMonthlyTracker);
+		} else {
+			hospitalMonthlyTracker.setLastModified(new Date());
 			session.saveOrUpdate(hospitalMonthlyTracker);
 		}
 		session.saveOrUpdate(serviceAreaOthers);

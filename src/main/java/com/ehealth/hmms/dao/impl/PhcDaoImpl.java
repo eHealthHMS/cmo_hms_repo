@@ -94,6 +94,8 @@ public class PhcDaoImpl implements PhcDao {
 		Session session = this.sessionFactory.getCurrentSession();;//HibernatePersistence.getSessionFactory().openSession();
 	//	Transaction transaction = null;
 		MonthlyDataFhcChc monthlyDataFhcChc = new MonthlyDataFhcChc();
+		
+		
 		  try {
 			//	 transaction = session.beginTransaction();
 				//Query query = session.createSQLQuery("select m.forenoon_op_male,m.forenoon_op_female,m.forenoon_op_tg,m.forenoon_op_tot,m.afternoon_op_male,m.afternoon_op_female,m.afternoon_op_tg,m.afternoon_op_tot,m.total_precheck,m.total_postconsultncounsel,m.patient_lab_test,m.total_lab_test,m.swas_clinic_new,m.aswasam_clinic_new,m.swas_clinic_followup,m.aswasam_clinic_followup,m.ncd_clinic_new,m.ncd_clinic_followup,m.tot_sc_immunizatnclinic,m.tot_other_sc_clinic,m.tot_outreach,m.tot_ncd_clinic,m.iec_healthpromo_activities,m.whsnc_meeting,m.regular_sc_clinic,m.jagratha_activities,m.total_attendee,m.houseVisitMo,m.housevisit_hs,m.housevisit_phns,m.housevisit_hi,m.housevisit_phn,m.housevisit_jhi,m.housevisit_jphn,m.housevisit_asha,m.last_hmc_meeting,m.monthly_staff_conf,m.post_dmo_conf,m.half_day_zonal,m.full_day_zonal,m.idsp_meetingconductd from monthlydata_fhc_chc m inner join hospital_monthlytracker h on h.id = m.hospmonthlytrack_id where h.report_date =:to_date(date,'yyyy-mm-dd') and h.hospital_id =:hospitalId;");
@@ -150,18 +152,15 @@ public class PhcDaoImpl implements PhcDao {
 						monthlyDataFhcChc.setPostDmoConf(castObjectToBoolean(row[37]));
 						monthlyDataFhcChc.setHalfDayZonal(castObjectToBoolean(row[38]));
 						monthlyDataFhcChc.setFullDayZonal(castObjectToBoolean(row[39]));
-						monthlyDataFhcChc.setIdspMeetingConductd(castObjectToBoolean(row[40]));
+						monthlyDataFhcChc.setIdspMeetingConductd(castObjectToLong(row[40]));
+					
 					}
 				}			
 			 } catch (HibernateException e) {
-//		         if (transaction!=null) { 
-//		        	 transaction.rollback();
-//		         }
+
 		        throw new HibernateException("Hibernate Exception : " +  e.getMessage() );
 		      } catch (Exception e) {
-//		    	  if (transaction!=null) { 
-//		         	 transaction.rollback();
-//		          }
+
 		         throw new Exception("Exception : " +  e.getMessage() );
 		      }
 		
@@ -179,69 +178,233 @@ public class PhcDaoImpl implements PhcDao {
 		return new Boolean((Boolean) ((object != null) ? object : 0));
 
 	}
+	/**
+	 * method to save phc functional components monthly
+	 */
+	public Result saveInstitutionalData(MonthlyDataFhcChc dataFhcChc,Long trackerId) throws Exception {
+
+		Session session = this.sessionFactory.getCurrentSession();
+		Result result = new Result();
+		try {
+			//Long trackerId = getHospitalTrakerForSave(hospitalMonthlyTracker);
+
+			Query query = session.createQuery("from MonthlyDataFhcChc where hospitalMonthlyTracker.id=:hospitalMonthlyTrackerId");
+
+			query.setLong("hospitalMonthlyTrackerId", trackerId);
+			List<MonthlyDataFhcChc> dataFhcChcs = query.list();
+			if(dataFhcChcs!=null && !dataFhcChcs.isEmpty()) {
+				
+				MonthlyDataFhcChc dataFhcChcFromDb = dataFhcChcs.get(0);
+				
+				dataFhcChcFromDb.setForenoonOpFemale(dataFhcChc.getForenoonOpFemale());
+				dataFhcChcFromDb.setForenoonOpMale(dataFhcChc.getForenoonOpMale());
+				dataFhcChcFromDb.setForenoonOpTg(dataFhcChc.getForenoonOpTg());
+				dataFhcChcFromDb.setForenoonOpTotal(dataFhcChc.getForenoonOpTotal());
+				
+				dataFhcChcFromDb.setAfternoonOpFemale(dataFhcChc.getAfternoonOpFemale());
+				dataFhcChcFromDb.setAfternoonOpMale(dataFhcChc.getAfternoonOpMale());
+				dataFhcChcFromDb.setAfternoonOpTg(dataFhcChc.getAfternoonOpTg());
+				dataFhcChcFromDb.setAfternoonOpTotal(dataFhcChc.getAfternoonOpTotal());
+				
+				dataFhcChcFromDb.setTotalPrecheck(dataFhcChc.getTotalPrecheck());
+				dataFhcChcFromDb.setTotalPostConsultnCounsel(dataFhcChc.getTotalPostConsultnCounsel());
+				dataFhcChcFromDb.setPatientLabTest(dataFhcChc.getPatientLabTest());
+				dataFhcChcFromDb.setTotalLabTest(dataFhcChc.getTotalLabTest());
+				
+				dataFhcChcFromDb.setSwasClinicNew(dataFhcChc.getSwasClinicNew());
+				dataFhcChcFromDb.setSwasClinicFollowup(dataFhcChc.getSwasClinicFollowup());
+				
+				dataFhcChcFromDb.setAswasamClinicNew(dataFhcChc.getAswasamClinicNew());
+				dataFhcChcFromDb.setAswasamClinicFollowup(dataFhcChc.getAswasamClinicFollowup());
+				
+				dataFhcChcFromDb.setNcdClinicNew(dataFhcChc.getNcdClinicNew());
+				dataFhcChcFromDb.setNcdClinicFollowup(dataFhcChc.getNcdClinicFollowup());
+				
+				session.update(dataFhcChcFromDb);
+				result.setStatus(Constants.SUCCESS_STATUS);
+				//Iterator iterator = phcList.iterator();
+			}else {
+				session.save(dataFhcChc);
+				result.setStatus(Constants.SUCCESS_STATUS);
+			}
+			
+
+		} catch (HibernateException e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+			throw new Exception("Exception : " + e.getMessage());
+
+		} 
+		return result;
+	}
+	
+	public Result saveMeetings(MonthlyDataFhcChc dataFhcChc,Long trackerId) throws Exception {
+
+		Session session = this.sessionFactory.getCurrentSession();
+		Result result = new Result();
+		try {
+
+			//Query query = "update MonthlyDataFhcChc set";
+			Query query = session.createQuery("from MonthlyDataFhcChc where hospitalMonthlyTracker.id=:hospitalMonthlyTrackerId");
+
+			query.setLong("hospitalMonthlyTrackerId", trackerId);
+			List<MonthlyDataFhcChc> dataFhcChcs = query.list();
+			if(dataFhcChcs!=null && !dataFhcChcs.isEmpty()) {
+				
+				MonthlyDataFhcChc dataFhcChcFromDb = dataFhcChcs.get(0);
+				
+				dataFhcChcFromDb.setMonthlyStaffConf(dataFhcChc.getMonthlyStaffConf());
+				dataFhcChcFromDb.setPostDmoConf(dataFhcChc.getPostDmoConf());
+				dataFhcChcFromDb.setHalfDayZonal(dataFhcChc.getHalfDayZonal());
+				dataFhcChcFromDb.setFullDayZonal(dataFhcChc.getFullDayZonal());
+				
+				dataFhcChcFromDb.setIdspMeetingConductd(dataFhcChc.getIdspMeetingConductd());
+				
+				dataFhcChcFromDb.setLastHmcMeeting(dataFhcChc.getLastHmcMeeting());
+				
+				session.update(dataFhcChcFromDb);
+				result.setStatus(Constants.SUCCESS_STATUS);
+				//Iterator iterator = phcList.iterator();
+			}else {
+				session.save(dataFhcChc);
+				result.setStatus(Constants.SUCCESS_STATUS);
+			}
+
+		} catch (HibernateException e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+			throw new Exception("Exception : " + e.getMessage());
+
+		} 
+		return result;
+	}
+
+	
+	public Result saveSubCentreDetails(MonthlyDataFhcChc dataFhcChc,Long trackerId) throws Exception {
+
+		Session session = this.sessionFactory.getCurrentSession();
+		Result result = new Result();
+		try {
+
+			Query query = session.createQuery("from MonthlyDataFhcChc where hospitalMonthlyTracker.id=:hospitalMonthlyTrackerId");
+
+			query.setLong("hospitalMonthlyTrackerId", trackerId);
+			List<MonthlyDataFhcChc> dataFhcChcs = query.list();
+			if(dataFhcChcs!=null && !dataFhcChcs.isEmpty()) {
+				
+				MonthlyDataFhcChc dataFhcChcFromDb = dataFhcChcs.get(0);
+				
+				dataFhcChcFromDb.setTotScImmunizatnClinic(dataFhcChc.getTotScImmunizatnClinic());
+				dataFhcChcFromDb.setTotOtherScClinic(dataFhcChc.getTotOtherScClinic());
+				dataFhcChcFromDb.setTotOutreach(dataFhcChc.getTotOutreach());
+				dataFhcChcFromDb.setTotNcdClinic(dataFhcChc.getTotNcdClinic());
+				dataFhcChcFromDb.setIecHealthpromoActivities(dataFhcChc.getIecHealthpromoActivities());
+				dataFhcChcFromDb.setWhsncMeeting(dataFhcChc.getWhsncMeeting());
+				dataFhcChcFromDb.setRegularScClinic(dataFhcChc.getRegularScClinic());
+				dataFhcChcFromDb.setJagrathaActivities(dataFhcChc.getJagrathaActivities());
+				dataFhcChcFromDb.setTotalAttendee(dataFhcChc.getTotalAttendee());
+				
+				session.update(dataFhcChcFromDb);
+				result.setStatus(Constants.SUCCESS_STATUS);
+				//Iterator iterator = phcList.iterator();
+			}else {
+				session.save(dataFhcChc);
+				result.setStatus(Constants.SUCCESS_STATUS);
+			}
+			
+
+		} catch (HibernateException e) {
+
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+
+			throw new Exception("Exception : " + e.getMessage());
+
+		} 
+		return result;
+	}
+
+
+	
+	public Result saveFieldWorks(MonthlyDataFhcChc dataFhcChc,Long trackerId) throws Exception {
+
+		Session session = this.sessionFactory.getCurrentSession();
+		Result result = new Result();
+		try {
+		Query query = session.createQuery("from MonthlyDataFhcChc where hospitalMonthlyTracker.id=:hospitalMonthlyTrackerId");
+
+		query.setLong("hospitalMonthlyTrackerId", trackerId);
+		List<MonthlyDataFhcChc> dataFhcChcs = query.list();
+		if(dataFhcChcs!=null && !dataFhcChcs.isEmpty()) {
+			
+			MonthlyDataFhcChc dataFhcChcFromDb = dataFhcChcs.get(0);
+			
+			dataFhcChcFromDb.setHouseVisitMo(dataFhcChc.getHouseVisitMo());
+			dataFhcChcFromDb.setHouseVisitHs(dataFhcChc.getHouseVisitHs());
+			dataFhcChcFromDb.setHouseVisitPhns(dataFhcChc.getHouseVisitPhns());
+			dataFhcChcFromDb.setHouseVisitHi(dataFhcChc.getHouseVisitHi());
+			dataFhcChcFromDb.setHouseVisitPhn(dataFhcChc.getHouseVisitPhn());
+			dataFhcChcFromDb.setHouseVisitJhi(dataFhcChc.getHouseVisitJhi());
+			dataFhcChcFromDb.setHouseVisitJphn(dataFhcChc.getHouseVisitJphn());
+			dataFhcChcFromDb.setHouseVisitAsha(dataFhcChc.getHouseVisitAsha());
+			
+			session.update(dataFhcChcFromDb);
+			result.setStatus(Constants.SUCCESS_STATUS);
+			//Iterator iterator = phcList.iterator();
+		}else {
+			session.save(dataFhcChc);
+			result.setStatus(Constants.SUCCESS_STATUS);
+		}
+
+		} catch (HibernateException e) {
+
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+
+			throw new Exception("Exception : " + e.getMessage());
+
+		} 
+		return result;
+	}
+
 
 	
 	/**
 	 * method to save phc functional components monthly
 	 */
-	public Result saveFunctionalComponents(MonthlyDataFhcChc dataFhcChc) throws Exception {
+	public Long getHospitalTrakerForSave(HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
 
-		Session session = this.sessionFactory.getCurrentSession();;//HibernatePersistence.getSessionFactory().openSession();
-		Result result = new Result();
-		//Transaction transaction = null;
+		Long trackerid = 0L;
 		try {
-		//	transaction = session.beginTransaction();
 
-			HospitalMonthlyTracker hospitalMonthlyTracker = dataFhcChc.getHospitalMonthlyTracker();// new
+			if(hospitalMonthlyTracker!=null && hospitalMonthlyTracker.getHospital()!=null) {
 			Long hospitalId = hospitalMonthlyTracker.getHospital().getId();
 
-			HospitalMonthlyTracker trackerForCurrentMonth = getMonthlyTrackerForCurrentMonth(hospitalId,
-					Calendar.getInstance().get(Calendar.MONTH));
-			Long trackerid = 0L;
+			HospitalMonthlyTracker trackerForCurrentMonth = getMonthlyTrackerForCurrentMonth(hospitalId);
+		
 			if (trackerForCurrentMonth == null) {
 				trackerid = saveHospitalMonthlyTracker(hospitalId);
 
+			}else {
+				trackerid = trackerForCurrentMonth.getId();
 			}
-			if (trackerid == 0) {
-				result.setStatus(Constants.FAILURE_STATUS);
-				return result;
-			} else {
-				// Query query = "";
-			}
+		
 
-			// functionalComponents - 1//fieldActivities - 2//subcentre - 3
-			Integer type = dataFhcChc.getType();
-			switch (type) {
-			case 1: {
-
-				break;
-			}
-			case 2: {
-				break;
-			}
-			case 3: {
-				break;
-			}
-			default: {
-				result.setStatus(Constants.FAILURE_STATUS);
-				return result;
-
-			}
 			}
 
 		} catch (HibernateException e) {
-//			if (transaction != null) {
-//				transaction.rollback();
-//			}
+
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
-//			if (transaction != null) {
-//				transaction.rollback();
-//			}
+
 			throw new Exception("Exception : " + e.getMessage());
 
 		} 
-		return result;
+		return trackerid;
 	}
 
 	/**
@@ -282,6 +445,8 @@ public class PhcDaoImpl implements PhcDao {
 		return trackerId;
 	}
 
+
+	
 	/**
 	 * get hospital monthly tracker for a month
 	 * 
@@ -290,7 +455,7 @@ public class PhcDaoImpl implements PhcDao {
 	 * @return
 	 * @throws Exception
 	 */
-	private HospitalMonthlyTracker getMonthlyTrackerForCurrentMonth(Long hospitalId, int currentMonth)
+	private HospitalMonthlyTracker getMonthlyTrackerForCurrentMonth(Long hospitalId)
 			throws Exception {
 
 		Session session = this.sessionFactory.getCurrentSession();//HibernatePersistence.getSessionFactory().openSession();
@@ -300,8 +465,8 @@ public class PhcDaoImpl implements PhcDao {
 			//transaction = session.beginTransaction();
 
 			Query query = session.createQuery(
-					"from HospitalMonthlyTracker mt where mt.reportMonth=:month and mt.hospital.id=:hospitalId");
-			query.setLong("month", currentMonth);
+					"from HospitalMonthlyTracker mt where mt.report_date=:reportDate and mt.hospital.id=:hospitalId");
+			query.setDate("reportDate", getReportDate());
 			query.setLong("hospitalId", hospitalId);
 
 			List<HospitalMonthlyTracker> hospitalMonthlyTrackers = query.list();
@@ -368,12 +533,21 @@ public class PhcDaoImpl implements PhcDao {
 		} 
 		return hospitalMonthlyTracker;
 	}
-	
+//	private Date getFirstDateOfMonth() {
+//		  Calendar cal = Calendar.getInstance();
+//		  cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+//		  return cal.getTime();
+//		}
 	
 	private Date getReportDate() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.MONTH, -1);
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		calendar.clear( Calendar.HOUR_OF_DAY );
+		calendar.clear(Calendar.AM_PM);
+		calendar.clear( Calendar.MINUTE );
+		calendar.clear( Calendar.SECOND );
+		calendar.clear( Calendar.MILLISECOND );
 		return calendar.getTime();
 	}
 	//for dashboard
@@ -478,9 +652,6 @@ public class PhcDaoImpl implements PhcDao {
 		//	}
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
-//			if (transaction != null) {
-//				transaction.rollback();
-//			}
 			throw new Exception("Exception : " + e.getMessage());
 
 		} 
@@ -498,8 +669,8 @@ public class PhcDaoImpl implements PhcDao {
 		try {
 		//transaction = session.beginTransaction();
 			Calendar today = Calendar.getInstance();
-			HospitalMonthlyTracker trackerForCurrentMonth = getMonthlyTrackerForCurrentMonth(new Long(hospitalId),
-					today.get(Calendar.MONTH));
+			HospitalMonthlyTracker trackerForCurrentMonth = getMonthlyTrackerForCurrentMonth(new Long(hospitalId));
+				//	today.get(Calendar.MONTH));
 
 			Long trackerid = 0L;
 			 

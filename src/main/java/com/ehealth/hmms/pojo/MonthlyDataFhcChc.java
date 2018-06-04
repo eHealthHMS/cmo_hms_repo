@@ -6,12 +6,16 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "monthlydata_fhc_chc")
@@ -19,9 +23,17 @@ public class MonthlyDataFhcChc implements Serializable{
 	
 	private static final long serialVersionUID = 6198698490528492269L;
 
+	
+//	@Id
+//	@org.hibernate.annotations.GenericGenerator(name="hilo-strategy", strategy = "hilo")
+//	@GeneratedValue(generator = "hilo-strategy")
+	
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@Column(name = "id",updatable = false, nullable = false)
+	@SequenceGenerator(name="identifier", sequenceName="monthlytracker_seq", allocationSize=1)  
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="identifier")
 	private Long id;
 	
 	/*-----------------------------phc hospital related starts------------------------------*/
@@ -161,17 +173,19 @@ public class MonthlyDataFhcChc implements Serializable{
 	
 	
 	@Column(name = "idsp_meetingconductd")
-	private Boolean idspMeetingConductd;
+	private Long idspMeetingConductd;
 	
 	/*---------------------------field activities  ends---------------------------------------------*/
 
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "hospmonthlytrack_id", referencedColumnName="id")
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 
 	//phc hospitals - 1
 	//phc meeting -2
 	//phc subcentre - 3
 	//phc field work - 4
-	
+	@Transient
 	private Integer type;
 	
 	
@@ -571,14 +585,14 @@ public void setFullDayZonal(Boolean fullDayZonal) {
 /**
  * @return the idspMeetingConductd
  */
-public Boolean getIdspMeetingConductd() {
+public Long getIdspMeetingConductd() {
 	return idspMeetingConductd;
 }
 
 /**
  * @param idspMeetingConductd the idspMeetingConductd to set
  */
-public void setIdspMeetingConductd(Boolean idspMeetingConductd) {
+public void setIdspMeetingConductd(Long idspMeetingConductd) {
 	this.idspMeetingConductd = idspMeetingConductd;
 }
 	/**
@@ -725,8 +739,8 @@ public void setType(Integer type) {
 
 	
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "id")
 	public HospitalMonthlyTracker getHospitalMonthlyTracker() {
 		return hospitalMonthlyTracker;
 	}

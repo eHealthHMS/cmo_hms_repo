@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 //import com.ehealth.hmms.dao.HibernatePersistence;
 import com.ehealth.hmms.dao.ThDao;
 import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
+import com.ehealth.hmms.pojo.FundExpenditure;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.ServiceAreaOthers;
@@ -58,6 +59,22 @@ public class ThDaoImpl implements ThDao{
 			session.saveOrUpdate(hospitalMonthlyTracker);
 		}
 		session.saveOrUpdate(serviceAreaOthers);
+		return true;
+	}
+	
+	public Boolean saveOrUpdateFundExpenditure(FundExpenditure fundExpenditure) throws Exception{
+		
+		Session session = this.sessionFactory.getCurrentSession();
+		HospitalMonthlyTracker hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, fundExpenditure.getHospitalMonthlyTracker().getId());
+		if(hospitalMonthlyTracker == null) {
+			hospitalMonthlyTracker = fundExpenditure.getHospitalMonthlyTracker();
+			hospitalMonthlyTracker.setReport_date(new Date());
+			session.saveOrUpdate(hospitalMonthlyTracker);
+		} else {
+			hospitalMonthlyTracker.setLastModified(new Date());
+			session.saveOrUpdate(hospitalMonthlyTracker);
+		}
+		session.saveOrUpdate(fundExpenditure);
 		return true;
 	}
 	// Saving or updating the OP and IP details of taluk hospital.

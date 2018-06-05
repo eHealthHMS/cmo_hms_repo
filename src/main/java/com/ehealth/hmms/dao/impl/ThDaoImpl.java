@@ -1,5 +1,10 @@
 package com.ehealth.hmms.dao.impl;
 
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -12,17 +17,81 @@ import org.springframework.transaction.annotation.Transactional;
 
 //import com.ehealth.hmms.dao.HibernatePersistence;
 import com.ehealth.hmms.dao.ThDao;
+import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
+import com.ehealth.hmms.pojo.FundExpenditure;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.OpIpDetails;
+import com.ehealth.hmms.pojo.ServiceAreaOthers;
 import com.ehealth.hmms.pojo.SpecialityClinicData;
 
 @Repository
 @Transactional
 public class ThDaoImpl implements ThDao{
 	
-	 @Autowired
-	    private SessionFactory sessionFactory;
+	@Autowired
+	private SessionFactory sessionFactory;
 
+	public Boolean saveOrUpdateDeptWiseIpOpDetails(DepartmentWiseOpIp departmentWiseOpIp) throws Exception{
+		
+		Session session = this.sessionFactory.getCurrentSession();
+		HospitalMonthlyTracker hospitalMonthlyTracker = null;
+		if(departmentWiseOpIp.getHospitalMonthlyTrackerId().getId()!=null) {
+		 hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, departmentWiseOpIp.getHospitalMonthlyTrackerId().getId());
+		}
+		if(hospitalMonthlyTracker == null) {
+			hospitalMonthlyTracker = departmentWiseOpIp.getHospitalMonthlyTrackerId();
+			//hospitalMonthlyTracker.setId(id)
+			hospitalMonthlyTracker.setLastModified(new Date());
+			hospitalMonthlyTracker.setReport_date(getFirstDateOfMonth());
+			departmentWiseOpIp.setHospitalMonthlyTrackerId(hospitalMonthlyTracker);
+		} else {			
+			hospitalMonthlyTracker.setLastModified(new Date());
+			departmentWiseOpIp.setHospitalMonthlyTrackerId(hospitalMonthlyTracker);
+		}
+		session.saveOrUpdate(departmentWiseOpIp);
+		return true;
+	}
+	
+	public Boolean saveOrUpdateServiceAreaOthers(ServiceAreaOthers serviceAreaOthers) throws Exception{
+		
+		 
+        
+		Session session = this.sessionFactory.getCurrentSession();
+		HospitalMonthlyTracker hospitalMonthlyTracker = null;
+		if(serviceAreaOthers.getHospitalMonthlyTracker().getId()!=null) {
+		 hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, serviceAreaOthers.getHospitalMonthlyTracker().getId());
+		}
+		if(hospitalMonthlyTracker == null) {
+			hospitalMonthlyTracker = serviceAreaOthers.getHospitalMonthlyTracker();
+			hospitalMonthlyTracker.setReport_date(getFirstDateOfMonth());
+			serviceAreaOthers.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+		} else {
+			hospitalMonthlyTracker.setLastModified(new Date());
+			serviceAreaOthers.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+		}
+		session.saveOrUpdate(serviceAreaOthers);
+		return true;
+	}
+	
+	public Boolean saveOrUpdateFundExpenditure(FundExpenditure fundExpenditure) throws Exception{
+		
+		Session session = this.sessionFactory.getCurrentSession();
+		HospitalMonthlyTracker hospitalMonthlyTracker = null;
+		if(fundExpenditure.getHospitalMonthlyTracker().getId()!=null) {
+		 hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, fundExpenditure.getHospitalMonthlyTracker().getId());
+		}
+		if(hospitalMonthlyTracker == null) {
+			hospitalMonthlyTracker = fundExpenditure.getHospitalMonthlyTracker();
+			hospitalMonthlyTracker.setReport_date(getFirstDateOfMonth());
+			fundExpenditure.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+			
+		} else {
+			hospitalMonthlyTracker.setLastModified(new Date());
+			fundExpenditure.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+		}
+		session.saveOrUpdate(fundExpenditure);
+		return true;
+	}
 	// Saving or updating the OP and IP details of taluk hospital.
 	
 	public Boolean saveAndUpdateOpIpDetails(OpIpDetails opIpDetails) throws Exception {
@@ -129,5 +198,13 @@ public class ThDaoImpl implements ThDao{
 				
 			}
 		
+		private Date getFirstDateOfMonth() throws ParseException {
+			Calendar c = Calendar.getInstance();   // this takes current date
+		    c.set(Calendar.DAY_OF_MONTH, 1);
+		    SimpleDateFormat dmyFormat = new SimpleDateFormat("yyyy-MM-dd");
+	           String dmy = dmyFormat.format(c.getTime());
+	        Date reportDate=dmyFormat.parse(dmy);
+	        return reportDate;
+		}
 	
 }

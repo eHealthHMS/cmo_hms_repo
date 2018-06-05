@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,6 +34,9 @@ public class HospitalMonthlyTracker implements Serializable{
 	@Column(name = "last_modified")
 	private Date lastModified;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "hospital_id", referencedColumnName="gid")
+
 	private HospitalMaster hospital;
 	
 	public Long getId() {
@@ -51,8 +55,8 @@ public class HospitalMonthlyTracker implements Serializable{
 		this.lastModified = lastModified;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "gid")
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "gid")
 	public HospitalMaster getHospital() {
 		return hospital;
 	}

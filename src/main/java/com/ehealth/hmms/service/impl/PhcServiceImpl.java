@@ -19,21 +19,7 @@ public class PhcServiceImpl implements PhcService {
 	 @Autowired
 	private PhcDao phcDao;
 
-//	public PhcServiceImpl() {
-//		phcDao = new PhcDaoImpl();
-//	}
 
-	 
-//	 public void setEmployeeDAO(EmployeeDAO employeeDAO) {
-//			this.employeeDAO = employeeDAO;
-//		}
-	 
-//	/**
-//	 * @return the phcDao
-//	 */
-//	public PhcDao getPhcDao() {
-//		return phcDao;
-//	}
 
 	/**
 	 * @param phcDao the phcDao to set
@@ -46,15 +32,68 @@ public class PhcServiceImpl implements PhcService {
 		Result result = new Result();
 		
 		try {
-			 result = phcDao.saveFunctionalComponents(dataFhcChc);
+			Long trackerId=phcDao.getHospitalTrakerForSave(dataFhcChc.getHospitalMonthlyTracker());
+			if(trackerId==0) {
+				result.setStatus(Constants.FAILURE_STATUS);
+			}else {
+				Integer type = dataFhcChc.getType();
+				switch (type) {
+				case 1: {
+					 result = phcDao.saveInstitutionalData(dataFhcChc,trackerId);
+					break;
+				}
+				case 2: {
+					result = phcDao.saveMeetings(dataFhcChc, trackerId);
+					break;
+				}
+				case 3: {
+					result = phcDao.saveSubCentreDetails(dataFhcChc, trackerId);
+					break;
+				}
+				case 4: {
+					result = phcDao.saveFieldWorks(dataFhcChc, trackerId);
+					break;
+				}
+				case 5: {
+					result = phcDao.saveInstitutionalData(dataFhcChc,trackerId);
+					if(result.getStatus().equals(Constants.FAILURE_STATUS)) {
+						break;
+					}
+					result = phcDao.saveMeetings(dataFhcChc, trackerId);
+					if(result.getStatus().equals(Constants.FAILURE_STATUS)) {
+						break;
+					}
+					result = phcDao.saveSubCentreDetails(dataFhcChc, trackerId);
+					if(result.getStatus().equals(Constants.FAILURE_STATUS)) {
+						break;
+					}
+					result = phcDao.saveFieldWorks(dataFhcChc, trackerId);
+					
+					if(result.getStatus().equals(Constants.SUCCESS_STATUS)) {
+						//todo update final submit status
+						break;
+					}
+					break;
+				}
+				default: {
+					result.setStatus(Constants.FAILURE_STATUS);
+					return result;
 
-			MonthlyDataFhcChc dataFhcChcToSave = new MonthlyDataFhcChc();
-
-			HospitalMonthlyTracker hospitalMonthlyTracker = dataFhcChc.getHospitalMonthlyTracker();// new
-																									// HospitalMonthlyTracker();
-			Long hospitalId = hospitalMonthlyTracker.getHospital().getId();
+				}
+				}
+			}
 		
-			result = phcDao.saveFunctionalComponents(dataFhcChc);
+			
+			
+			
+
+//			MonthlyDataFhcChc dataFhcChcToSave = new MonthlyDataFhcChc();
+//
+//			HospitalMonthlyTracker hospitalMonthlyTracker = dataFhcChc.getHospitalMonthlyTracker();// new
+//																									// HospitalMonthlyTracker();
+//			Long hospitalId = hospitalMonthlyTracker.getHospital().getId();
+		
+		//result = phcDao.saveFunctionalComponents(dataFhcChc);
 		
 		} catch (Exception e) {
 			result.setStatus(Constants.FAILURE_STATUS);

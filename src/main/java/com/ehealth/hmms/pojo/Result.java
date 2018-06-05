@@ -10,6 +10,8 @@ public class Result {
 	
 	private Boolean editable;// view mode or edit mode
 
+	
+	private Long hospitalType;
 
 	private String errorMessage;
 
@@ -78,6 +80,22 @@ public class Result {
 
 	public void setHospitalMaster(HospitalMaster hospitalMaster) {
 		this.hospitalMaster = hospitalMaster;
+	}
+
+
+	/**
+	 * @return the hospitalType
+	 */
+	public Long getHospitalType() {
+		return hospitalType;
+	}
+
+
+	/**
+	 * @param hospitalType the hospitalType to set
+	 */
+	public void setHospitalType(Long hospitalType) {
+		this.hospitalType = hospitalType;
 	}
 
 	

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.ehealth.hmms.dao.AuthenticationDao;
 import com.ehealth.hmms.dao.PhcDao;
 import com.ehealth.hmms.pojo.HospitalMaster;
+import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.Users;
@@ -61,7 +62,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 			Users userResult = authenticationDao.authenticate(user);
 			if (userResult != null) {
 				HospitalMaster hospitalMaster = userResult.getHospitalid();		
-				result.setHospitalMaster(hospitalMaster);
+				result.setHospitalType(hospitalMaster.getHospitalTypeMaster().getId());
 				Date todaysDate = new Date();
 				SimpleDateFormat dmyFormat = new SimpleDateFormat("yyyy-MM-dd");
 				   String date = dmyFormat.format(todaysDate);
@@ -74,14 +75,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				Long hospitalId = hospitalMaster.getId();
 				//int month =  date.getMonth();	
 				MonthlyDataFhcChc MonthlyPhcResult = phcDao.fetchPhcRecord(hospitalId,date);
+				HospitalMonthlyTracker hospitalMonthlyTracker = new HospitalMonthlyTracker();
+				
+				hospitalMonthlyTracker.setHospital(hospitalMaster);
+				MonthlyPhcResult.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 				result.setValue(MonthlyPhcResult);
+				result.setStatus(Constants.SUCCESS_STATUS);
 
 			} else {
 				result.setStatus(Constants.FAILURE_STATUS);
 				result.setErrorMessage("Invalid Credentials");
 			}
 
-			result.setStatus(Constants.SUCCESS_STATUS);
+			
 
 		} catch (Exception e) {
 			result.setStatus(Constants.FAILURE_STATUS);

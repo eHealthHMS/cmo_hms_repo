@@ -31,16 +31,19 @@ public class ThDaoImpl implements ThDao{
 	public Boolean saveOrUpdateDeptWiseIpOpDetails(DepartmentWiseOpIp departmentWiseOpIp) throws Exception{
 		
 		Session session = this.sessionFactory.getCurrentSession();
-		HospitalMonthlyTracker hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, departmentWiseOpIp.getHospitalMonthlyTrackerId().getId());
+		HospitalMonthlyTracker hospitalMonthlyTracker = null;
+		if(departmentWiseOpIp.getHospitalMonthlyTrackerId().getId()!=null) {
+		 hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, departmentWiseOpIp.getHospitalMonthlyTrackerId().getId());
+		}
 		if(hospitalMonthlyTracker == null) {
 			hospitalMonthlyTracker = departmentWiseOpIp.getHospitalMonthlyTrackerId();
 			//hospitalMonthlyTracker.setId(id)
 			hospitalMonthlyTracker.setLastModified(new Date());
 			hospitalMonthlyTracker.setReport_date(new Date());
-			session.saveOrUpdate(hospitalMonthlyTracker);
+			departmentWiseOpIp.setHospitalMonthlyTrackerId(hospitalMonthlyTracker);
 		} else {			
 			hospitalMonthlyTracker.setLastModified(new Date());
-			session.saveOrUpdate(hospitalMonthlyTracker);
+			departmentWiseOpIp.setHospitalMonthlyTrackerId(hospitalMonthlyTracker);
 		}
 		session.saveOrUpdate(departmentWiseOpIp);
 		return true;
@@ -49,14 +52,17 @@ public class ThDaoImpl implements ThDao{
 	public Boolean saveOrUpdateServiceAreaOthers(ServiceAreaOthers serviceAreaOthers) throws Exception{
 		
 		Session session = this.sessionFactory.getCurrentSession();
-		HospitalMonthlyTracker hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, serviceAreaOthers.getHospitalMonthlyTracker().getId());
+		HospitalMonthlyTracker hospitalMonthlyTracker = null;
+		if(serviceAreaOthers.getHospitalMonthlyTracker().getId()!=null) {
+		 hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, serviceAreaOthers.getHospitalMonthlyTracker().getId());
+		}
 		if(hospitalMonthlyTracker == null) {
 			hospitalMonthlyTracker = serviceAreaOthers.getHospitalMonthlyTracker();
 			hospitalMonthlyTracker.setReport_date(new Date());
-			session.saveOrUpdate(hospitalMonthlyTracker);
+			serviceAreaOthers.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 		} else {
 			hospitalMonthlyTracker.setLastModified(new Date());
-			session.saveOrUpdate(hospitalMonthlyTracker);
+			serviceAreaOthers.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 		}
 		session.saveOrUpdate(serviceAreaOthers);
 		return true;
@@ -65,14 +71,18 @@ public class ThDaoImpl implements ThDao{
 	public Boolean saveOrUpdateFundExpenditure(FundExpenditure fundExpenditure) throws Exception{
 		
 		Session session = this.sessionFactory.getCurrentSession();
-		HospitalMonthlyTracker hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, fundExpenditure.getHospitalMonthlyTracker().getId());
+		HospitalMonthlyTracker hospitalMonthlyTracker = null;
+		if(fundExpenditure.getHospitalMonthlyTracker().getId()!=null) {
+		 hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, fundExpenditure.getHospitalMonthlyTracker().getId());
+		}
 		if(hospitalMonthlyTracker == null) {
 			hospitalMonthlyTracker = fundExpenditure.getHospitalMonthlyTracker();
 			hospitalMonthlyTracker.setReport_date(new Date());
-			session.saveOrUpdate(hospitalMonthlyTracker);
+			fundExpenditure.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+			
 		} else {
 			hospitalMonthlyTracker.setLastModified(new Date());
-			session.saveOrUpdate(hospitalMonthlyTracker);
+			fundExpenditure.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 		}
 		session.saveOrUpdate(fundExpenditure);
 		return true;

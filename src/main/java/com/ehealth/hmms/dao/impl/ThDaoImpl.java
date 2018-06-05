@@ -1,7 +1,10 @@
 package com.ehealth.hmms.dao.impl;
 
-import java.util.Date;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -39,7 +42,7 @@ public class ThDaoImpl implements ThDao{
 			hospitalMonthlyTracker = departmentWiseOpIp.getHospitalMonthlyTrackerId();
 			//hospitalMonthlyTracker.setId(id)
 			hospitalMonthlyTracker.setLastModified(new Date());
-			hospitalMonthlyTracker.setReport_date(new Date());
+			hospitalMonthlyTracker.setReport_date(getFirstDateOfMonth());
 			departmentWiseOpIp.setHospitalMonthlyTrackerId(hospitalMonthlyTracker);
 		} else {			
 			hospitalMonthlyTracker.setLastModified(new Date());
@@ -51,6 +54,8 @@ public class ThDaoImpl implements ThDao{
 	
 	public Boolean saveOrUpdateServiceAreaOthers(ServiceAreaOthers serviceAreaOthers) throws Exception{
 		
+		 
+        
 		Session session = this.sessionFactory.getCurrentSession();
 		HospitalMonthlyTracker hospitalMonthlyTracker = null;
 		if(serviceAreaOthers.getHospitalMonthlyTracker().getId()!=null) {
@@ -58,7 +63,7 @@ public class ThDaoImpl implements ThDao{
 		}
 		if(hospitalMonthlyTracker == null) {
 			hospitalMonthlyTracker = serviceAreaOthers.getHospitalMonthlyTracker();
-			hospitalMonthlyTracker.setReport_date(new Date());
+			hospitalMonthlyTracker.setReport_date(getFirstDateOfMonth());
 			serviceAreaOthers.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 		} else {
 			hospitalMonthlyTracker.setLastModified(new Date());
@@ -77,7 +82,7 @@ public class ThDaoImpl implements ThDao{
 		}
 		if(hospitalMonthlyTracker == null) {
 			hospitalMonthlyTracker = fundExpenditure.getHospitalMonthlyTracker();
-			hospitalMonthlyTracker.setReport_date(new Date());
+			hospitalMonthlyTracker.setReport_date(getFirstDateOfMonth());
 			fundExpenditure.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 			
 		} else {
@@ -193,5 +198,13 @@ public class ThDaoImpl implements ThDao{
 				
 			}
 		
+		private Date getFirstDateOfMonth() throws ParseException {
+			Calendar c = Calendar.getInstance();   // this takes current date
+		    c.set(Calendar.DAY_OF_MONTH, 1);
+		    SimpleDateFormat dmyFormat = new SimpleDateFormat("yyyy-MM-dd");
+	           String dmy = dmyFormat.format(c.getTime());
+	        Date reportDate=dmyFormat.parse(dmy);
+	        return reportDate;
+		}
 	
 }

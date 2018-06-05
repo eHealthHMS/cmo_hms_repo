@@ -259,7 +259,7 @@ public class PhcDaoImpl implements PhcDao {
 				dataFhcChcFromDb.setPostDmoConf(dataFhcChc.getPostDmoConf());
 				dataFhcChcFromDb.setHalfDayZonal(dataFhcChc.getHalfDayZonal());
 				dataFhcChcFromDb.setFullDayZonal(dataFhcChc.getFullDayZonal());
-				
+				//todo
 				dataFhcChcFromDb.setIdspMeetingConductd(dataFhcChc.getIdspMeetingConductd());
 				
 				dataFhcChcFromDb.setLastHmcMeeting(dataFhcChc.getLastHmcMeeting());
@@ -290,31 +290,8 @@ public class PhcDaoImpl implements PhcDao {
 		Result result = new Result();
 		try {
 
-			Query query = session.createQuery("from MonthlyDataFhcChc where hospitalMonthlyTracker.id=:hospitalMonthlyTrackerId");
+			//Query query = "update MonthlyDataFhcChc set";
 
-			query.setLong("hospitalMonthlyTrackerId", trackerId);
-			List<MonthlyDataFhcChc> dataFhcChcs = query.list();
-			if(dataFhcChcs!=null && !dataFhcChcs.isEmpty()) {
-				
-				MonthlyDataFhcChc dataFhcChcFromDb = dataFhcChcs.get(0);
-				
-				dataFhcChcFromDb.setTotScImmunizatnClinic(dataFhcChc.getTotScImmunizatnClinic());
-				dataFhcChcFromDb.setTotOtherScClinic(dataFhcChc.getTotOtherScClinic());
-				dataFhcChcFromDb.setTotOutreach(dataFhcChc.getTotOutreach());
-				dataFhcChcFromDb.setTotNcdClinic(dataFhcChc.getTotNcdClinic());
-				dataFhcChcFromDb.setIecHealthpromoActivities(dataFhcChc.getIecHealthpromoActivities());
-				dataFhcChcFromDb.setWhsncMeeting(dataFhcChc.getWhsncMeeting());
-				dataFhcChcFromDb.setRegularScClinic(dataFhcChc.getRegularScClinic());
-				dataFhcChcFromDb.setJagrathaActivities(dataFhcChc.getJagrathaActivities());
-				dataFhcChcFromDb.setTotalAttendee(dataFhcChc.getTotalAttendee());
-				
-				session.update(dataFhcChcFromDb);
-				result.setStatus(Constants.SUCCESS_STATUS);
-				//Iterator iterator = phcList.iterator();
-			}else {
-				session.save(dataFhcChc);
-				result.setStatus(Constants.SUCCESS_STATUS);
-			}
 			
 
 		} catch (HibernateException e) {
@@ -335,30 +312,10 @@ public class PhcDaoImpl implements PhcDao {
 		Session session = this.sessionFactory.getCurrentSession();
 		Result result = new Result();
 		try {
-		Query query = session.createQuery("from MonthlyDataFhcChc where hospitalMonthlyTracker.id=:hospitalMonthlyTrackerId");
 
-		query.setLong("hospitalMonthlyTrackerId", trackerId);
-		List<MonthlyDataFhcChc> dataFhcChcs = query.list();
-		if(dataFhcChcs!=null && !dataFhcChcs.isEmpty()) {
+
+
 			
-			MonthlyDataFhcChc dataFhcChcFromDb = dataFhcChcs.get(0);
-			
-			dataFhcChcFromDb.setHouseVisitMo(dataFhcChc.getHouseVisitMo());
-			dataFhcChcFromDb.setHouseVisitHs(dataFhcChc.getHouseVisitHs());
-			dataFhcChcFromDb.setHouseVisitPhns(dataFhcChc.getHouseVisitPhns());
-			dataFhcChcFromDb.setHouseVisitHi(dataFhcChc.getHouseVisitHi());
-			dataFhcChcFromDb.setHouseVisitPhn(dataFhcChc.getHouseVisitPhn());
-			dataFhcChcFromDb.setHouseVisitJhi(dataFhcChc.getHouseVisitJhi());
-			dataFhcChcFromDb.setHouseVisitJphn(dataFhcChc.getHouseVisitJphn());
-			dataFhcChcFromDb.setHouseVisitAsha(dataFhcChc.getHouseVisitAsha());
-			
-			session.update(dataFhcChcFromDb);
-			result.setStatus(Constants.SUCCESS_STATUS);
-			//Iterator iterator = phcList.iterator();
-		}else {
-			session.save(dataFhcChc);
-			result.setStatus(Constants.SUCCESS_STATUS);
-		}
 
 		} catch (HibernateException e) {
 
@@ -544,7 +501,7 @@ public class PhcDaoImpl implements PhcDao {
 		calendar.add(Calendar.MONTH, -1);
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		calendar.clear( Calendar.HOUR_OF_DAY );
-		calendar.clear(Calendar.AM_PM);
+		calendar.clear( Calendar.AM_PM);
 		calendar.clear( Calendar.MINUTE );
 		calendar.clear( Calendar.SECOND );
 		calendar.clear( Calendar.MILLISECOND );

@@ -157,9 +157,7 @@ public class PhcDaoImpl implements PhcDao {
 						monthlyDataFhcChc.setHalfDayZonal(castObjectToBoolean(row[38]));
 						monthlyDataFhcChc.setFullDayZonal(castObjectToBoolean(row[39]));
 						monthlyDataFhcChc.setIdspMeetingConductd(castObjectToLong(row[40]));
-					
 						monthlyDataFhcChc.setHospitalMonthlyTracker(castObjectToHmt(row[41]));
-						 
 					}
 				}			
 			 } catch (HibernateException e) {
@@ -184,6 +182,10 @@ public class PhcDaoImpl implements PhcDao {
 		return new Boolean((Boolean) ((object != null) ? object : 0));
 
 	}
+	/**
+	 * method to save phc functional components monthly
+	 */
+	public Result saveInstitutionalData(MonthlyDataFhcChc dataFhcChc,Long trackerId) throws Exception {
 	  
 	  private HospitalMonthlyTracker castObjectToHmt(Object object) {
 	    HospitalMonthlyTracker hospMonTrack = new HospitalMonthlyTracker();
@@ -194,6 +196,62 @@ public class PhcDaoImpl implements PhcDao {
 	 */
 	public Result saveInstitutionalData(MonthlyDataFhcChc dataFhcChc,Long trackerId) throws Exception {
 
+		Session session = this.sessionFactory.getCurrentSession();
+		Result result = new Result();
+		try {
+			//Long trackerId = getHospitalTrakerForSave(hospitalMonthlyTracker);
+
+			Query query = session.createQuery("from MonthlyDataFhcChc where hospitalMonthlyTracker.id=:hospitalMonthlyTrackerId");
+
+			query.setLong("hospitalMonthlyTrackerId", trackerId);
+			List<MonthlyDataFhcChc> dataFhcChcs = query.list();
+			if(dataFhcChcs!=null && !dataFhcChcs.isEmpty()) {
+				
+				MonthlyDataFhcChc dataFhcChcFromDb = dataFhcChcs.get(0);
+				
+				dataFhcChcFromDb.setForenoonOpFemale(dataFhcChc.getForenoonOpFemale());
+				dataFhcChcFromDb.setForenoonOpMale(dataFhcChc.getForenoonOpMale());
+				dataFhcChcFromDb.setForenoonOpTg(dataFhcChc.getForenoonOpTg());
+				dataFhcChcFromDb.setForenoonOpTotal(dataFhcChc.getForenoonOpTotal());
+				
+				dataFhcChcFromDb.setAfternoonOpFemale(dataFhcChc.getAfternoonOpFemale());
+				dataFhcChcFromDb.setAfternoonOpMale(dataFhcChc.getAfternoonOpMale());
+				dataFhcChcFromDb.setAfternoonOpTg(dataFhcChc.getAfternoonOpTg());
+				dataFhcChcFromDb.setAfternoonOpTotal(dataFhcChc.getAfternoonOpTotal());
+				
+				dataFhcChcFromDb.setTotalPrecheck(dataFhcChc.getTotalPrecheck());
+				dataFhcChcFromDb.setTotalPostConsultnCounsel(dataFhcChc.getTotalPostConsultnCounsel());
+				dataFhcChcFromDb.setPatientLabTest(dataFhcChc.getPatientLabTest());
+				dataFhcChcFromDb.setTotalLabTest(dataFhcChc.getTotalLabTest());
+				
+				dataFhcChcFromDb.setSwasClinicNew(dataFhcChc.getSwasClinicNew());
+				dataFhcChcFromDb.setSwasClinicFollowup(dataFhcChc.getSwasClinicFollowup());
+				
+				dataFhcChcFromDb.setAswasamClinicNew(dataFhcChc.getAswasamClinicNew());
+				dataFhcChcFromDb.setAswasamClinicFollowup(dataFhcChc.getAswasamClinicFollowup());
+				
+				dataFhcChcFromDb.setNcdClinicNew(dataFhcChc.getNcdClinicNew());
+				dataFhcChcFromDb.setNcdClinicFollowup(dataFhcChc.getNcdClinicFollowup());
+				
+				session.update(dataFhcChcFromDb);
+				result.setStatus(Constants.SUCCESS_STATUS);
+				//Iterator iterator = phcList.iterator();
+			}else {
+				session.save(dataFhcChc);
+				result.setStatus(Constants.SUCCESS_STATUS);
+			}
+			
+
+		} catch (HibernateException e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+			throw new Exception("Exception : " + e.getMessage());
+
+		} 
+		return result;
+	}
 	  }
 
 		Session session = this.sessionFactory.getCurrentSession();

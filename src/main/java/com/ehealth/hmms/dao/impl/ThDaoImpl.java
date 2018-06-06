@@ -20,6 +20,7 @@ import com.ehealth.hmms.dao.ThDao;
 import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
 import com.ehealth.hmms.pojo.FundExpenditure;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
+import com.ehealth.hmms.pojo.LabDialysis;
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.ServiceAreaOthers;
 import com.ehealth.hmms.pojo.SpecialityClinicData;
@@ -54,9 +55,7 @@ public class ThDaoImpl implements ThDao{
 	
 	public Boolean saveOrUpdateServiceAreaOthers(ServiceAreaOthers serviceAreaOthers) throws Exception{
 		
-		 
-        
-		Session session = this.sessionFactory.getCurrentSession();
+		 Session session = this.sessionFactory.getCurrentSession();
 		HospitalMonthlyTracker hospitalMonthlyTracker = null;
 		if(serviceAreaOthers.getHospitalMonthlyTracker().getId()!=null) {
 		 hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, serviceAreaOthers.getHospitalMonthlyTracker().getId());
@@ -162,41 +161,45 @@ public class ThDaoImpl implements ThDao{
 	
 		public Boolean saveAndUpdateSpecialityClinicData(SpecialityClinicData specialityClinicData) throws Exception {
 			
-			Session session = this.sessionFactory.getCurrentSession();//HibernatePersistence.getSessionFactory().openSession();
-	//		Transaction transaction = null;
-			Boolean resultFlag = false;
-			HospitalMonthlyTracker hospitalMonthlyTracker = specialityClinicData.getHospitalMonthlyTracker();
-			Long hospitalId = hospitalMonthlyTracker.getHospital().getId();
-			PhcDaoImpl phcDaoImpl = new PhcDaoImpl();
-			Long hospmonthlytrack_id = phcDaoImpl.saveHospitalMonthlyTracker(hospitalId);
-	
-			  try {
-				  	
-				//	transaction = session.beginTransaction();
-					Long maleCount = specialityClinicData.getMaleCount();
-					Long femalCount = specialityClinicData.getFemalCount();
-					Long total = specialityClinicData.getTotal();
-					Long specialityClinicId = specialityClinicData.getSpecialityClinic().getId();
-					
-					
-					Query query = session.createSQLQuery("update specialityclinic_data set maleCount=: maleCount, femalCount=:femalCount, total=:total where specialityclinic_id=:specialityClinicId;");
-					 resultFlag = true;
-				 }
-			  catch (HibernateException e) {
-//				if (transaction != null) {
-//					transaction.rollback();
-//				}
-				throw new HibernateException("Hibernate Exception : " + e.getMessage());
-			} catch (Exception e) {
-//				if (transaction != null) {
-//					transaction.rollback();
-//				}
-				throw new Exception("Exception : " + e.getMessage());
-		
-			} 
-			return resultFlag;
-				
+			Session session = this.sessionFactory.getCurrentSession();
+			HospitalMonthlyTracker hospitalMonthlyTracker = null;
+			if(specialityClinicData.getHospitalMonthlyTracker().getId()!=null) {
+			 hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, specialityClinicData.getHospitalMonthlyTracker().getId());
 			}
+			if(hospitalMonthlyTracker == null) {
+				hospitalMonthlyTracker = specialityClinicData.getHospitalMonthlyTracker();
+				hospitalMonthlyTracker.setReport_date(getFirstDateOfMonth());
+				specialityClinicData.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+				
+			} else {
+				hospitalMonthlyTracker.setLastModified(new Date());
+				specialityClinicData.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+			}
+			session.saveOrUpdate(specialityClinicData);
+			return true;
+		}
+		
+		public Boolean saveAndUpdateLabDialysis(LabDialysis labDialysis) throws Exception {
+			
+			Session session = this.sessionFactory.getCurrentSession();
+			HospitalMonthlyTracker hospitalMonthlyTracker = null;
+			if(labDialysis.getHospitalMonthlyTracker().getId()!=null) {
+			 hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, labDialysis.getHospitalMonthlyTracker().getId());
+			}
+			if(hospitalMonthlyTracker == null) {
+				hospitalMonthlyTracker = labDialysis.getHospitalMonthlyTracker();
+				hospitalMonthlyTracker.setReport_date(getFirstDateOfMonth());
+				labDialysis.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+				
+			} else {
+				hospitalMonthlyTracker.setLastModified(new Date());
+				labDialysis.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+			}
+			session.saveOrUpdate(labDialysis);
+			return true;
+		}
+		
+		
 		
 		private Date getFirstDateOfMonth() throws ParseException {
 			Calendar c = Calendar.getInstance();   // this takes current date

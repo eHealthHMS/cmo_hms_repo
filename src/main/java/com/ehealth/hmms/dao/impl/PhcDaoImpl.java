@@ -274,7 +274,7 @@ public class PhcDaoImpl implements PhcDao {
 				dataFhcChcFromDb.setPostDmoConf(dataFhcChc.getPostDmoConf());
 				dataFhcChcFromDb.setHalfDayZonal(dataFhcChc.getHalfDayZonal());
 				dataFhcChcFromDb.setFullDayZonal(dataFhcChc.getFullDayZonal());
-
+				//todo
 				dataFhcChcFromDb.setIdspMeetingConductd(dataFhcChc.getIdspMeetingConductd());
 
 				dataFhcChcFromDb.setLastHmcMeeting(dataFhcChc.getLastHmcMeeting());

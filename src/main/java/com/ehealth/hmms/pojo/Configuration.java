@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "configuration")
+@Table(name = "configuration_master")
 public class Configuration implements Serializable{
 	
 	private static final long serialVersionUID = 387137050385972831L;

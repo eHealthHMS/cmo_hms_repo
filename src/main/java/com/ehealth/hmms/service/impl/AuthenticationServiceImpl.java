@@ -1,7 +1,6 @@
 package com.ehealth.hmms.service.impl;
 
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ehealth.hmms.dao.AuthenticationDao;
+import com.ehealth.hmms.dao.LookupDao;
 import com.ehealth.hmms.dao.PhcDao;
 import com.ehealth.hmms.pojo.HospitalMaster;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
@@ -32,6 +32,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	
 	@Autowired
 	private PhcDao phcDao;
+	
+	@Autowired
+	private LookupDao lookupDao;
 
 	/**
 	 * @param phcService the phcService to set
@@ -55,6 +58,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	}
 	
 	
+	public LookupDao getLookupDao() {
+		return lookupDao;
+	}
+
+	public void setLookupDao(LookupDao lookupDao) {
+		this.lookupDao = lookupDao;
+	}
+	
 	public Result authenticate(Users user) throws Exception {
 		Result result = new Result();
 	//	authenticationDao = new AuthenticationDaoImpl();
@@ -63,20 +74,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 			if (userResult != null) {
 				HospitalMaster hospitalMaster = userResult.getHospitalid();		
 				result.setHospitalType(hospitalMaster.getHospitalTypeMaster().getId());
-				Date todaysDate = new Date();
-				SimpleDateFormat dmyFormat = new SimpleDateFormat("yyyy-MM-dd");
-				   String date = dmyFormat.format(todaysDate);
-				if (todaysDate.getDate() <= Constants.ENDDATE) {
+				Date todaysDate = new Date();				
+				String date = lookupDao.getConfiguration(Constants.DB_END_DATE_KEY);
+				if (todaysDate.getDate() <= Integer.parseInt(date)) {
 					result.setEditable(true);							
 				} else {
 					result.setEditable(false);	
 				} 
-				//result.setHospitalName(hospitalMaster.getHospitalName());
 				Long hospitalId = hospitalMaster.getId();
-				//int month =  date.getMonth();	
-				MonthlyDataFhcChc MonthlyPhcResult = phcDao.fetchPhcRecord(hospitalId,date);
-				HospitalMonthlyTracker hospitalMonthlyTracker = new HospitalMonthlyTracker();
-				
+				MonthlyDataFhcChc MonthlyPhcResult = phcDao.fetchPhcRecord(hospitalId);
+				HospitalMonthlyTracker hospitalMonthlyTracker = MonthlyPhcResult.getHospitalMonthlyTracker();	
 				hospitalMonthlyTracker.setHospital(hospitalMaster);
 				MonthlyPhcResult.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 				result.setValue(MonthlyPhcResult);
@@ -94,6 +101,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		}
 		return result;
 	}
+
+
 	//for viewing dashboard
 	public Result authenticateUserForDashBoard(Users user)  throws Exception{
 		 Result result = new Result();

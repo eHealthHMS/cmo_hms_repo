@@ -59,6 +59,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
     <bean id="thDao" class="com.ehealth.hmms.dao.impl.ThDaoImpl"></bean>
     <bean id="thService" class="com.ehealth.hmms.service.impl.ThServiceImpl"></bean>
     <bean id="authenticationDao" class="com.ehealth.hmms.dao.impl.AuthenticationDaoImpl"></bean>
+    <bean id="lookupDao" class="com.ehealth.hmms.dao.impl.LookupDaoImpl"></bean>
      
     
     

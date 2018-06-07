@@ -39,5 +39,16 @@ public class ThController {
 		return result;
 
 	}
+/*	
+	@RequestMapping(value = "/saveOrUpdateSpecialityClinic", method = RequestMethod.POST,headers="Accept=application/json")
+	public Result saveOrUpdateSpecialityClinic( @RequestBody SpecialityClinicData specialityClinicData) throws Exception{
 		
+		 
+		//ThService thService = new ThServiceImpl();
+		Result result =  thService.saveOrUpdateSpecialityClinic(specialityClinicData);
+		
+		return result;
+
+	}
+		*/
 }

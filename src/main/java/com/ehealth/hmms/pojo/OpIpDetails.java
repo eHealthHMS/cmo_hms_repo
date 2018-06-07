@@ -5,11 +5,13 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -23,9 +25,10 @@ public class OpIpDetails implements Serializable{
 
 	private static final long serialVersionUID = 7609838762982956384L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Id 
+	@SequenceGenerator(name="op_ip_details_sequence",sequenceName="op_ip_details_seq", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="op_ip_details_sequence")
+	@Column(name="id", unique=true, nullable=false)
 	private Long id;
 	
 	@Column(name = "forenoon_op_male")
@@ -85,6 +88,8 @@ public class OpIpDetails implements Serializable{
 	@Column(name = "emr_patinet_attended")
 	private Long emrPatinetAttended;
 
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "hospmonthlytrack_id", referencedColumnName="id")
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 	
 	public Long getId() {
@@ -247,8 +252,6 @@ public class OpIpDetails implements Serializable{
 		this.emrPatinetAttended = emrPatinetAttended;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
 	public HospitalMonthlyTracker getHospitalMonthlyTracker() {
 		return hospitalMonthlyTracker;
 	}

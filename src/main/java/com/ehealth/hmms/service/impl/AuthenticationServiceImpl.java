@@ -1,7 +1,6 @@
 package com.ehealth.hmms.service.impl;
 
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.log4j.Logger;

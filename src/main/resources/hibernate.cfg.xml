@@ -12,7 +12,8 @@
         <mapping class="com.ehealth.hmms.pojo.DistrictMaster"/>
         <mapping class="com.ehealth.hmms.pojo.MonthlyDataFhcChc"/>
         <mapping class="com.ehealth.hmms.pojo.HospitalTypeMaster"/>
-         <mapping class="com.ehealth.hmms.pojo.HospitalMonthlyTracker"/>
+        <mapping class="com.ehealth.hmms.pojo.HospitalMonthlyTracker"/>
+        <mapping class="com.ehealth.hmms.pojo.OpIpDetails"/>
         
     </session-factory>
 </hibernate-configuration>

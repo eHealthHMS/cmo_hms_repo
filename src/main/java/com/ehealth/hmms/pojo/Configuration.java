@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -15,9 +16,10 @@ public class Configuration implements Serializable{
 	
 	private static final long serialVersionUID = 387137050385972831L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Id 
+	@SequenceGenerator(name="configuration_sequence",sequenceName="configuration_seq", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="configuration_sequence")
+	@Column(name="id", unique=true, nullable=false)
 	private Long id;
 	
 	@Column(name = "key")

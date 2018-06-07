@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -22,18 +21,11 @@ import javax.persistence.Transient;
 public class MonthlyDataFhcChc implements Serializable{
 	
 	private static final long serialVersionUID = 6198698490528492269L;
-
 	
-//	@Id
-//	@org.hibernate.annotations.GenericGenerator(name="hilo-strategy", strategy = "hilo")
-//	@GeneratedValue(generator = "hilo-strategy")
-	
-	
-	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	@Column(name = "id",updatable = false, nullable = false)
-	@SequenceGenerator(name="identifier", sequenceName="monthlytracker_seq", allocationSize=1)  
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="identifier")
+	@Id 
+	@SequenceGenerator(name="monthly_data_fhch_sequence",sequenceName="monthly_data_fhch_seq", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="monthly_data_fhch_sequence")
+	@Column(name="id", unique=true, nullable=false)
 	private Long id;
 	
 	/*-----------------------------phc hospital related starts------------------------------*/

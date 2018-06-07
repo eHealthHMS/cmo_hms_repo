@@ -42,4 +42,22 @@ public class ThServiceImpl implements ThService{
 		}
 		return result;
 	}
+
+/*	public Result saveOrUpdateSpecialityClinic(SpecialityClinicData specialityClinicData) throws Exception {
+		Result result = new Result();
+		try {
+
+			Boolean resultFlag = thDao.saveOrUpdateSpecialityClinic(specialityClinicData);
+			if (resultFlag.equals(true)) {
+				result.setStatus(Constants.SUCCESS_STATUS);
+
+			} else {
+				result.setStatus(Constants.FAILURE_STATUS);
+			}
+
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+		}
+		return result;
+	}*/
 }

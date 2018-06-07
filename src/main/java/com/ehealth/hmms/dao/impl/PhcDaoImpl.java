@@ -158,6 +158,8 @@ public class PhcDaoImpl implements PhcDao {
 					monthlyDataFhcChc.setMonthlyStaffConf(castObjectToBoolean(row[36]));
 					monthlyDataFhcChc.setPostDmoConf(castObjectToBoolean(row[37]));
 					monthlyDataFhcChc.setHalfDayZonal(castObjectToBoolean(row[38]));
+					
+					System.out.println("***********:" +row[39] );
 					monthlyDataFhcChc.setFullDayZonal(castObjectToBoolean(row[39]));
 					monthlyDataFhcChc.setIdspMeetingConductd(castObjectToLong(row[40]));
 					monthlyDataFhcChc.setHospitalMonthlyTracker(castObjectToHmt(row[41]));
@@ -182,7 +184,7 @@ public class PhcDaoImpl implements PhcDao {
 
 	private Boolean castObjectToBoolean(Object object) {
 
-		return new Boolean((Boolean) ((object != null) ? object : 0));
+		return new Boolean((Boolean) ((object != null) ? object : false));
 
 	}
 

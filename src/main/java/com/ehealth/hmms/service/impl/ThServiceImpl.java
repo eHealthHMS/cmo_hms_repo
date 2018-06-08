@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.ehealth.hmms.dao.ThDao;
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.Result;
+import com.ehealth.hmms.pojo.SpecialityClinicData;
 import com.ehealth.hmms.service.ThService;
 import com.ehealth.hmms.util.Constants;
 
@@ -43,11 +44,11 @@ public class ThServiceImpl implements ThService{
 		return result;
 	}
 
-/*	public Result saveOrUpdateSpecialityClinic(SpecialityClinicData specialityClinicData) throws Exception {
+	public Result saveAndUpdateSpecialityClinicData(SpecialityClinicData specialityClinicData) throws Exception {
 		Result result = new Result();
 		try {
 
-			Boolean resultFlag = thDao.saveOrUpdateSpecialityClinic(specialityClinicData);
+			Boolean resultFlag = thDao.saveAndUpdateSpecialityClinicData(specialityClinicData);
 			if (resultFlag.equals(true)) {
 				result.setStatus(Constants.SUCCESS_STATUS);
 
@@ -59,5 +60,5 @@ public class ThServiceImpl implements ThService{
 			result.setStatus(Constants.FAILURE_STATUS);
 		}
 		return result;
-	}*/
+	}
 }

@@ -7,5 +7,5 @@ public interface ThDao {
 
 	Boolean saveAndUpdateOpIpDetails(OpIpDetails opIpDetails) throws Exception;
 
-	//Boolean saveOrUpdateSpecialityClinic(SpecialityClinicData specialityClinicData)throws Exception;
+	Boolean saveAndUpdateSpecialityClinicData(SpecialityClinicData specialityClinicData) throws Exception ;
 }

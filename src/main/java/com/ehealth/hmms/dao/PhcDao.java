@@ -26,5 +26,7 @@ public interface PhcDao {
 	Result saveSubCentreDetails(MonthlyDataFhcChc dataFhcChc, Long trackerId) throws Exception;
 
 	Result saveFieldWorks(MonthlyDataFhcChc dataFhcChc, Long trackerId) throws Exception;
+	
+	Long saveHospitalMonthlyTracker(Long hospitalId) throws Exception;
 
 }

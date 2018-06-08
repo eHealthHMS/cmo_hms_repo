@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ehealth.hmms.dao.ThDao;
+import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.service.ThService;
@@ -41,5 +42,25 @@ public class ThServiceImpl implements ThService{
 			result.setStatus(Constants.FAILURE_STATUS);
 		}
 		return result;
+	}
+	
+	public Result saveOrUpdateDeptWiseIpOpDetails(DepartmentWiseOpIp departmentWiseOpIp) throws Exception{
+		Result result = new Result();
+		try {
+
+			Boolean resultFlag = thDao.saveOrUpdateDeptWiseIpOpDetails(departmentWiseOpIp);
+
+			if (resultFlag.equals(true)) {
+				result.setStatus(Constants.SUCCESS_STATUS);
+
+			} else {
+				result.setStatus(Constants.FAILURE_STATUS);
+			}
+
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+		}
+		return result;
+		
 	}
 }

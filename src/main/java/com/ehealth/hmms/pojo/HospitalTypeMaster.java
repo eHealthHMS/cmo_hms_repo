@@ -19,7 +19,7 @@ public class HospitalTypeMaster implements Serializable{
 	@Id 
 	@SequenceGenerator(name="hospital_type_sequence",sequenceName="hospital_type_seq", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="hospital_type_sequence")
-	@Column(name="gid", unique=true, nullable=false)
+	@Column(name="id", unique=true, nullable=false)
 	private Long id;
 
 	@Column(name = "hospital_type")

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.ehealth.hmms.dao.PhcDao;
 import com.ehealth.hmms.pojo.CategoryDetails;
-import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.service.PhcService;

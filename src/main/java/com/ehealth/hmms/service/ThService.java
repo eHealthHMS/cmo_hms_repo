@@ -8,6 +8,6 @@ public interface ThService {
 	
 	Result saveAndUpdateOpIpDetails(OpIpDetails opIpDetails) throws Exception;
 
-//	Result saveOrUpdateSpecialityClinic(SpecialityClinicData specialityClinicData)throws Exception;
+	Result saveAndUpdateSpecialityClinicData(SpecialityClinicData specialityClinicData)throws Exception;
 
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.Result;
+import com.ehealth.hmms.pojo.SpecialityClinicData;
 import com.ehealth.hmms.service.ThService;
 
 
@@ -32,23 +33,20 @@ public class ThController {
 	@RequestMapping(value = "/saveAndUpdateOpIpDetails", method = RequestMethod.POST,headers="Accept=application/json")
 	public Result saveAndUpdateOpIpDetails( @RequestBody OpIpDetails opIpDetails) throws Exception{
 		
-		 
-		//ThService thService = new ThServiceImpl();
 		Result result =  thService.saveAndUpdateOpIpDetails(opIpDetails);
 		
 		return result;
 
 	}
-/*	
+	
 	@RequestMapping(value = "/saveOrUpdateSpecialityClinic", method = RequestMethod.POST,headers="Accept=application/json")
-	public Result saveOrUpdateSpecialityClinic( @RequestBody SpecialityClinicData specialityClinicData) throws Exception{
+	public Result saveAndUpdateSpecialityClinicData( @RequestBody SpecialityClinicData specialityClinicData) throws Exception{
 		
-		 
-		//ThService thService = new ThServiceImpl();
-		Result result =  thService.saveOrUpdateSpecialityClinic(specialityClinicData);
+
+		Result result =  thService.saveAndUpdateSpecialityClinicData(specialityClinicData);
 		
 		return result;
 
 	}
-		*/
+		
 }

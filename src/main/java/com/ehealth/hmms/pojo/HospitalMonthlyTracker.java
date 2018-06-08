@@ -6,11 +6,13 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -19,9 +21,10 @@ public class HospitalMonthlyTracker implements Serializable{
 
 	private static final long serialVersionUID = 5288682087185207627L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Id 
+	@SequenceGenerator(name="monthlytracker_sequence",sequenceName="monthlytracker_seq", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="monthlytracker_sequence")
+	@Column(name="id", unique=true, nullable=false)
 	private Long id;
 
 	@Column(name = "created_date")
@@ -33,6 +36,9 @@ public class HospitalMonthlyTracker implements Serializable{
 	@Column(name = "last_modified")
 	private Date lastModified;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "hospital_id", referencedColumnName="gid")
+
 	private HospitalMaster hospital;
 	
 	public Long getId() {
@@ -51,8 +57,8 @@ public class HospitalMonthlyTracker implements Serializable{
 		this.lastModified = lastModified;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "gid")
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "gid")
 	public HospitalMaster getHospital() {
 		return hospital;
 	}

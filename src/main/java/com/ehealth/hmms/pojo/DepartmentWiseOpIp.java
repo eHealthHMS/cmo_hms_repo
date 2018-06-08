@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -23,9 +24,10 @@ public class DepartmentWiseOpIp implements Serializable{
 
 	private static final long serialVersionUID = -2634396201900455069L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Id 
+	@SequenceGenerator(name="department_wise_sequence",sequenceName="department_wise_seq", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="department_wise_sequence")
+	@Column(name="id", unique=true, nullable=false)
 	private Long id;
 
 	@Column(name = "total_op_count")

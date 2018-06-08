@@ -50,6 +50,7 @@ public class ThServiceImpl implements ThService{
 
 			Boolean resultFlag = thDao.saveOrUpdateDeptWiseIpOpDetails(departmentWiseOpIp);
 
+
 			if (resultFlag.equals(true)) {
 				result.setStatus(Constants.SUCCESS_STATUS);
 

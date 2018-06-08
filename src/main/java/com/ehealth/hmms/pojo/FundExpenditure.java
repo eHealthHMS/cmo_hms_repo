@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -18,9 +19,10 @@ public class FundExpenditure implements Serializable{
 
 	private static final long serialVersionUID = -8372548777949540310L;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Id 
+	@SequenceGenerator(name="fund_expenditure_sequence",sequenceName="fund_expenditure_seq", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="fund_expenditure_sequence")
+	@Column(name="id", unique=true, nullable=false)
 	private Long id;
 
 	@Column(name = "fund_hmc")

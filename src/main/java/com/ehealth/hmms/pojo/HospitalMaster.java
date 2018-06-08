@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -19,9 +20,10 @@ public class HospitalMaster implements Serializable {
 
 		private static final long serialVersionUID = -7788619177798333712L;
 		
-		@Id
-		@GeneratedValue(strategy = GenerationType.IDENTITY)
-	    @Column(name = "gid")
+		@Id 
+		@SequenceGenerator(name="hospital_master_sequence",sequenceName="hospital_master_seq1", allocationSize=1)
+		@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="hospital_master_sequence")
+		@Column(name="gid", unique=true, nullable=false)
 		private Long id;
 		
 		@Column(name = "place")

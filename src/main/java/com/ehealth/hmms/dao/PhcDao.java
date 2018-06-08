@@ -9,25 +9,22 @@ import com.ehealth.hmms.pojo.Result;
 
 public interface PhcDao {
 
+	Result saveInstitutionalData(MonthlyDataFhcChc dataFhcChc, Long trackerId) throws Exception;
 
-	
-	Result saveInstitutionalData(MonthlyDataFhcChc dataFhcChc,Long trackerId)  throws Exception;
-	MonthlyDataFhcChc fetchPhcRecord(Long hospitalId, String date)throws Exception;
-	
-//	Hospital getMonthlyData(Integer hospitalId)  throws Exception;
-	
+	MonthlyDataFhcChc fetchPhcRecord(Long hospitalId) throws Exception;
+
 	List<CategoryDetails> getPhcStaticData(String hospitalId) throws Exception;
-	
+
 	List<MonthlyDataFhcChc> getPhcDynamicDataForDashboard(String hospitalId) throws Exception;
-	
+
 	MonthlyDataFhcChc getPhcDynamicDataFromHospitalId(Long hospitalId) throws Exception;
-	
+
 	Long getHospitalTrakerForSave(HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception;
-	
-	Result saveMeetings(MonthlyDataFhcChc dataFhcChc,Long trackerId) throws Exception;
-	
-	Result saveSubCentreDetails(MonthlyDataFhcChc dataFhcChc,Long trackerId) throws Exception ;
-	
-	Result saveFieldWorks(MonthlyDataFhcChc dataFhcChc,Long trackerId) throws Exception ;
-	
+
+	Result saveMeetings(MonthlyDataFhcChc dataFhcChc, Long trackerId) throws Exception;
+
+	Result saveSubCentreDetails(MonthlyDataFhcChc dataFhcChc, Long trackerId) throws Exception;
+
+	Result saveFieldWorks(MonthlyDataFhcChc dataFhcChc, Long trackerId) throws Exception;
+
 }

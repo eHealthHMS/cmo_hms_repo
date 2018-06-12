@@ -73,9 +73,13 @@ public class LabDialysis implements Serializable{
 	@Column(name = "ph_shortage_details")
 	private String phShortageDetails;
 	
-	private HospitalMonthlyTracker hospitalMonthlyTracker;
+	@Column(name = "drug_availability")
+	private String drugAvailability;
 	
-	private DrugAvailabilityStatus drugAvailabilityStatus;
+	@Column(name = "functional_ambulance")
+	private String functionalAmbulance;
+	
+	private HospitalMonthlyTracker hospitalMonthlyTracker;
 
 	public Long getId() {
 		return id;

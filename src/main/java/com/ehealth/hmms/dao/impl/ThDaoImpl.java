@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -15,14 +16,18 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ehealth.hmms.dao.ThDao;
+import com.ehealth.hmms.pojo.CategoryMaster;
 import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
 import com.ehealth.hmms.pojo.FundExpenditure;
 import com.ehealth.hmms.pojo.HospitalMaster;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
+import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
 import com.ehealth.hmms.pojo.LabDialysis;
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.ServiceAreaOthers;
+import com.ehealth.hmms.pojo.SpecialityClinic;
 import com.ehealth.hmms.pojo.SpecialityClinicData;
+import com.ehealth.hmms.pojo.SurgeryDetailsThDhGh;
 
 @Repository
 @Transactional
@@ -98,7 +103,7 @@ public class ThDaoImpl implements ThDao {
 		session.saveOrUpdate(fundExpenditure);
 		return true;
 	}
-	
+
 	// Saving or updating the OP and IP details of taluk hospital.
 
 	public Boolean saveAndUpdateOpIpDetails(OpIpDetails opIpDetails) throws Exception {
@@ -359,4 +364,196 @@ public class ThDaoImpl implements ThDao {
 		return calendar.getTime();
 	}
 
+	// **************************< Fetch monthly record of TH starts >***************************************
+
+	public OpIpDetails fetchOpIpDetails(Long hospitalId) throws Exception {
+
+		Session session = this.sessionFactory.getCurrentSession();
+		OpIpDetails opIpDetails = new OpIpDetails();
+
+		try {
+			String sql = "select op.forenoon_op_male, op.afternoon_op_male, op.ip_patients_discharged, op.ip_patients_expired, op.ip_patients_referred, op.emr_patinet_attended, op.emr_patient_admited, op.emr_patient_referred, op.emr_rta_trauma, op.forenoon_op_female, op.forenoon_op_tg, op.forenoon_op_total, op.afternoon_op_female, op.afternoon_op_tg, op.afternoon_op_total, op.ip_admissions_male, op.ip_admissions_female, op.ip_admissions_tg, op.ip_admissions_total from op_ip_th_gh_dh op\r\n"
+					+ "inner join hospital_monthlytracker h on h.id = op.hospmonthlytrack_id where h.report_date =to_date(:date,'yyyy-mm-dd') and h.hospital_id =:hospitalId";
+
+			Query query = session.createSQLQuery(sql);
+
+			query.setParameter("hospitalId", hospitalId);
+
+			query.setParameter("date", getReportDate());
+
+			List<OpIpDetails> thOpIpList = query.list();
+
+			if (thOpIpList != null && !thOpIpList.isEmpty()) {
+				Iterator iterator = thOpIpList.iterator();
+
+				while (iterator.hasNext()) {
+					Object[] row = (Object[]) iterator.next();
+
+					opIpDetails.setForenoonOpMale(castObjectToLong(row[0]));
+					opIpDetails.setAfternoonOpMale(castObjectToLong(row[1]));
+					opIpDetails.setIpPatientsDischarged(castObjectToLong(row[2]));
+					opIpDetails.setIpPatientsExpired(castObjectToLong(row[3]));
+					opIpDetails.setIpPatientsReferred(castObjectToLong(row[4]));
+					opIpDetails.setEmrPatinetAttended(castObjectToLong(row[5]));
+					opIpDetails.setEmrPatientAdmited(castObjectToLong(row[6]));
+					opIpDetails.setEmrPatientReferred(castObjectToLong(row[7]));
+					opIpDetails.setEmrRtaTrauma(castObjectToLong(row[8]));
+					opIpDetails.setForenoonOpFemale(castObjectToLong(row[9]));
+					opIpDetails.setForenoonOpTg(castObjectToLong(row[10]));
+					opIpDetails.setForenoonOpTotal(castObjectToLong(row[11]));
+					opIpDetails.setAfternoonOpFemale(castObjectToLong(row[12]));
+					opIpDetails.setAfternoonOpTg(castObjectToLong(row[13]));
+					opIpDetails.setAfternoonOpTotal(castObjectToLong(row[14]));
+					opIpDetails.setIpAdmissionsMale(castObjectToLong(row[15]));
+					opIpDetails.setIpAdmissionsFemale(castObjectToLong(row[16]));
+					opIpDetails.setIpAdmissionsTg(castObjectToLong(row[17]));
+					opIpDetails.setIpAdmissionsTotal(castObjectToLong(row[18]));
+
+				}
+			}
+		} catch (HibernateException e) {
+
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+
+			throw new Exception("Exception : " + e.getMessage());
+		}
+
+		return opIpDetails;
+	}
+
+	public DepartmentWiseOpIp fetchDeptOpIpDetails(Long hospitalId)  throws Exception {
+		
+		Session session = this.sessionFactory.getCurrentSession();
+		DepartmentWiseOpIp departmentWiseOpIp = new DepartmentWiseOpIp();
+
+		try {
+			String sql = "select d.category_id, d.total_op_count, d.total_ip_count from department_wise_op_ip d inner join hospital_monthlytracker h on h.id = d.hospital_track_id where h.report_date =to_date(:date,'yyyy-mm-dd') and h.hospital_id =:hospitalId";
+			Query query = session.createSQLQuery(sql);
+			query.setParameter("hospitalId", hospitalId);
+			query.setParameter("date", getReportDate());
+			List<OpIpDetails> thDeptOpIpList = query.list();
+			
+			if (thDeptOpIpList != null && !thDeptOpIpList.isEmpty()) {
+				Iterator iterator = thDeptOpIpList.iterator();
+
+				while (iterator.hasNext()) {
+					Object[] row = (Object[]) iterator.next();
+
+					departmentWiseOpIp.setCategoryMasterId(castObjectToCategryMastr(row[0]));
+					departmentWiseOpIp.setTotalIpCount(castObjectToLong(row[1]));
+					departmentWiseOpIp.setTotalOpCount(castObjectToLong(row[2]));
+				}
+			}
+		} catch (HibernateException e) {
+
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+
+			throw new Exception("Exception : " + e.getMessage());
+		}
+
+		return departmentWiseOpIp;
+	}
+	
+	public SurgeryDetailsThDhGh fetchSurgeryDetailsThDhGh(Long hospitalId)  throws Exception {
+		
+		Session session = this.sessionFactory.getCurrentSession();
+		SurgeryDetailsThDhGh surgeryDetailsThDhGh = new SurgeryDetailsThDhGh();
+
+		try {
+			String sql = "select s.category_id , s.majorsurgery, s.minorsurgery from surgerydetails_thghdh s inner join hospital_monthlytracker h on h.id = s.hosp_monthly_trackid where h.report_date =to_date(:date,'yyyy-mm-dd') and h.hospital_id =:hospitalId\r\n";
+			Query query = session.createSQLQuery(sql);
+			query.setParameter("hospitalId", hospitalId);
+			query.setParameter("date", getReportDate());
+			List<SurgeryDetailsThDhGh> thSurgeryDetails = query.list();
+			
+			if (thSurgeryDetails != null && !thSurgeryDetails.isEmpty()) {
+				Iterator iterator = thSurgeryDetails.iterator();
+
+				while (iterator.hasNext()) {
+					Object[] row = (Object[]) iterator.next();
+
+					surgeryDetailsThDhGh.setCategoryMaster(castObjectToCategryMastr(row[0]));
+					surgeryDetailsThDhGh.setMajorSurgery(castObjectToLong(row[1]));
+					surgeryDetailsThDhGh.setMinorSurgery(castObjectToLong(row[2]));
+				}
+			}
+		} catch (HibernateException e) {
+
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+
+			throw new Exception("Exception : " + e.getMessage());
+		}
+
+		return surgeryDetailsThDhGh;
+	}
+
+	public SpecialityClinicData fetchSpecialityClinicData(Long hospitalId)  throws Exception {
+		
+		Session session = this.sessionFactory.getCurrentSession();
+		SpecialityClinicData specialityClinicData = new SpecialityClinicData();
+
+		try {
+			String sql = "select sc.specialityclinic_id, sc.malecount, sc.femalecount, sc.total, sc.tgcount from specialityclinic_data sc inner join hospital_monthlytracker h on h.id = sc.hosp_track_id where h.report_date =to_date(:date,'yyyy-mm-dd') and h.hospital_id =:hospitalId";
+			Query query = session.createSQLQuery(sql);
+			query.setParameter("hospitalId", hospitalId);
+			query.setParameter("date", getReportDate());
+			List<SpecialityClinicData> thSpecialityClinicData= query.list();
+			
+			if (thSpecialityClinicData != null && !thSpecialityClinicData.isEmpty()) {
+				Iterator iterator = thSpecialityClinicData.iterator();
+
+				while (iterator.hasNext()) {
+					Object[] row = (Object[]) iterator.next();
+
+					specialityClinicData.setSpecialityClinic(castObjectToSpecialityClinic(row[0]));
+					specialityClinicData.setMaleCount(castObjectToLong(row[1]));
+					specialityClinicData.setFemalCount(castObjectToLong(row[2]));
+					specialityClinicData.setTotal(castObjectToLong(row[3]));
+					specialityClinicData.setTgCount(castObjectToLong(row[4]));
+				}
+			}
+		} catch (HibernateException e) {
+
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+
+			throw new Exception("Exception : " + e.getMessage());
+		}
+
+		return specialityClinicData;
+	}
+
+	// **************************< Fetch monthly record of TH ends >***************************************
+	private Long castObjectToLong(Object object) {
+
+		return new Long((Integer) ((object != null) ? object : 0));
+
+	}
+
+	private Boolean castObjectToBoolean(Object object) {
+
+		return new Boolean((Boolean) ((object != null) ? object : false));
+
+	}
+
+	private HospitalMonthlyTracker castObjectToHmt(Object object) {
+		HospitalMonthlyTracker hospMonTrack = new HospitalMonthlyTracker();
+		hospMonTrack.setId(new Long((Integer) ((object != null) ? object : 0)));
+		return hospMonTrack;
+	}
+	
+	private CategoryMaster castObjectToCategryMastr(Object object) {
+		CategoryMaster categoryMaster = new CategoryMaster();
+		categoryMaster.setId(new Long((Integer) ((object != null) ? object : 0)));
+		return categoryMaster;
+	}
+	
+	private SpecialityClinic castObjectToSpecialityClinic(Object object) {
+		SpecialityClinic specialityClinic = new SpecialityClinic();
+		specialityClinic.setId(new Long((Integer) ((object != null) ? object : 0)));
+		return specialityClinic;
+	}
 }

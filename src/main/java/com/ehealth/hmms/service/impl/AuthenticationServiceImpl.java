@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 import com.ehealth.hmms.dao.AuthenticationDao;
 import com.ehealth.hmms.dao.LookupDao;
 import com.ehealth.hmms.dao.PhcDao;
+import com.ehealth.hmms.dao.ThDao;
 import com.ehealth.hmms.pojo.HospitalMaster;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
+import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.Users;
 import com.ehealth.hmms.service.AuthenticationService;
@@ -31,6 +33,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	
 	@Autowired
 	private PhcDao phcDao;
+	
+	@Autowired
+	private ThDao thDao;
 	
 	@Autowired
 	private LookupDao lookupDao;
@@ -65,14 +70,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		this.lookupDao = lookupDao;
 	}
 	
+	public ThDao getThDao() {
+		return thDao;
+	}
+
+	public void setThDao(ThDao thDao) {
+		this.thDao = thDao;
+	}
+
 	public Result authenticate(Users user) throws Exception {
 		Result result = new Result();
-	//	authenticationDao = new AuthenticationDaoImpl();
+
 		try {
 			Users userResult = authenticationDao.authenticate(user);
 			if (userResult != null) {
-				HospitalMaster hospitalMaster = userResult.getHospitalid();		
-				result.setHospitalType(hospitalMaster.getHospitalTypeMaster().getId());
+				HospitalMaster hospitalMaster = userResult.getHospitalid();	
+				Long hospitalTypeId = hospitalMaster.getHospitalTypeMaster().getId();
+				result.setHospitalType(hospitalTypeId);
 				Date todaysDate = new Date();				
 				String date = lookupDao.getConfiguration(Constants.DB_END_DATE_KEY);
 				if (todaysDate.getDate() <= Integer.parseInt(date)) {
@@ -81,13 +95,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 					result.setEditable(false);	
 				} 
 				Long hospitalId = hospitalMaster.getId();
-				MonthlyDataFhcChc MonthlyPhcResult = phcDao.fetchPhcRecord(hospitalId);
-				HospitalMonthlyTracker hospitalMonthlyTracker = MonthlyPhcResult.getHospitalMonthlyTracker();	
-				hospitalMonthlyTracker.setHospital(hospitalMaster);
-				MonthlyPhcResult.setHospitalMonthlyTracker(hospitalMonthlyTracker);
-				result.setValue(MonthlyPhcResult);
-				result.setStatus(Constants.SUCCESS_STATUS);
-
+				if(hospitalTypeId == 15 || hospitalTypeId == 16 || hospitalTypeId == 17 || hospitalTypeId == 20)
+				{	
+					MonthlyDataFhcChc MonthlyPhcResult = phcDao.fetchPhcRecord(hospitalId);
+					HospitalMonthlyTracker hospitalMonthlyTracker = MonthlyPhcResult.getHospitalMonthlyTracker();	
+					hospitalMonthlyTracker.setHospital(hospitalMaster);
+					MonthlyPhcResult.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+					result.setValue(MonthlyPhcResult);
+					result.setStatus(Constants.SUCCESS_STATUS);
+				}
+				else if(hospitalTypeId == 18 || hospitalTypeId == 19)
+				{
+					OpIpDetails opIpDetails = thDao.fetchOpIpDetails(hospitalId);
+				}
 			} else {
 				result.setStatus(Constants.FAILURE_STATUS);
 				result.setErrorMessage("Invalid Credentials");

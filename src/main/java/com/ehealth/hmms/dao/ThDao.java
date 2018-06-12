@@ -8,4 +8,6 @@ public interface ThDao {
 	Boolean saveAndUpdateOpIpDetails(OpIpDetails opIpDetails) throws Exception;
 
 	Boolean saveAndUpdateSpecialityClinicData(SpecialityClinicData specialityClinicData) throws Exception ;
+
+	OpIpDetails fetchOpIpDetails(Long hospitalId)throws Exception;
 }

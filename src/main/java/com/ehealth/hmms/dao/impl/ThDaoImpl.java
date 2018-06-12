@@ -31,10 +31,11 @@ public class ThDaoImpl implements ThDao {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public Boolean saveOrUpdateDeptWiseIpOpDetails(DepartmentWiseOpIp departmentWiseOpIp) throws Exception {
+	public Boolean saveOrUpdateDeptWiseIpOpDetails(List<DepartmentWiseOpIp> departmentWiseOpIpList) throws Exception {
 
 		Session session = this.sessionFactory.getCurrentSession();
 		HospitalMonthlyTracker hospitalMonthlyTracker = null;
+		for(DepartmentWiseOpIp departmentWiseOpIp : departmentWiseOpIpList) {
 		if (departmentWiseOpIp.getHospitalMonthlyTrackerId().getId() != null) {
 			hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class,
 					departmentWiseOpIp.getHospitalMonthlyTrackerId().getId());
@@ -44,12 +45,15 @@ public class ThDaoImpl implements ThDao {
 			// hospitalMonthlyTracker.setId(id)
 			hospitalMonthlyTracker.setLastModified(new Date());
 			hospitalMonthlyTracker.setReport_date(getFirstDateOfMonth());
+			session.saveOrUpdate(hospitalMonthlyTracker);
 			departmentWiseOpIp.setHospitalMonthlyTrackerId(hospitalMonthlyTracker);
 		} else {
 			hospitalMonthlyTracker.setLastModified(new Date());
+			session.saveOrUpdate(hospitalMonthlyTracker);
 			departmentWiseOpIp.setHospitalMonthlyTrackerId(hospitalMonthlyTracker);
 		}
 		session.saveOrUpdate(departmentWiseOpIp);
+		}
 		return true;
 	}
 
@@ -180,9 +184,10 @@ public class ThDaoImpl implements ThDao {
 	// Saving or updating the speciality clinics of taluk hospital.
 
 	
-		public Boolean saveAndUpdateSpecialityClinicData(SpecialityClinicData specialityClinicData) throws Exception {
+		public Boolean saveAndUpdateSpecialityClinicData(List<SpecialityClinicData> specialityClinicDataList) throws Exception {
 			
 			Session session = this.sessionFactory.getCurrentSession();
+			for(SpecialityClinicData specialityClinicData : specialityClinicDataList) {
 			HospitalMonthlyTracker hospitalMonthlyTracker = null;
 			if(specialityClinicData.getHospitalMonthlyTracker().getId()!=null) {
 			 hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, specialityClinicData.getHospitalMonthlyTracker().getId());
@@ -197,6 +202,7 @@ public class ThDaoImpl implements ThDao {
 				specialityClinicData.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 			}
 			session.saveOrUpdate(specialityClinicData);
+			}
 			return true;
 		}
 		

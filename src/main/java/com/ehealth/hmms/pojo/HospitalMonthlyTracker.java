@@ -38,7 +38,6 @@ public class HospitalMonthlyTracker implements Serializable{
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "hospital_id", referencedColumnName="gid")
-
 	private HospitalMaster hospital;
 	
 	public Long getId() {

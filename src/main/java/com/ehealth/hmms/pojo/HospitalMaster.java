@@ -115,14 +115,6 @@ public class HospitalMaster implements Serializable {
 			this.geometry = geometry;
 		}
 
-		public String getHospitalCode() {
-			return hospitalCode;
-		}
-
-		public void setHospitalCode(String hospitalCode) {
-			this.hospitalCode = hospitalCode;
-		}
-
 		public Long getNin() {
 			return nin;
 		}

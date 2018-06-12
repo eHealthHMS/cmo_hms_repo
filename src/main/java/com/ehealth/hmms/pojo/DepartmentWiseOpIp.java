@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,8 +36,12 @@ public class DepartmentWiseOpIp implements Serializable{
 	@Column(name = "total_ip_count")
 	private Long totalIpCount;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "hospital_track_id", referencedColumnName="id")
 	private HospitalMonthlyTracker hospitalMonthlyTrackerId;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "category_id", referencedColumnName="id")
 	private CategoryMaster categoryMasterId;
 
 	public Long getId() {
@@ -63,8 +68,6 @@ public class DepartmentWiseOpIp implements Serializable{
 		this.totalIpCount = totalIpCount;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
 	public HospitalMonthlyTracker getHospitalMonthlyTrackerId() {
 		return hospitalMonthlyTrackerId;
 	}
@@ -73,8 +76,6 @@ public class DepartmentWiseOpIp implements Serializable{
 		this.hospitalMonthlyTrackerId = hospitalMonthlyTrackerId;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
 	public CategoryMaster getCategoryMasterId() {
 		return categoryMasterId;
 	}

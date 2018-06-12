@@ -12,7 +12,11 @@ import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
 import com.ehealth.hmms.pojo.FundExpenditure;
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.Result;
+<<<<<<< HEAD
 import com.ehealth.hmms.pojo.ServiceAreaOthers;
+=======
+import com.ehealth.hmms.pojo.SpecialityClinicData;
+>>>>>>> master
 import com.ehealth.hmms.service.ThService;
 
 
@@ -37,14 +41,13 @@ public class ThController {
 	@RequestMapping(value = "/saveAndUpdateOpIpDetails", method = RequestMethod.POST,headers="Accept=application/json")
 	public Result saveAndUpdateOpIpDetails( @RequestBody OpIpDetails opIpDetails) throws Exception{
 		
-		 
-		//ThService thService = new ThServiceImpl();
 		Result result =  thService.saveAndUpdateOpIpDetails(opIpDetails);
 		
 		return result;
 
 	}
 	
+<<<<<<< HEAD
 	@RequestMapping(value = "/saveOrUpdateDeptWiseIpOpDetails", method = RequestMethod.POST,headers="Accept=application/json")
 	public Result saveOrUpdateDeptWiseIpOpDetails( @RequestBody List<DepartmentWiseOpIp> departmentWiseOpIpList) throws Exception{
 		
@@ -85,9 +88,16 @@ public class ThController {
 		 
 		//ThService thService = new ThServiceImpl();
 		Result result =  thService.saveOrUpdateSpecialityClinic(specialityClinicData);
+=======
+	@RequestMapping(value = "/saveOrUpdateSpecialityClinic", method = RequestMethod.POST,headers="Accept=application/json")
+	public Result saveAndUpdateSpecialityClinicData( @RequestBody SpecialityClinicData specialityClinicData) throws Exception{
+		
+
+		Result result =  thService.saveAndUpdateSpecialityClinicData(specialityClinicData);
+>>>>>>> master
 		
 		return result;
 
 	}
-		*/
+		
 }

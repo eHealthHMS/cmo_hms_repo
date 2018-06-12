@@ -5,7 +5,6 @@
  
 <hibernate-configuration>
     <session-factory>
-
         <mapping class="com.ehealth.hmms.pojo.Users"/>
         <mapping class="com.ehealth.hmms.pojo.Role"/>
         <mapping class="com.ehealth.hmms.pojo.HospitalMaster"/>
@@ -18,5 +17,6 @@
         <mapping class="com.ehealth.hmms.pojo.OpIpDetails"/>
         <mapping class="com.ehealth.hmms.pojo.ServiceAreaOthers"/>
         <mapping class="com.ehealth.hmms.pojo.FundExpenditure"/>
+        <mapping class="com.ehealth.hmms.pojo.SpecialityClinicData"/>
     </session-factory>
 </hibernate-configuration>

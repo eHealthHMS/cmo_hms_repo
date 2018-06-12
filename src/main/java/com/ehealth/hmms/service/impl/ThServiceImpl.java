@@ -98,7 +98,6 @@ public class ThServiceImpl implements ThService{
 
 			Boolean resultFlag = thDao.saveOrUpdateFundExpenditure(fundExpenditure);
 
-
 			if (resultFlag.equals(true)) {
 				result.setStatus(Constants.SUCCESS_STATUS);
 

@@ -39,18 +39,9 @@ public class ServiceAreaOthers implements Serializable {
 	
 	@Column(name = "og_maternal_death_count")
 	private Long ogMaternalDeathCount;
-
-	@Column(name = "drugs_availability")
-	private Long drugsAvailability;
-	
-	@Column(name = "critical_shortage_details")
-	private Long criticalShortageDetails;
 	
 	@Column(name = "last_hmc_meeting")
 	private Date lasthmcMeeting;
-
-	@Column(name = "ambulance")
-	private Boolean ambulance;
 	
 	@Column(name = "og_referred_cases_count")
 	private Long ogReferredCasesCount;
@@ -112,36 +103,12 @@ public class ServiceAreaOthers implements Serializable {
 		this.ogMaternalDeathCount = ogMaternalDeathCount;
 	}
 
-	public Long getDrugsAvailability() {
-		return drugsAvailability;
-	}
-
-	public void setDrugsAvailability(Long drugsAvailability) {
-		this.drugsAvailability = drugsAvailability;
-	}
-
-	public Long getCriticalShortageDetails() {
-		return criticalShortageDetails;
-	}
-
-	public void setCriticalShortageDetails(Long criticalShortageDetails) {
-		this.criticalShortageDetails = criticalShortageDetails;
-	}
-
 	public Date getLasthmcMeeting() {
 		return lasthmcMeeting;
 	}
 
 	public void setLasthmcMeeting(Date lasthmcMeeting) {
 		this.lasthmcMeeting = lasthmcMeeting;
-	}
-
-	public Boolean getAmbulance() {
-		return ambulance;
-	}
-
-	public void setAmbulance(Boolean ambulance) {
-		this.ambulance = ambulance;
 	}
 
 	public Boolean getScHighDependencyUnit() {

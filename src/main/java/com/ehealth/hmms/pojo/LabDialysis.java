@@ -217,14 +217,20 @@ public class LabDialysis implements Serializable{
 		this.phShortageDetails = phShortageDetails;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
-	public DrugAvailabilityStatus getDrugAvailabilityStatus() {
-		return drugAvailabilityStatus;
+	public String getDrugAvailability() {
+		return drugAvailability;
 	}
 
-	public void setDrugAvailabilityStatus(DrugAvailabilityStatus drugAvailabilityStatus) {
-		this.drugAvailabilityStatus = drugAvailabilityStatus;
+	public void setDrugAvailability(String drugAvailability) {
+		this.drugAvailability = drugAvailability;
+	}
+
+	public String getFunctionalAmbulance() {
+		return functionalAmbulance;
+	}
+
+	public void setFunctionalAmbulance(String functionalAmbulance) {
+		this.functionalAmbulance = functionalAmbulance;
 	}
 
 	@OneToOne(cascade = CascadeType.ALL)

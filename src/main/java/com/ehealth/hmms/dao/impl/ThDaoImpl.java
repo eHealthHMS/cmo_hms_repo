@@ -22,6 +22,7 @@ import com.ehealth.hmms.pojo.FundExpenditure;
 import com.ehealth.hmms.pojo.HospitalMaster;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
+import com.ehealth.hmms.pojo.LabDialysis;
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.ServiceAreaOthers;
 import com.ehealth.hmms.pojo.SpecialityClinic;
@@ -35,10 +36,11 @@ public class ThDaoImpl implements ThDao {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public Boolean saveOrUpdateDeptWiseIpOpDetails(DepartmentWiseOpIp departmentWiseOpIp) throws Exception {
+	public Boolean saveOrUpdateDeptWiseIpOpDetails(List<DepartmentWiseOpIp> departmentWiseOpIpList) throws Exception {
 
 		Session session = this.sessionFactory.getCurrentSession();
 		HospitalMonthlyTracker hospitalMonthlyTracker = null;
+		for(DepartmentWiseOpIp departmentWiseOpIp : departmentWiseOpIpList) {
 		if (departmentWiseOpIp.getHospitalMonthlyTrackerId().getId() != null) {
 			hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class,
 					departmentWiseOpIp.getHospitalMonthlyTrackerId().getId());
@@ -48,15 +50,19 @@ public class ThDaoImpl implements ThDao {
 			// hospitalMonthlyTracker.setId(id)
 			hospitalMonthlyTracker.setLastModified(new Date());
 			hospitalMonthlyTracker.setReport_date(getFirstDateOfMonth());
+			session.saveOrUpdate(hospitalMonthlyTracker);
 			departmentWiseOpIp.setHospitalMonthlyTrackerId(hospitalMonthlyTracker);
 		} else {
 			hospitalMonthlyTracker.setLastModified(new Date());
+			session.saveOrUpdate(hospitalMonthlyTracker);
 			departmentWiseOpIp.setHospitalMonthlyTrackerId(hospitalMonthlyTracker);
 		}
 		session.saveOrUpdate(departmentWiseOpIp);
+		}
 		return true;
 	}
 
+	
 	public Boolean saveOrUpdateServiceAreaOthers(ServiceAreaOthers serviceAreaOthers) throws Exception {
 
 		Session session = this.sessionFactory.getCurrentSession();
@@ -183,7 +189,61 @@ public class ThDaoImpl implements ThDao {
 
 	// Saving or updating the speciality clinics of taluk hospital.
 
-	public Boolean saveAndUpdateSpecialityClinicData(SpecialityClinicData specialityClinicData) throws Exception {
+	
+		public Boolean saveAndUpdateSpecialityClinicData(List<SpecialityClinicData> specialityClinicDataList) throws Exception {
+			
+			Session session = this.sessionFactory.getCurrentSession();
+			for(SpecialityClinicData specialityClinicData : specialityClinicDataList) {
+			HospitalMonthlyTracker hospitalMonthlyTracker = null;
+			if(specialityClinicData.getHospitalMonthlyTracker().getId()!=null) {
+			 hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, specialityClinicData.getHospitalMonthlyTracker().getId());
+			}
+			if(hospitalMonthlyTracker == null) {
+				hospitalMonthlyTracker = specialityClinicData.getHospitalMonthlyTracker();
+				hospitalMonthlyTracker.setReport_date(getFirstDateOfMonth());
+				specialityClinicData.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+				
+			} else {
+				hospitalMonthlyTracker.setLastModified(new Date());
+				specialityClinicData.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+			}
+			session.saveOrUpdate(specialityClinicData);
+			}
+			return true;
+		}
+		
+		public Boolean saveAndUpdateLabDialysis(LabDialysis labDialysis) throws Exception {
+			
+			Session session = this.sessionFactory.getCurrentSession();
+			HospitalMonthlyTracker hospitalMonthlyTracker = null;
+			if(labDialysis.getHospitalMonthlyTracker().getId()!=null) {
+			 hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class, labDialysis.getHospitalMonthlyTracker().getId());
+			}
+			if(hospitalMonthlyTracker == null) {
+				hospitalMonthlyTracker = labDialysis.getHospitalMonthlyTracker();
+				hospitalMonthlyTracker.setReport_date(getFirstDateOfMonth());
+				labDialysis.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+				
+			} else {
+				hospitalMonthlyTracker.setLastModified(new Date());
+				labDialysis.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+			}
+			session.saveOrUpdate(labDialysis);
+			return true;
+		}
+		
+		
+		
+		/*private Date getFirstDateOfMonth() throws ParseException {
+			Calendar c = Calendar.getInstance();   // this takes current date
+		    c.set(Calendar.DAY_OF_MONTH, 1);
+		    SimpleDateFormat dmyFormat = new SimpleDateFormat("yyyy-MM-dd");
+	           String dmy = dmyFormat.format(c.getTime());
+	        Date reportDate=dmyFormat.parse(dmy);
+	        return reportDate;
+		}*/
+
+	/*public Boolean saveAndUpdateSpecialityClinicData(SpecialityClinicData specialityClinicData) throws Exception {
 
 		Session session = this.sessionFactory.getCurrentSession();
 		Boolean resultFlag = false;
@@ -229,10 +289,27 @@ public class ThDaoImpl implements ThDao {
 		} catch (Exception e) {
 			throw new Exception("Exception : " + e.getMessage());
 
+>>>>>>> master
 		}
 		return resultFlag;
 
-	}
+<<<<<<< HEAD
+	}*/
+/*
+	public Boolean saveOrUpdateSpecialityClinic(SpecialityClinicData specialityClinicData) throws Exception {
+
+		Session session = this.sessionFactory.getCurrentSession();
+		HospitalMonthlyTracker hospitalMonthlyTracker = null;
+		if (specialityClinicData.getHospitalMonthlyTracker().getId() != null) {
+			hospitalMonthlyTracker = (HospitalMonthlyTracker) session.get(HospitalMonthlyTracker.class,
+					specialityClinicData.getHospitalMonthlyTracker().getId());
+		}
+		if (hospitalMonthlyTracker == null) {
+			hospitalMonthlyTracker = specialityClinicData.getHospitalMonthlyTracker();
+			hospitalMonthlyTracker.setReport_date(getFirstDateOfMonth());
+			specialityClinicData.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+=======
+	}*/
 
 	private Date getFirstDateOfMonth() throws ParseException {
 		Calendar c = Calendar.getInstance(); // this takes current date

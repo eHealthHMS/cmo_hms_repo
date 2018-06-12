@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -64,6 +65,8 @@ public class FundExpenditure implements Serializable{
 	@Column(name = "delay_reason")
 	private String delayReason;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "hospital_tracker_id", referencedColumnName="id")
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 
 	public Long getId() {
@@ -178,8 +181,6 @@ public class FundExpenditure implements Serializable{
 		this.delayReason = delayReason;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
 	public HospitalMonthlyTracker getHospitalMonthlyTracker() {
 		return hospitalMonthlyTracker;
 	}

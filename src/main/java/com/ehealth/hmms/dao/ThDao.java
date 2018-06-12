@@ -22,7 +22,6 @@ public interface ThDao {
 	Boolean saveAndUpdateSpecialityClinicData(List<SpecialityClinicData> specialityClinicDataList)throws Exception;
 	
 	Boolean saveAndUpdateLabDialysis(LabDialysis labDialysis) throws Exception;
-	
 	Boolean saveAndUpdateSpecialityClinicData(SpecialityClinicData specialityClinicData) throws Exception ;
 
 	OpIpDetails fetchOpIpDetails(Long hospitalId)throws Exception;

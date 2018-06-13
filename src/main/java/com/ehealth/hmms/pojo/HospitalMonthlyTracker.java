@@ -31,10 +31,16 @@ public class HospitalMonthlyTracker implements Serializable{
 	@Column(name = "report_date")
 	private Date report_date;
 	
+	
+	
+	
+	@Column(name = "final_submit_done")
+	private Boolean finalSubmitDone;
+	
 	@Column(name = "last_modified")
 	private Date lastModified;
-	
-	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	//cascade = CascadeType.ALL,
+	@OneToOne( fetch=FetchType.EAGER)
 	@JoinColumn(name = "hospital_id", referencedColumnName="gid")
 
 	private HospitalMaster hospital;
@@ -91,6 +97,14 @@ public class HospitalMonthlyTracker implements Serializable{
 	 */
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public Boolean getFinalSubmitDone() {
+		return finalSubmitDone;
+	}
+
+	public void setFinalSubmitDone(Boolean finalSubmitDone) {
+		this.finalSubmitDone = finalSubmitDone;
 	}
 
 	

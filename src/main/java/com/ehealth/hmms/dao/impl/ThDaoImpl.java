@@ -168,7 +168,7 @@ public class ThDaoImpl implements ThDao{
 			HospitalMonthlyTracker hospitalMonthlyTracker = specialityClinicData.getHospitalMonthlyTracker();
 			Long hospitalId = hospitalMonthlyTracker.getHospital().getId();
 			PhcDaoImpl phcDaoImpl = new PhcDaoImpl();
-			Long hospmonthlytrack_id = phcDaoImpl.saveHospitalMonthlyTracker(hospitalId);
+			Long hospmonthlytrack_id = phcDaoImpl.createHospitalMonthlyTracker(hospitalId).getId();
 	
 			  try {
 				  	

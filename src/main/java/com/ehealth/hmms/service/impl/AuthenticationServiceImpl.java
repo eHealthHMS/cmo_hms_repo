@@ -84,6 +84,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				Long hospitalId = hospitalMaster.getId();
 				MonthlyDataFhcChc MonthlyPhcResult = phcDao.fetchPhcRecord(hospitalId);
 				HospitalMonthlyTracker hospitalMonthlyTracker = MonthlyPhcResult.getHospitalMonthlyTracker();	
+				if(hospitalMonthlyTracker==null) {
+					hospitalMonthlyTracker = new HospitalMonthlyTracker();
+				}
+				
 				hospitalMonthlyTracker.setHospital(hospitalMaster);
 				MonthlyPhcResult.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 				result.setValue(MonthlyPhcResult);
@@ -105,7 +109,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	//for viewing dashboard
 	public Result authenticateUserForDashBoard(Users user)  throws Exception{
-		 Result result = new Result();
+		 Result result = null;
 		// authenticationDao = new AuthenticationDaoImpl();
 		try {
 		Users  userResult = authenticationDao.authenticate(user);
@@ -113,19 +117,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		if(userResult!=null ) 
 		{
 			
-			
+			//if(userResult.getHospitalid())
 			HospitalMaster hospitalMaster = userResult.getHospitalid();
 			if(hospitalMaster!=null) {
-			phcService.getPhcDynamicDataFromHospitalId(hospitalMaster.getId());//DataForDashboard(hospitalMaster.getId());
+				result =phcService.getPhcDynamicDataFromHospitalId(hospitalMaster.getId());//DataForDashboard(hospitalMaster.getId());
 			}else {
 				result.setStatus(Constants.FAILURE_STATUS);
 				//result.setErrorMessage("Invalid Credentials");
 			}
-			//result.setHospitalName(hospitalMaster.getHospitalName());
-			
-//			authenticationDao
-//			HospitalMaster hospitalMaster = userResult.getHospital();
-//			result.setHospitalName(hospitalMaster.getHospitalName());
 			
 		}else	{
 			result.setStatus(Constants.FAILURE_STATUS);

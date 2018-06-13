@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -21,7 +22,6 @@ import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
 import com.ehealth.hmms.pojo.FundExpenditure;
 import com.ehealth.hmms.pojo.HospitalMaster;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
-import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
 import com.ehealth.hmms.pojo.LabDialysis;
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.ServiceAreaOthers;
@@ -62,6 +62,20 @@ public class ThDaoImpl implements ThDao {
 		return true;
 	}
 
+	public Map<String,String> getThalukBasicData(String nin){
+		Session session = this.sessionFactory.getCurrentSession();
+		HospitalMaster hospitalMaster = (HospitalMaster) session.get(HospitalMaster.class, nin);
+		if(hospitalMaster!=null) {
+			
+			Query query = session.createQuery("from HospitalMonthlyTracker hmt where hmt.hospital_id=:hospital_id and hmt.report_date=:report_date" );
+			HospitalMonthlyTracker hospitalMonthlyTracker = (HospitalMonthlyTracker) query.setParameter("hospital_id", hospitalMaster.getId())
+																						   .setParameter("report_date", getReportDate()).uniqueResult();
+			
+			//HospitalMonthlyTracker hospitalMonthlyTracker = session.get(HospitalMonthlyTracker.class, hospitalMaster.)
+		}
+		
+		return null;
+	}
 	
 	public Boolean saveOrUpdateServiceAreaOthers(ServiceAreaOthers serviceAreaOthers) throws Exception {
 

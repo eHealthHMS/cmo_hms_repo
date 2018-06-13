@@ -18,5 +18,6 @@
         <mapping class="com.ehealth.hmms.pojo.ServiceAreaOthers"/>
         <mapping class="com.ehealth.hmms.pojo.FundExpenditure"/>
         <mapping class="com.ehealth.hmms.pojo.SpecialityClinicData"/>
+        <mapping class="com.ehealth.hmms.pojo.LabDialysis"/>
     </session-factory>
 </hibernate-configuration>

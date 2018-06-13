@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +23,7 @@ public class LabDialysis implements Serializable{
 	@Id 
 	@SequenceGenerator(name="lab_dialysis_xray_pharmacy_sequence",sequenceName="lab_dialysis_xray_pharmacy_seq", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="lab_dialysis_xray_pharmacy_sequence")
-	@Column(name="id", unique=true, nullable=false)
+	@Column(name="id", unique=true, nullable=false)	
 	private Long id;
 
 	@Column(name = "lab_patients_tested")
@@ -77,8 +78,10 @@ public class LabDialysis implements Serializable{
 	private String drugAvailability;
 	
 	@Column(name = "functional_ambulance")
-	private String functionalAmbulance;
+	private Boolean functionalAmbulance;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "hospmonthlytrack_id", referencedColumnName="id")
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 
 	public Long getId() {
@@ -225,16 +228,15 @@ public class LabDialysis implements Serializable{
 		this.drugAvailability = drugAvailability;
 	}
 
-	public String getFunctionalAmbulance() {
+	
+	public Boolean getFunctionalAmbulance() {
 		return functionalAmbulance;
 	}
 
-	public void setFunctionalAmbulance(String functionalAmbulance) {
+	public void setFunctionalAmbulance(Boolean functionalAmbulance) {
 		this.functionalAmbulance = functionalAmbulance;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
 	public HospitalMonthlyTracker getHospitalMonthlyTracker() {
 		return hospitalMonthlyTracker;
 	}

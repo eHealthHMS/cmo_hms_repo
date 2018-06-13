@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -18,9 +19,10 @@ public class CategoryDetails implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Id 
+	@SequenceGenerator(name="categorydetails_sequence",sequenceName="seq_categorydetails_id", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="categorydetails_sequence")
+	@Column(name="id", unique=true, nullable=false)
 	private Long id;
 	
 	@Column(name = "sanctioned_post")

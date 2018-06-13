@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -18,9 +19,10 @@ public class SpecialityClinicData implements Serializable {
 
 	private static final long serialVersionUID = -1248473620447378766L;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Id 
+	@SequenceGenerator(name="speciality_clinic_data_sequence",sequenceName="speciality_clinic_data_seq", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="speciality_clinic_data_sequence")
+	@Column(name="id", unique=true, nullable=false)
 	private Long id;
 
 	@Column(name = "malecount")

@@ -31,8 +31,6 @@ public class AuthenticationController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST, headers = "Accept=application/json")
 	public Result authenticateUserForDataEntry(@RequestBody Users user) throws Exception {
 
-		// AuthenticationService authenticationService = new
-		// AuthenticationServiceImpl();
 		Result userResult = authenticationService.authenticate(user);
 		return userResult;
 

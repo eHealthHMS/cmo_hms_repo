@@ -5,14 +5,19 @@
  
 <hibernate-configuration>
     <session-factory>
-
         <mapping class="com.ehealth.hmms.pojo.Users"/>
         <mapping class="com.ehealth.hmms.pojo.Role"/>
         <mapping class="com.ehealth.hmms.pojo.HospitalMaster"/>
         <mapping class="com.ehealth.hmms.pojo.DistrictMaster"/>
         <mapping class="com.ehealth.hmms.pojo.MonthlyDataFhcChc"/>
         <mapping class="com.ehealth.hmms.pojo.HospitalTypeMaster"/>
-         <mapping class="com.ehealth.hmms.pojo.HospitalMonthlyTracker"/>
-        
+         <mapping class="com.ehealth.hmms.pojo.DepartmentWiseOpIp"/>
+		<mapping class="com.ehealth.hmms.pojo.CategoryMaster"/>         
+        <mapping class="com.ehealth.hmms.pojo.HospitalMonthlyTracker"/>
+        <mapping class="com.ehealth.hmms.pojo.OpIpDetails"/>
+        <mapping class="com.ehealth.hmms.pojo.ServiceAreaOthers"/>
+        <mapping class="com.ehealth.hmms.pojo.FundExpenditure"/>
+        <mapping class="com.ehealth.hmms.pojo.SpecialityClinicData"/>
+        <mapping class="com.ehealth.hmms.pojo.LabDialysis"/>
     </session-factory>
 </hibernate-configuration>

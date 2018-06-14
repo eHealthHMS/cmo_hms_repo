@@ -3,8 +3,6 @@ package com.ehealth.hmms.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Transient;
-
 public class MonthlyDataTh {
 
 	/*
@@ -14,9 +12,6 @@ public class MonthlyDataTh {
 	 * type 9: lab and facility 
 	 * type 10: fund
 	 */
-	@Transient
-	private Integer type;
-
 	private String deviceId;
 
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
@@ -33,16 +28,10 @@ public class MonthlyDataTh {
 	private LabDialysis talukFacilityDetails;
 	private FundExpenditure talukFundDetails;
 	private ServiceAreaOthers talukOtherServiceDetails;
-
+		
 	private boolean idlingEquipment;
 	private List<IdlingMajorEquipment> idlingMajorEquipments = new ArrayList<IdlingMajorEquipment>();
-	
-	public Integer getType() {
-		return type;
-	}
-	public void setType(Integer type) {
-		this.type = type;
-	}
+
 	public String getDeviceId() {
 		return deviceId;
 	}

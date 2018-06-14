@@ -1,6 +1,7 @@
 package com.ehealth.hmms.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
 import com.ehealth.hmms.pojo.FundExpenditure;
@@ -23,5 +24,7 @@ public interface ThService {
 	Result saveAndUpdateSpecialityClinicData(List<SpecialityClinicData> specialityClinicData)throws Exception;
 	
 	Result saveAndUpdateLabDialysis(LabDialysis labDialysis) throws Exception;
+	
+	Map<String,String>  getThalukBasicData(Long nin)throws Exception;
 
 }

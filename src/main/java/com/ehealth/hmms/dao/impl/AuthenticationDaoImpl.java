@@ -42,6 +42,8 @@ public class AuthenticationDaoImpl implements AuthenticationDao {
          
          criteria.add(Restrictions.eq("password", user.getPassword()));
          
+     //    criteria.add(Restrictions.eq("password", user.getPassword()));
+         
     //     criteria.setFetchMode("PayoutHeader", FetchMode.JOIN)
          List<Users> users  = criteria.list();//uniqueResult();
 

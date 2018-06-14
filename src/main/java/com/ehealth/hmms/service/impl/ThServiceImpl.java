@@ -1,6 +1,7 @@
 package com.ehealth.hmms.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import com.ehealth.hmms.dao.ThDao;
 import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
 import com.ehealth.hmms.pojo.FundExpenditure;
 import com.ehealth.hmms.pojo.LabDialysis;
+import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.ServiceAreaOthers;
@@ -149,6 +151,11 @@ public class ThServiceImpl implements ThService{
 			result.setStatus(Constants.FAILURE_STATUS);
 		}
 		return result;
+	}
+	
+	public Map<String,String> getThalukBasicData(Long nin) throws Exception {
+		
+		return thDao.getThalukBasicData(nin);
 	}
 	
 }

@@ -1,8 +1,7 @@
 package com.ehealth.hmms.pojo;
 
 import java.util.ArrayList;
-
-import javax.persistence.Transient;
+import java.util.List;
 
 public class MonthlyDataTh {
 
@@ -13,34 +12,26 @@ public class MonthlyDataTh {
 	 * type 9: lab and facility 
 	 * type 10: fund
 	 */
-	@Transient
-	private Integer type;
-
 	private String deviceId;
 
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 
 	private OpIpDetails talukOpIpDetails;
+	
+	private List<DepartmentWiseOpIp> departmentWiseOpIp = new ArrayList<DepartmentWiseOpIp>(9);
 
-	private DepartmentWiseOpIp[] departmentWiseOpIp = new DepartmentWiseOpIp[9];
+	private List<SurgeryDetailsThDhGh> SurgeryDetailsThDhGh = new ArrayList<SurgeryDetailsThDhGh>(5);
 
-	private SurgeryDetailsThDhGh[] surgeryDetailsThDhGh = new SurgeryDetailsThDhGh[5];
+	private List<SpecialityClinicData> specialityClinicData = new ArrayList<SpecialityClinicData>(7);
 
-	private SpecialityClinicData[] specialityClinicData = new SpecialityClinicData[7];
 
 	private LabDialysis talukFacilityDetails;
 	private FundExpenditure talukFundDetails;
 	private ServiceAreaOthers talukOtherServiceDetails;
-
+		
 	private boolean idlingEquipment;
-	private ArrayList<IdlingMajorEquipment> idlingMajorEquipments = new ArrayList<IdlingMajorEquipment>();
-	
-	public Integer getType() {
-		return type;
-	}
-	public void setType(Integer type) {
-		this.type = type;
-	}
+	private List<IdlingMajorEquipment> idlingMajorEquipments = new ArrayList<IdlingMajorEquipment>();
+
 	public String getDeviceId() {
 		return deviceId;
 	}
@@ -59,22 +50,23 @@ public class MonthlyDataTh {
 	public void setTalukOpIpDetails(OpIpDetails talukOpIpDetails) {
 		this.talukOpIpDetails = talukOpIpDetails;
 	}
-	public DepartmentWiseOpIp[] getDepartmentWiseOpIp() {
+
+	public List<DepartmentWiseOpIp> getDepartmentWiseOpIp() {
 		return departmentWiseOpIp;
 	}
-	public void setDepartmentWiseOpIp(DepartmentWiseOpIp[] departmentWiseOpIp) {
+	public void setDepartmentWiseOpIp(List<DepartmentWiseOpIp> departmentWiseOpIp) {
 		this.departmentWiseOpIp = departmentWiseOpIp;
 	}
-	public SurgeryDetailsThDhGh[] getSurgeryDetailsThDhGh() {
-		return surgeryDetailsThDhGh;
+	public List<SurgeryDetailsThDhGh> getSurgeryDetailsThDhGh() {
+		return SurgeryDetailsThDhGh;
 	}
-	public void setSurgeryDetailsThDhGh(SurgeryDetailsThDhGh[] surgeryDetailsThDhGh) {
-		this.surgeryDetailsThDhGh = surgeryDetailsThDhGh;
+	public void setSurgeryDetailsThDhGh(List<SurgeryDetailsThDhGh> surgeryDetailsThDhGh) {
+		SurgeryDetailsThDhGh = surgeryDetailsThDhGh;
 	}
-	public SpecialityClinicData[] getSpecialityClinicData() {
+	public List<SpecialityClinicData> getSpecialityClinicData() {
 		return specialityClinicData;
 	}
-	public void setSpecialityClinicData(SpecialityClinicData[] specialityClinicData) {
+	public void setSpecialityClinicData(List<SpecialityClinicData> specialityClinicData) {
 		this.specialityClinicData = specialityClinicData;
 	}
 	public LabDialysis getTalukFacilityDetails() {
@@ -101,11 +93,11 @@ public class MonthlyDataTh {
 	public void setIdlingEquipment(boolean idlingEquipment) {
 		this.idlingEquipment = idlingEquipment;
 	}
-	public ArrayList<IdlingMajorEquipment> getIdlingMajorEquipments() {
+	public List<IdlingMajorEquipment> getIdlingMajorEquipments() {
 		return idlingMajorEquipments;
 	}
-	public void setIdlingMajorEquipments(ArrayList<IdlingMajorEquipment> idlingMajorEquipments) {
-		this.idlingMajorEquipments = idlingMajorEquipments;
+	public void setIdlingMajorEquipments(List<IdlingMajorEquipment> idlingMajorEquipments2) {
+		this.idlingMajorEquipments = idlingMajorEquipments2;
 	}
 
 }

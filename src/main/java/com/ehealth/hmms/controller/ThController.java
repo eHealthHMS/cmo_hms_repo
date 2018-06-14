@@ -13,7 +13,6 @@ import com.ehealth.hmms.pojo.FundExpenditure;
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.ServiceAreaOthers;
-import com.ehealth.hmms.pojo.SpecialityClinicData;
 import com.ehealth.hmms.service.ThService;
 
 

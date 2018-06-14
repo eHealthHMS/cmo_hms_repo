@@ -14,7 +14,7 @@ import com.ehealth.hmms.dao.ThDao;
 import com.ehealth.hmms.pojo.HospitalMaster;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
-import com.ehealth.hmms.pojo.OpIpDetails;
+import com.ehealth.hmms.pojo.MonthlyDataTh;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.Users;
 import com.ehealth.hmms.service.AuthenticationService;
@@ -97,16 +97,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				Long hospitalId = hospitalMaster.getId();
 				if(hospitalTypeId == 15 || hospitalTypeId == 16 || hospitalTypeId == 17 || hospitalTypeId == 20)
 				{	
-					MonthlyDataFhcChc MonthlyPhcResult = phcDao.fetchPhcRecord(hospitalId);
-					HospitalMonthlyTracker hospitalMonthlyTracker = MonthlyPhcResult.getHospitalMonthlyTracker();	
+					MonthlyDataFhcChc monthlyPhcResult = phcDao.fetchPhcRecord(hospitalId);
+					HospitalMonthlyTracker hospitalMonthlyTracker = monthlyPhcResult.getHospitalMonthlyTracker();	
 					hospitalMonthlyTracker.setHospital(hospitalMaster);
-					MonthlyPhcResult.setHospitalMonthlyTracker(hospitalMonthlyTracker);
-					result.setValue(MonthlyPhcResult);
+					monthlyPhcResult.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+					result.setValue(monthlyPhcResult);
 					result.setStatus(Constants.SUCCESS_STATUS);
 				}
 				else if(hospitalTypeId == 18 || hospitalTypeId == 19)
 				{
-					OpIpDetails opIpDetails = thDao.fetchOpIpDetails(hospitalId);
+					MonthlyDataTh monthlyDataTh = thDao.fetchMonthlyDataTh(hospitalId);
+					HospitalMonthlyTracker hospitalMonthlyTracker = monthlyDataTh.getHospitalMonthlyTracker();	
+					hospitalMonthlyTracker.setHospital(hospitalMaster);
+					monthlyDataTh.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+					result.setValue(monthlyDataTh);
+					result.setStatus(Constants.SUCCESS_STATUS);
 				}
 			} else {
 				result.setStatus(Constants.FAILURE_STATUS);

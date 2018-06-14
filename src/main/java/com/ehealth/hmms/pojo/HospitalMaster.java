@@ -114,7 +114,6 @@ public class HospitalMaster implements Serializable {
 		public void setGeometry(Point geometry) {
 			this.geometry = geometry;
 		}
-
 		public Long getNin() {
 			return nin;
 		}

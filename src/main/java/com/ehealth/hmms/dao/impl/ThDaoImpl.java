@@ -526,8 +526,7 @@ public class ThDaoImpl implements ThDao {
 		LabDialysis labDialysis = new LabDialysis();
 
 		try {
-			String sql = "select lb.labPatientsTested, lb.labTotalTests, lb.labUsgFuncMachines, lb.labUsgCount, lb.labEcgCount, lb.diaShiftFunctioning, lb.diaPatientCount, lb.diaTotalCount, lb.diaPatientWaiting, lb.xrayUnitsFunctioning, lb.totalXrayTaken, lb.phArvAvailability, lb.phAsvAvailability, lb.bloodBank, lb.bloodStorageUnit, lb.phShortageDetails, lb.drugAvailability, lb.functionalAmbulance, lb.hospmonthlytrack_id from lab_dialysis_xray_pharmacy lb\r\n"
-					+ "inner join hospital_monthlytracker h on h.id = lb.hospmonthlytrack_id where h.report_date =to_date(:date,'yyyy-mm-dd') and h.hospital_id =:hospitalId";
+			String sql = "select lb.lab_patients_tested, lb.lab_total_tests, lb.lab_usg_func_machines, lb.lab_usg_count, lb.lab_ecg_count, lb.dia_shift_functioning, lb.dia_patient_count, lb.dia_total_count, lb.dia_patient_waiting, lb.xray_units_functioning, lb.total_xray_taken, lb.ph_arv_availability, lb.ph_asv_availability, lb.blood_bank, lb.blood_storage_unit, lb.ph_shortage_details, lb.drug_availability, lb.functional_ambulance, lb.hospmonthlytrack_id from lab_dialysis_xray_pharmacy lb inner join hospital_monthlytracker h on h.id = lb.hospmonthlytrack_id where h.report_date =to_date(:date,'yyyy-mm-dd') and h.hospital_id =:hospitalId";
 			Query query = session.createSQLQuery(sql);
 			query.setParameter("hospitalId", hospitalId);
 			query.setParameter("date", getReportDate());
@@ -666,8 +665,7 @@ public class ThDaoImpl implements ThDao {
 		// IdlingMajorEquipment idlingMajorEquipment = new IdlingMajorEquipment();
 		List<IdlingMajorEquipment> idlingMajorEquipment = new ArrayList<IdlingMajorEquipment>();
 		try {
-			String sql = "select maj.equipment_name, maj.acquisition_date, maj.hosp_track_id from idling_major_equipment maj \r\n"
-					+ "inner join hospital_monthlytracker h on h.id = maj.hosp_track_id where h.report_date =to_date(:date,'yyyy-mm-dd') and h.hospital_id =:hospitalId";
+			String sql = "select maj.equipment_name, maj.acquisition_date, maj.hosp_track_id from idling_major_equipment maj inner join hospital_monthlytracker h on h.id = maj.hosp_track_id where h.report_date =to_date(:date,'yyyy-mm-dd') and h.hospital_id =:hospitalId";
 			Query query = session.createSQLQuery(sql);
 			query.setParameter("hospitalId", hospitalId);
 			query.setParameter("date", getReportDate());

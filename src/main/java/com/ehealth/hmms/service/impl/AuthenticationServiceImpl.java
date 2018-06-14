@@ -15,7 +15,6 @@ import com.ehealth.hmms.pojo.HospitalMaster;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
 import com.ehealth.hmms.pojo.MonthlyDataTh;
-import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.Users;
 import com.ehealth.hmms.service.AuthenticationService;

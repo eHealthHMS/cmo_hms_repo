@@ -75,18 +75,18 @@ public class AuthenticationController {
 	//
 	// }
 
-	@RequestMapping(value = "/loginForTest", method = RequestMethod.POST, headers = "Accept=application/json")
-	public Result authenticateUserForTest(@RequestBody Users user) throws Exception {
-
-		// AuthenticationService authenticationService = new
-		// AuthenticationServiceImpl();
-		Result userResult = new Result();// authenticationService.authenticate(user);
-
-		// userResult.setHospitalName("test Hos");
-		userResult.setStatus('S');
-
-		return userResult;
-
-	}
+//	@RequestMapping(value = "/loginForTest", method = RequestMethod.POST, headers = "Accept=application/json")
+//	public Result authenticateUserForTest(@RequestBody Users user) throws Exception {
+//
+//		// AuthenticationService authenticationService = new
+//		// AuthenticationServiceImpl();
+//		Result userResult = new Result();// authenticationService.authenticate(user);
+//
+//		// userResult.setHospitalName("test Hos");
+//		userResult.setStatus('S');
+//
+//		return userResult;
+//
+//	}
 
 }

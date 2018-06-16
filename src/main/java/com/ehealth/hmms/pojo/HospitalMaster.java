@@ -30,8 +30,8 @@ public class HospitalMaster implements Serializable {
 		@Column(name = "hospital_name")
 		private String hospitalName;
 		
-		@Column(name = "local_body")
-		private String localBody;
+//		@Column(name = "local_body")
+//		private String localBody;
 
 		@Column(name = "lac")
 		private String lac;
@@ -39,23 +39,23 @@ public class HospitalMaster implements Serializable {
 		@Column(name = "geometry")
 		private transient Point geometry;
 		
-		@Column(name = "hospital_code")
-		private String hospitalCode;
+//		@Column(name = "hospital_code")
+//		private String hospitalCode;
 		
-		@Column(name = "operation_theatre_count")
-		private Long operationtheatreCount;
-		
-		@Column(name = "dialysis_machines_count")
-		private Long dialysisMachinesCount;
-		
-		@Column(name = "ward_count")
-		private Long wardCount;
-		
-		@Column(name = "subcenter_count")
-		private Long subCenterCount;
-		
-		@Column(name = "houshold_gramapanchyt_count")
-		private Long housholdGpCount;
+//		@Column(name = "operation_theatre_count")
+//		private Long operationtheatreCount;
+//		
+//		@Column(name = "dialysis_machines_count")
+//		private Long dialysisMachinesCount;
+//		
+//		@Column(name = "ward_count")
+//		private Long wardCount;
+//		
+//		@Column(name = "subcenter_count")
+//		private Long subCenterCount;
+//		
+//		@Column(name = "houshold_gramapanchyt_count")
+//		private Long housholdGpCount;
 		
 		@Column(name = "nin")
 		private Long nin;
@@ -92,13 +92,13 @@ public class HospitalMaster implements Serializable {
 			this.hospitalName = hospitalName;
 		}
 
-		public String getLocalBody() {
-			return localBody;
-		}
-
-		public void setLocalBody(String localBody) {
-			this.localBody = localBody;
-		}
+//		public String getLocalBody() {
+//			return localBody;
+//		}
+//
+//		public void setLocalBody(String localBody) {
+//			this.localBody = localBody;
+//		}
 
 		public String getLac() {
 			return lac;
@@ -116,13 +116,13 @@ public class HospitalMaster implements Serializable {
 			this.geometry = geometry;
 		}
 
-		public String getHospitalCode() {
-			return hospitalCode;
-		}
-
-		public void setHospitalCode(String hospitalCode) {
-			this.hospitalCode = hospitalCode;
-		}
+//		public String getHospitalCode() {
+//			return hospitalCode;
+//		}
+//
+//		public void setHospitalCode(String hospitalCode) {
+//			this.hospitalCode = hospitalCode;
+//		}
 
 		public Long getNin() {
 			return nin;
@@ -141,72 +141,72 @@ public class HospitalMaster implements Serializable {
 		/**
 		 * @return the operationtheatreCount
 		 */
-		public Long getOperationtheatreCount() {
-			return operationtheatreCount;
-		}
-
-		/**
-		 * @param operationtheatreCount the operationtheatreCount to set
-		 */
-		public void setOperationtheatreCount(Long operationtheatreCount) {
-			this.operationtheatreCount = operationtheatreCount;
-		}
-
-		/**
-		 * @return the dialysisMachinesCount
-		 */
-		public Long getDialysisMachinesCount() {
-			return dialysisMachinesCount;
-		}
-
-		/**
-		 * @param dialysisMachinesCount the dialysisMachinesCount to set
-		 */
-		public void setDialysisMachinesCount(Long dialysisMachinesCount) {
-			this.dialysisMachinesCount = dialysisMachinesCount;
-		}
-
-		/**
-		 * @return the wardCount
-		 */
-		public Long getWardCount() {
-			return wardCount;
-		}
-
-		/**
-		 * @param wardCount the wardCount to set
-		 */
-		public void setWardCount(Long wardCount) {
-			this.wardCount = wardCount;
-		}
-
-		/**
-		 * @return the housholdGpCount
-		 */
-		public Long getHousholdGpCount() {
-			return housholdGpCount;
-		}
-
-		/**
-		 * @param housholdGpCount the housholdGpCount to set
-		 */
-		public void setHousholdGpCount(Long housholdGpCount) {
-			this.housholdGpCount = housholdGpCount;
-		}
-
-		/**
-		 * @return the subCenterCount
-		 */
-		public Long getSubCenterCount() {
-			return subCenterCount;
-		}
-
-		/**
-		 * @param subCenterCount the subCenterCount to set
-		 */
-		public void setSubCenterCount(Long subCenterCount) {
-			this.subCenterCount = subCenterCount;
-		}
+//		public Long getOperationtheatreCount() {
+//			return operationtheatreCount;
+//		}
+//
+//		/**
+//		 * @param operationtheatreCount the operationtheatreCount to set
+//		 */
+//		public void setOperationtheatreCount(Long operationtheatreCount) {
+//			this.operationtheatreCount = operationtheatreCount;
+//		}
+//
+//		/**
+//		 * @return the dialysisMachinesCount
+//		 */
+//		public Long getDialysisMachinesCount() {
+//			return dialysisMachinesCount;
+//		}
+//
+//		/**
+//		 * @param dialysisMachinesCount the dialysisMachinesCount to set
+//		 */
+//		public void setDialysisMachinesCount(Long dialysisMachinesCount) {
+//			this.dialysisMachinesCount = dialysisMachinesCount;
+//		}
+//
+//		/**
+//		 * @return the wardCount
+//		 */
+//		public Long getWardCount() {
+//			return wardCount;
+//		}
+//
+//		/**
+//		 * @param wardCount the wardCount to set
+//		 */
+//		public void setWardCount(Long wardCount) {
+//			this.wardCount = wardCount;
+//		}
+//
+//		/**
+//		 * @return the housholdGpCount
+//		 */
+//		public Long getHousholdGpCount() {
+//			return housholdGpCount;
+//		}
+//
+//		/**
+//		 * @param housholdGpCount the housholdGpCount to set
+//		 */
+//		public void setHousholdGpCount(Long housholdGpCount) {
+//			this.housholdGpCount = housholdGpCount;
+//		}
+//
+//		/**
+//		 * @return the subCenterCount
+//		 */
+//		public Long getSubCenterCount() {
+//			return subCenterCount;
+//		}
+//
+//		/**
+//		 * @param subCenterCount the subCenterCount to set
+//		 */
+//		public void setSubCenterCount(Long subCenterCount) {
+//			this.subCenterCount = subCenterCount;
+//		}
 
 		public HospitalTypeMaster getHospitalTypeMaster() {
 			return hospitalTypeMaster;

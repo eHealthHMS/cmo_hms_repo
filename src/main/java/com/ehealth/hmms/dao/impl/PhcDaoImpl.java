@@ -844,7 +844,7 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 					+ "housevisit_mo,housevisit_hs,housevisit_phns,housevisit_hi,housevisit_phn,housevisit_jhi,housevisit_jphn,"
 					+ "housevisit_asha,regular_sc_clinic from monthlydata_fhc_chc md inner join hospital_monthlytracker mt "
 					+ " on md.hospmonthlytrack_id  = mt.id inner join  hospital_master hm  on mt.hospital_id=hm.gid where "
-					+ "hm.nin=:hospitalCode and mt.report_date=to_date(:reportDate,'yyyy-mm-dd')";
+					+ "hm.nin=:hospitalCode and mt.report_date=to_date(:reportDate,'yyyy-mm-dd') and mt.final_submit_done=true";
 			Query query = session.createSQLQuery(strQuery);
 			 query.setDate("reportDate", getReportDate());
 			 query.setLong("hospitalCode", hospitalId);

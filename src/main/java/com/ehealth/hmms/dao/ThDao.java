@@ -1,6 +1,7 @@
 package com.ehealth.hmms.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
 import com.ehealth.hmms.pojo.FundExpenditure;
@@ -27,4 +28,8 @@ public interface ThDao {
 	OpIpDetails fetchOpIpDetails(Long hospitalId)throws Exception;
 
 	MonthlyDataTh fetchMonthlyDataTh(Long hospitalId)throws Exception;
+	
+	Map<String,String> getThalukBasicData(Long nin)throws Exception;
+	
+	
 }

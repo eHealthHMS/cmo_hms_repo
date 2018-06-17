@@ -5,6 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,6 +17,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,6 +71,49 @@ public class ThDaoImpl implements ThDao {
 			session.saveOrUpdate(departmentWiseOpIp);
 		}
 		return true;
+	}
+
+	public Map<String,String> getThalukBasicData(Long nin){
+		Session session = this.sessionFactory.getCurrentSession();
+		Object[] opIpDetails = null;
+		Object[] serviceAreasOthers = null;
+		Object[] diaLysisDetails = null;
+		
+		HospitalMaster hospitalMaster = (HospitalMaster) session.get(HospitalMaster.class, nin);
+		if(hospitalMaster!=null) {
+			
+			Query query = session.createQuery("from HospitalMonthlyTracker hmt where hmt.hospital.id=:hospital_id and hmt.report_date=:report_date and hmt.finalSubmitDone=true" );
+			HospitalMonthlyTracker hospitalMonthlyTracker = (HospitalMonthlyTracker) query.setParameter("hospital_id", hospitalMaster.getId())
+																						   .setParameter("report_date", getReportDate()).uniqueResult();
+			if(hospitalMonthlyTracker != null) {
+				opIpDetails = (Object[]) session.createQuery("select opipdet.forenoonOpTotal+opipdet.afternoonOpTotal,opipdet.emrPatinetAttended, "
+									+ "opipdet.ipAdmissionsTotal from OpIpDetails opipdet "
+									+ "where opipdet.hospitalMonthlyTracker.id=:hospmonthlytrack_id")
+									.setParameter("hospmonthlytrack_id", hospitalMonthlyTracker.getId())
+									.uniqueResult();
+				serviceAreasOthers = (Object[])session.createQuery("select sao.ogLscsCount+sao.ogNormalDeliveryCount "
+						+ "from ServiceAreaOthers sao "
+						+ "where sao.hospitalMonthlyTracker.id=:hospmonthlytrack_id")
+						.setParameter("hospmonthlytrack_id", hospitalMonthlyTracker.getId())
+						.uniqueResult();
+				diaLysisDetails = (Object[])session.createQuery("select dia.diaTotalCount "
+						+ "from LabDialysis dia "
+						+ "where dia.hospitalMonthlyTracker.id=:hospmonthlytrack_id")
+						.setParameter("hospmonthlytrack_id", hospitalMonthlyTracker.getId())
+						.uniqueResult();
+			}
+			
+			
+			//HospitalMonthlyTracker hospitalMonthlyTracker = session.get(HospitalMonthlyTracker.class, hospitalMaster.)
+		}
+		Map<String, String> basicData = new HashMap<String,String>();
+		basicData.put("totalOPCount",(opIpDetails[0]==null?"no value":String.valueOf(opIpDetails[0])));
+		basicData.put("emrPatientsAdmitted",(opIpDetails[1]==null?"no value":String.valueOf(opIpDetails[1])));
+		basicData.put("ipAdmissionsTotal",(opIpDetails[2]==null?"no value":String.valueOf(opIpDetails[2])));
+		basicData.put("totalDeliveryCount", (serviceAreasOthers==null?"no value":String.valueOf(serviceAreasOthers[0])));
+		basicData.put("hospitalName", hospitalMaster.getHospitalName()==null?"no value":hospitalMaster.getHospitalName());
+		basicData.put("totalDiaCount", (diaLysisDetails==null?"no value":String.valueOf(diaLysisDetails[0])));
+		return basicData;
 	}
 
 	public Boolean saveOrUpdateServiceAreaOthers(ServiceAreaOthers serviceAreaOthers) throws Exception {

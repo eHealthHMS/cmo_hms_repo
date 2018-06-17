@@ -1,12 +1,15 @@
 package com.ehealth.hmms.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.ehealth.hmms.dao.PhcDao;
 import com.ehealth.hmms.pojo.CategoryDetails;
+import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.service.PhcService;
@@ -31,45 +34,46 @@ public class PhcServiceImpl implements PhcService {
 		Result result = new Result();
 		
 		try {
-			Long trackerId=phcDao.getHospitalTrakerForSave(dataFhcChc.getHospitalMonthlyTracker());
-			if(trackerId==0) {
-				result.setStatus(Constants.FAILURE_STATUS);
-			}else {
+			HospitalMonthlyTracker hospitalMonthlyTracker=phcDao.getHospitalTrakerForSave(dataFhcChc.getHospitalMonthlyTracker());
+			dataFhcChc.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 				Integer type = dataFhcChc.getType();
 				switch (type) {
 				case 1: {
-					 result = phcDao.saveInstitutionalData(dataFhcChc,trackerId);
+					 result = phcDao.saveInstitutionalData(dataFhcChc);
 					break;
 				}
 				case 2: {
-					result = phcDao.saveMeetings(dataFhcChc, trackerId);
+					result = phcDao.saveMeetings(dataFhcChc);
 					break;
 				}
 				case 3: {
-					result = phcDao.saveSubCentreDetails(dataFhcChc, trackerId);
+					result = phcDao.saveSubCentreDetails(dataFhcChc);
 					break;
 				}
 				case 4: {
-					result = phcDao.saveFieldWorks(dataFhcChc, trackerId);
+					result = phcDao.saveFieldWorks(dataFhcChc);
 					break;
 				}
 				case 5: {
-					result = phcDao.saveInstitutionalData(dataFhcChc,trackerId);
+					result = phcDao.saveInstitutionalData(dataFhcChc);
 					if(result.getStatus().equals(Constants.FAILURE_STATUS)) {
 						break;
 					}
-					result = phcDao.saveMeetings(dataFhcChc, trackerId);
+					result = phcDao.saveMeetings(dataFhcChc);
+					if(result.getStatus().equals(Constants.FAILURE_STATUS)) {
+						
+						break;
+					}
+					result = phcDao.saveSubCentreDetails(dataFhcChc);
 					if(result.getStatus().equals(Constants.FAILURE_STATUS)) {
 						break;
 					}
-					result = phcDao.saveSubCentreDetails(dataFhcChc, trackerId);
-					if(result.getStatus().equals(Constants.FAILURE_STATUS)) {
-						break;
-					}
-					result = phcDao.saveFieldWorks(dataFhcChc, trackerId);
+					result = phcDao.saveFieldWorks(dataFhcChc);
 					
 					if(result.getStatus().equals(Constants.SUCCESS_STATUS)) {
 						//todo update final submit status
+					//	hospitalMonthlyTracker.
+					//	phcDao.updateHospitalMonthlyTracker(dataFhcChc.getHospitalMonthlyTracker(),true);
 						break;
 					}
 					break;
@@ -80,69 +84,41 @@ public class PhcServiceImpl implements PhcService {
 
 				}
 				}
-			}
-		
-			
-			
-			
 
-//			MonthlyDataFhcChc dataFhcChcToSave = new MonthlyDataFhcChc();
+		
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+		}
+		return result;
+	}
+
+//	public Result getPhcStaticData(String hospitalId) throws Exception {
+//		Result result = new Result();
+//		try {
+//			List<CategoryDetails> categoryDetailsList = phcDao.getPhcStaticData(hospitalId);
 //
-//			HospitalMonthlyTracker hospitalMonthlyTracker = dataFhcChc.getHospitalMonthlyTracker();// new
-//																									// HospitalMonthlyTracker();
-//			Long hospitalId = hospitalMonthlyTracker.getHospital().getId();
-		
-		//result = phcDao.saveFunctionalComponents(dataFhcChc);
-		
-		} catch (Exception e) {
-			result.setStatus(Constants.FAILURE_STATUS);
-		}
-		return result;
-	}
-
-	public Result getPhcStaticData(String hospitalId) throws Exception {
-		Result result = new Result();
-		try {
-			List<CategoryDetails> categoryDetailsList = phcDao.getPhcStaticData(hospitalId);
-
-			if (categoryDetailsList != null && !categoryDetailsList.isEmpty()) {
-
-				result.setValue(categoryDetailsList);
-				result.setStatus(Constants.SUCCESS_STATUS);
-
-			} else {
-				result.setStatus(Constants.FAILURE_STATUS);
-				result.setErrorMessage("Data not available");
-			}
-		} catch (Exception e) {
-			result.setStatus(Constants.FAILURE_STATUS);
-		}
-		return result;
-
-	}
-	
-	
-	public Result getPhcDynamicDataForDashboard(String hospitalId) throws Exception {
-		Result result = new Result();
-		try {
-			List<MonthlyDataFhcChc> dataFhcChcs = phcDao.getPhcDynamicDataForDashboard(hospitalId);
-
-			if (dataFhcChcs != null && !dataFhcChcs.isEmpty()) {
-				
-				result.setValue(dataFhcChcs);
-				result.setStatus(Constants.SUCCESS_STATUS);
-
-			} else {
-				result.setStatus(Constants.FAILURE_STATUS);
-				result.setErrorMessage("Data not available");
-			}
-		} catch (Exception e) {
-			result.setStatus(Constants.FAILURE_STATUS);
-		}
-		return result;
-
-	}
-	
+//			if (categoryDetailsList != null && !categoryDetailsList.isEmpty()) {
+//
+//				result.setValue(categoryDetailsList);
+//				result.setStatus(Constants.SUCCESS_STATUS);
+//
+//			} else {
+//				result.setStatus(Constants.FAILURE_STATUS);
+//				result.setErrorMessage("Data not available");
+//			}
+//		} catch (Exception e) {
+//			result.setStatus(Constants.FAILURE_STATUS);
+//		}
+//		return result;
+//
+//	}
+//	
+//	
+//	
+//	
+//	
+//	
+//	
 	public Result getPhcDynamicDataFromHospitalId(Long hospitalId)  throws Exception {
 		Result result = new Result();
 		try {
@@ -165,6 +141,13 @@ public class PhcServiceImpl implements PhcService {
 	}
 	
 	
+	
+	public Map<String,String>  getDataForMap( Long hospitalId) throws Exception {
+	
+	return phcDao.getDataForMap(hospitalId);
+	
+
+}
 		
 
 }

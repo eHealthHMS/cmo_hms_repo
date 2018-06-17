@@ -46,7 +46,7 @@ public class Users implements Serializable {
 	private HospitalMaster hospitalid;
 	
 	@ManyToOne(targetEntity=Role.class, fetch=FetchType.EAGER)
-	@JoinColumn(name = "id", insertable=false, updatable=false)
+	@JoinColumn(name = "roleid", insertable=false, updatable=false)
 	private Role roleid;
 
 	/**

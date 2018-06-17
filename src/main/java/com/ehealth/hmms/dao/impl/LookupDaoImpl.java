@@ -1,5 +1,6 @@
 package com.ehealth.hmms.dao.impl;
 
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -14,6 +15,8 @@ import com.ehealth.hmms.dao.LookupDao;
 @Transactional
 public class LookupDaoImpl implements LookupDao {
 
+	final static Logger logger = Logger.getLogger(LookupDaoImpl.class);
+
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -22,7 +25,7 @@ public class LookupDaoImpl implements LookupDao {
 		Session session = this.sessionFactory.getCurrentSession();
 		String value = null;
 		try {
-
+			logger.info("Entered LookupDaoImpl:getConfiguration");
 			String sql = "select value from configuration_master where key= :key";
 
 			Query query = session.createSQLQuery(sql);
@@ -40,6 +43,7 @@ public class LookupDaoImpl implements LookupDao {
 			throw new Exception("Exception : " + e.getMessage());
 
 		}
+		logger.info("Exited LookupDaoImpl:getConfiguration");
 		return value;
 	}
 

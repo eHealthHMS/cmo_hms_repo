@@ -2,6 +2,7 @@ package com.ehealth.hmms.controller;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,78 +17,68 @@ import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.ServiceAreaOthers;
 import com.ehealth.hmms.service.ThService;
 
-
 @RestController
 @RequestMapping("/th")
 public class ThController {
-	
+
+	final static Logger logger = Logger.getLogger(ThController.class);
+
 	@Autowired
 	private ThService thService;
-	
-	
-	
+
 	/**
-	 * @param thService the thService to set
+	 * @param thService
+	 *            the thService to set
 	 */
 	public void setThService(ThService thService) {
 		this.thService = thService;
 	}
 
-
-
-	@RequestMapping(value = "/saveAndUpdateOpIpDetails", method = RequestMethod.POST,headers="Accept=application/json")
-	public Result saveAndUpdateOpIpDetails( @RequestBody OpIpDetails opIpDetails) throws Exception{
-		
-		Result result =  thService.saveAndUpdateOpIpDetails(opIpDetails);
-		
+	@RequestMapping(value = "/saveAndUpdateOpIpDetails", method = RequestMethod.POST, headers = "Accept=application/json")
+	public Result saveAndUpdateOpIpDetails(@RequestBody OpIpDetails opIpDetails) throws Exception {
+		logger.info("Entered ThController:saveAndUpdateOpIpDetails");
+		Result result = thService.saveAndUpdateOpIpDetails(opIpDetails);
+		logger.info("Exited ThController:saveAndUpdateOpIpDetails");
 		return result;
 
 	}
-	
-	@RequestMapping(value = "/saveOrUpdateDeptWiseIpOpDetails", method = RequestMethod.POST,headers="Accept=application/json")
-	public Result saveOrUpdateDeptWiseIpOpDetails( @RequestBody List<DepartmentWiseOpIp> departmentWiseOpIpList) throws Exception{
-		
-		 
-		//ThService thService = new ThServiceImpl();
-		Result result =  thService.saveOrUpdateDeptWiseIpOpDetails(departmentWiseOpIpList);
-		
+
+	@RequestMapping(value = "/saveOrUpdateDeptWiseIpOpDetails", method = RequestMethod.POST, headers = "Accept=application/json")
+	public Result saveOrUpdateDeptWiseIpOpDetails(@RequestBody List<DepartmentWiseOpIp> departmentWiseOpIpList)
+			throws Exception {
+
+		logger.info("Entered ThController:saveAndUpdateOpIpDetails");
+		Result result = thService.saveOrUpdateDeptWiseIpOpDetails(departmentWiseOpIpList);
+		logger.info("Exited ThController:saveAndUpdateOpIpDetails");
 		return result;
 
 	}
-	
-	@RequestMapping(value = "/saveOrUpdateServiceAreaOthers", method = RequestMethod.POST,headers="Accept=application/json")
-	public Result saveOrUpdateServiceAreaOthers( @RequestBody ServiceAreaOthers serviceAreaOthers) throws Exception{
-		
-		 
-		//ThService thService = new ThServiceImpl();
-		Result result =  thService.saveOrUpdateServiceAreaOthers(serviceAreaOthers);
-		
+
+	@RequestMapping(value = "/saveOrUpdateServiceAreaOthers", method = RequestMethod.POST, headers = "Accept=application/json")
+	public Result saveOrUpdateServiceAreaOthers(@RequestBody ServiceAreaOthers serviceAreaOthers) throws Exception {
+		logger.info("Entered ThController:saveOrUpdateServiceAreaOthers");
+		Result result = thService.saveOrUpdateServiceAreaOthers(serviceAreaOthers);
+		logger.info("Exited ThController:saveOrUpdateServiceAreaOthers");
 		return result;
 
 	}
-	
-	@RequestMapping(value = "/saveOrUpdateFundExpenditure", method = RequestMethod.POST,headers="Accept=application/json")
-	public Result saveOrUpdateFundExpenditure( @RequestBody FundExpenditure fundExpenditure) throws Exception{
-		
-		 
-		//ThService thService = new ThServiceImpl();
-		Result result =  thService.saveOrUpdateFundExpenditure(fundExpenditure);
-		
+
+	@RequestMapping(value = "/saveOrUpdateFundExpenditure", method = RequestMethod.POST, headers = "Accept=application/json")
+	public Result saveOrUpdateFundExpenditure(@RequestBody FundExpenditure fundExpenditure) throws Exception {
+		logger.info("Entered ThController:saveOrUpdateFundExpenditure");
+		Result result = thService.saveOrUpdateFundExpenditure(fundExpenditure);
+		logger.info("Exited ThController:saveOrUpdateFundExpenditure");
 		return result;
 
 	}
-	
-	@RequestMapping(value = "/saveAndUpdateLabDialysis", method = RequestMethod.POST,headers="Accept=application/json")
-	public Result saveAndUpdateLabDialysis( @RequestBody LabDialysis labDialysis) throws Exception{
-		
-		 
-		//ThService thService = new ThServiceImpl();
-		Result result =  thService.saveAndUpdateLabDialysis(labDialysis);
-		
+
+	@RequestMapping(value = "/saveAndUpdateLabDialysis", method = RequestMethod.POST, headers = "Accept=application/json")
+	public Result saveAndUpdateLabDialysis(@RequestBody LabDialysis labDialysis) throws Exception {
+		logger.info("Entered ThController:saveAndUpdateLabDialysis");
+		Result result = thService.saveAndUpdateLabDialysis(labDialysis);
+		logger.info("Exited ThController:saveAndUpdateLabDialysis");
 		return result;
 
 	}
-			
 
-		
 }

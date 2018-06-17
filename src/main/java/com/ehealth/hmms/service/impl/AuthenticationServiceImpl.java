@@ -77,11 +77,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	public void setThDao(ThDao thDao) {
 		this.thDao = thDao;
 	}
-
+// For fetching data of fhc/chc/th for Android form
 	public Result authenticate(Users user) throws Exception {
 		Result result = new Result();
 
 		try {
+			logger.info("Entered Authenticate service with the following user details"+user);
 			Users userResult = authenticationDao.authenticate(user);
 			if (userResult != null) {
 				HospitalMaster hospitalMaster = userResult.getHospitalid();	
@@ -97,6 +98,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				Long hospitalId = hospitalMaster.getId();
 				if(hospitalTypeId == 15 || hospitalTypeId == 16 || hospitalTypeId == 17 || hospitalTypeId == 20)
 				{	
+					logger.info("Entered autenticate service for fetching phc/chc data while user login");
 					MonthlyDataFhcChc monthlyPhcResult = phcDao.fetchPhcRecord(hospitalId);
 					HospitalMonthlyTracker hospitalMonthlyTracker = monthlyPhcResult.getHospitalMonthlyTracker();	
 					hospitalMonthlyTracker.setHospital(hospitalMaster);
@@ -106,6 +108,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				}
 				else if(hospitalTypeId == 18 || hospitalTypeId == 19)
 				{
+					logger.info("Entered authenticate service for fetching the taluk hospital related data on user login");
 					MonthlyDataTh monthlyDataTh = thDao.fetchMonthlyDataTh(hospitalId);
 					HospitalMonthlyTracker hospitalMonthlyTracker = monthlyDataTh.getHospitalMonthlyTracker();	
 					hospitalMonthlyTracker.setHospital(hospitalMaster);
@@ -122,6 +125,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 		} catch (Exception e) {
 			result.setStatus(Constants.FAILURE_STATUS);
+			logger.error(e);
 		}
 		return result;
 	}

@@ -69,16 +69,17 @@ public class SurgeryDetailsThDhGh implements Serializable {
 		this.categoryMaster = categoryMaster;
 	}
 
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id")
-	public HospitalMonthlyTracker getHospitalMaster() {
+	public HospitalMonthlyTracker getHospitalMonthlyTracker() {
 		return hospitalMonthlyTracker;
 	}
 
-	public void setHospitalMaster(HospitalMonthlyTracker hospitalMonthlyTracker) {
+	public void setHospitalMonthlyTracker(HospitalMonthlyTracker hospitalMonthlyTracker) {
 		this.hospitalMonthlyTracker = hospitalMonthlyTracker;
 	}
-	
+
 	
 	
 }

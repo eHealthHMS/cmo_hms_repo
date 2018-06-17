@@ -17,11 +17,11 @@ import com.ehealth.hmms.service.ThService;
 @RequestMapping("/dashboard")
 public class DashboardController {
 
-	final static Logger logger = Logger.getLogger(AuthenticationController.class);
+	final static Logger logger = Logger.getLogger(DashboardController.class);
 
 	@Autowired
 	private PhcService phcService;
-	
+
 	@Autowired
 	private ThService thService;
 
@@ -35,30 +35,29 @@ public class DashboardController {
 
 	@RequestMapping(value = "/getDataForMap/{hospitalId}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public Map<String, String> getDataForMap(@PathVariable("hospitalId") Long hospitalId) throws Exception {
-
+		logger.info("Entered DashboardController:getDataForMap");
 		Map<String, String> result = phcService.getDataForMap(hospitalId);
-
+		logger.info("Exited DashboardController:getDataForMap");
 		return result;
 
 	}
-	
+
 	@RequestMapping(value = "/getDetailedDataForMap/{hospitalId}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public Result getDetailedDataForMap(@PathVariable("hospitalId") Long hospitalId) throws Exception {
-
-		Result result = phcService.getPhcDynamicDataFromHospitalId(hospitalId);//(hospitalId);
-
+		logger.info("Entered DashboardController:getDetailedDataForMap");
+		Result result = phcService.getPhcDynamicDataFromHospitalId(hospitalId);// (hospitalId);
+		logger.info("Exited DashboardController:getDetailedDataForMap");
 		return result;
 
 	}
-	
+
 	@RequestMapping(value = "/getThalukBasicData/{hospitalId}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public Map<String, String> getThalukBasicData(@PathVariable("hospitalId") Long hospitalId) throws Exception {
-
-		Map<String, String> result = thService.getThalukBasicData(hospitalId);//(hospitalId);
-
+		logger.info("Entered DashboardController:getThalukBasicData");
+		Map<String, String> result = thService.getThalukBasicData(hospitalId);// (hospitalId);
+		logger.info("Exited DashboardController:getThalukBasicData");
 		return result;
 
 	}
-	
 
 }

@@ -16,20 +16,19 @@ public interface ThDao {
 	Boolean saveAndUpdateOpIpDetails(OpIpDetails opIpDetails) throws Exception;
 
 	Boolean saveOrUpdateDeptWiseIpOpDetails(List<DepartmentWiseOpIp> departmentWiseOpIpList) throws Exception;
-	
+
 	Boolean saveOrUpdateServiceAreaOthers(ServiceAreaOthers serviceAreaOthers) throws Exception;
-	
+
 	Boolean saveOrUpdateFundExpenditure(FundExpenditure fundExpenditure) throws Exception;
 
-	Boolean saveAndUpdateSpecialityClinicData(List<SpecialityClinicData> specialityClinicDataList)throws Exception;
-	
+	Boolean saveAndUpdateSpecialityClinicData(List<SpecialityClinicData> specialityClinicDataList) throws Exception;
+
 	Boolean saveAndUpdateLabDialysis(LabDialysis labDialysis) throws Exception;
 
-	OpIpDetails fetchOpIpDetails(Long hospitalId)throws Exception;
+	OpIpDetails fetchOpIpDetails(Long hospitalId) throws Exception;
 
-	MonthlyDataTh fetchMonthlyDataTh(Long hospitalId)throws Exception;
-	
-	Map<String,String> getThalukBasicData(Long nin)throws Exception;
-	
-	
+	MonthlyDataTh fetchMonthlyDataTh(Long hospitalId) throws Exception;
+
+	Map<String, String> getThalukBasicData(Long nin) throws Exception;
+
 }

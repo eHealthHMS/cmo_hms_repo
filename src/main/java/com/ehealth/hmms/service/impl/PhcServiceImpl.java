@@ -3,6 +3,7 @@ package com.ehealth.hmms.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,8 @@ import com.ehealth.hmms.util.Constants;
 
 @Service
 public class PhcServiceImpl implements PhcService {
+
+	final static Logger logger = Logger.getLogger(PhcServiceImpl.class);
 
 	 @Autowired
 	private PhcDao phcDao;
@@ -29,6 +32,8 @@ public class PhcServiceImpl implements PhcService {
 	}
 
 	public Result savePhcTransactionalData(MonthlyDataFhcChc dataFhcChc) throws Exception {
+		logger.info("Entered PhcServiceImpl:savePhcTransactionalData");
+
 		Result result = new Result();
 		
 		try {
@@ -87,37 +92,40 @@ public class PhcServiceImpl implements PhcService {
 		} catch (Exception e) {
 			result.setStatus(Constants.FAILURE_STATUS);
 		}
+		logger.info("Exited PhcServiceImpl:savePhcTransactionalData");
 		return result;
 	}
 
-//	public Result getPhcStaticData(String hospitalId) throws Exception {
-//		Result result = new Result();
-//		try {
-//			List<CategoryDetails> categoryDetailsList = phcDao.getPhcStaticData(hospitalId);
-//
-//			if (categoryDetailsList != null && !categoryDetailsList.isEmpty()) {
-//
-//				result.setValue(categoryDetailsList);
-//				result.setStatus(Constants.SUCCESS_STATUS);
-//
-//			} else {
-//				result.setStatus(Constants.FAILURE_STATUS);
-//				result.setErrorMessage("Data not available");
-//			}
-//		} catch (Exception e) {
-//			result.setStatus(Constants.FAILURE_STATUS);
-//		}
-//		return result;
-//
-//	}
-//	
-//	
-//	
-//	
-//	
-//	
-//	
-	public Result getPhcDynamicDataFromHospitalId(Long hospitalId)  throws Exception {
+	// public Result getPhcStaticData(String hospitalId) throws Exception {
+	// Result result = new Result();
+	// try {
+	// List<CategoryDetails> categoryDetailsList =
+	// phcDao.getPhcStaticData(hospitalId);
+	//
+	// if (categoryDetailsList != null && !categoryDetailsList.isEmpty()) {
+	//
+	// result.setValue(categoryDetailsList);
+	// result.setStatus(Constants.SUCCESS_STATUS);
+	//
+	// } else {
+	// result.setStatus(Constants.FAILURE_STATUS);
+	// result.setErrorMessage("Data not available");
+	// }
+	// } catch (Exception e) {
+	// result.setStatus(Constants.FAILURE_STATUS);
+	// }
+	// return result;
+	//
+	// }
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	public Result getPhcDynamicDataFromHospitalId(Long hospitalId) throws Exception {
+		logger.info("Entered PhcServiceImpl:getPhcDynamicDataFromHospitalId");
 		Result result = new Result();
 		try {
 			List<Map<String,String>> resultList = phcDao.getPhcDynamicDataFromHospitalId(hospitalId);
@@ -125,6 +133,7 @@ public class PhcServiceImpl implements PhcService {
 			if (resultList != null && !resultList.isEmpty()) {
 				
 				result.setValue(resultList);
+
 				result.setStatus(Constants.SUCCESS_STATUS);
 
 			} else {
@@ -134,6 +143,8 @@ public class PhcServiceImpl implements PhcService {
 		} catch (Exception e) {
 			result.setStatus(Constants.FAILURE_STATUS);
 		}
+		logger.info("Exited PhcServiceImpl:getPhcDynamicDataFromHospitalId");
+
 		return result;
 
 	}

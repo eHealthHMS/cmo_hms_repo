@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -18,9 +19,10 @@ public class SurgeryDetailsThDhGh implements Serializable {
 
 	private static final long serialVersionUID = -298595611083363309L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Id 
+	@SequenceGenerator(name="surgerydetails_thghdh_sequence",sequenceName="surgerydetails_thghdh_seq", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="surgerydetails_thghdh_sequence")
+	@Column(name="id", unique=true, nullable=false)
 	private Long id;
 
 	@Column(name = "majorsurgery")
@@ -67,16 +69,17 @@ public class SurgeryDetailsThDhGh implements Serializable {
 		this.categoryMaster = categoryMaster;
 	}
 
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id")
-	public HospitalMonthlyTracker getHospitalMaster() {
+	public HospitalMonthlyTracker getHospitalMonthlyTracker() {
 		return hospitalMonthlyTracker;
 	}
 
-	public void setHospitalMaster(HospitalMonthlyTracker hospitalMonthlyTracker) {
+	public void setHospitalMonthlyTracker(HospitalMonthlyTracker hospitalMonthlyTracker) {
 		this.hospitalMonthlyTracker = hospitalMonthlyTracker;
 	}
-	
+
 	
 	
 }

@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -19,9 +20,10 @@ public class HospitalMaster implements Serializable {
 
 		private static final long serialVersionUID = -7788619177798333712L;
 		
-		@Id
-		@GeneratedValue(strategy = GenerationType.IDENTITY)
-	    @Column(name = "gid")
+		@Id 
+		@SequenceGenerator(name="hospital_master_sequence",sequenceName="hospital_master_seq1", allocationSize=1)
+		@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="hospital_master_sequence")
+		@Column(name="gid", unique=true, nullable=false)
 		private Long id;
 		
 		@Column(name = "place")
@@ -39,23 +41,20 @@ public class HospitalMaster implements Serializable {
 		@Column(name = "geometry")
 		private transient Point geometry;
 		
-//		@Column(name = "hospital_code")
-//		private String hospitalCode;
+		@Column(name = "operation_theatre_count")
+		private Long operationtheatreCount;
 		
-//		@Column(name = "operation_theatre_count")
-//		private Long operationtheatreCount;
-//		
-//		@Column(name = "dialysis_machines_count")
-//		private Long dialysisMachinesCount;
-//		
-//		@Column(name = "ward_count")
-//		private Long wardCount;
-//		
-//		@Column(name = "subcenter_count")
-//		private Long subCenterCount;
-//		
-//		@Column(name = "houshold_gramapanchyt_count")
-//		private Long housholdGpCount;
+		@Column(name = "dialysis_machines_count")
+		private Long dialysisMachinesCount;
+		
+		@Column(name = "ward_count")
+		private Long wardCount;
+		
+		@Column(name = "subcenter_count")
+		private Long subCenterCount;
+		
+		@Column(name = "houshold_gramapanchyt_count")
+		private Long housholdGpCount;
 		
 		@Column(name = "nin")
 		private Long nin;
@@ -115,14 +114,6 @@ public class HospitalMaster implements Serializable {
 		public void setGeometry(Point geometry) {
 			this.geometry = geometry;
 		}
-
-//		public String getHospitalCode() {
-//			return hospitalCode;
-//		}
-//
-//		public void setHospitalCode(String hospitalCode) {
-//			this.hospitalCode = hospitalCode;
-//		}
 
 		public Long getNin() {
 			return nin;

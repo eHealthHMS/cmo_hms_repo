@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -20,9 +21,10 @@ public class Users implements Serializable {
 
 	private static final long serialVersionUID = -7788619177798333712L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Id 
+	@SequenceGenerator(name="users_sequence",sequenceName="users_seq", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="users_sequence")
+	@Column(name="id", unique=true, nullable=false)
 	private Long id;
 
 	@Column(name = "login_name")
@@ -44,6 +46,7 @@ public class Users implements Serializable {
 	private HospitalMaster hospitalid;
 	
 	@ManyToOne(targetEntity=Role.class, fetch=FetchType.EAGER)
+
 	@JoinColumn(name = "roleid",referencedColumnName="id", insertable=false, updatable=false)
 	private Role roleid;
 

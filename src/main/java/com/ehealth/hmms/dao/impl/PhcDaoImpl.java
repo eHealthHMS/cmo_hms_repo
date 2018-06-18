@@ -779,7 +779,6 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 
 			// resultSet = query.list();
 			Iterator iterator = query.list().iterator();
-			
 			while (iterator.hasNext()) {
 
 				Object[] row = (Object[]) iterator.next();

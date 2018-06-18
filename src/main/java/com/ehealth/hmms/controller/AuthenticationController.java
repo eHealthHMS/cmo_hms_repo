@@ -30,10 +30,9 @@ public class AuthenticationController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, headers = "Accept=application/json")
 	public Result authenticateUserForDataEntry(@RequestBody Users user) throws Exception {
-
-		// AuthenticationService authenticationService = new
-		// AuthenticationServiceImpl();
+		logger.info("Entered AuthenticationController:authenticateUserForDataEntry");
 		Result userResult = authenticationService.authenticate(user);
+		logger.info("Exited AuthenticationController:authenticateUserForDataEntry");
 		return userResult;
 
 	}
@@ -41,13 +40,48 @@ public class AuthenticationController {
 	@RequestMapping(value = "/loginForDashboard", method = RequestMethod.POST, headers = "Accept=application/json")
 	public Result authenticateUserForDashBoard(@RequestBody Users user) throws Exception {
 
-	
+		logger.info("Entered AuthenticationController:authenticateUserForDashBoard");
 		Result userResult = authenticationService.authenticateUserForDashBoard(user);
-
+		logger.info("Exited AuthenticationController:authenticateUserForDashBoard");
 		return userResult;
 
 	}
 
-	
+	// @RequestMapping(value = "/test/{hospitalId}", method =
+	// RequestMethod.GET,headers="Accept=application/json")
+	// public String gettestData(@PathVariable("hospitalId") String hospitalId)
+	// throws Exception{
+	//
+	//
+	// return "connected";
+	//
+	// }
 
+	// @RequestMapping(value = "/loginForDashboard", method =
+	// RequestMethod.POST,headers="Accept=application/json")
+	// public Result authenticateUserForDashBoard( @RequestBody Users user) throws
+	// Exception{
+	//
+	//
+	// AuthenticationService authenticationService = new
+	// AuthenticationServiceImpl();
+	// Result userResult = authenticationService.authenticateUserForDashBoard(user);
+	//
+	//
+	//
+	// return userResult;
+	//
+	// }
+
+	@RequestMapping(value = "/loginForTest", method = RequestMethod.POST, headers = "Accept=application/json")
+	public Result authenticateUserForTest(@RequestBody Users user) throws Exception {
+
+		logger.info("Entered AuthenticationController:authenticateUserForTest");
+		Result userResult = new Result();// authenticationService.authenticate(user);
+		logger.info("Exited AuthenticationController:authenticateUserForTest");
+		userResult.setStatus('S');
+
+		return userResult;
+
+	}
 }

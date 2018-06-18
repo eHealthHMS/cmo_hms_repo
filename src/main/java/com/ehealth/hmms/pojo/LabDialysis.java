@@ -5,11 +5,13 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -18,9 +20,10 @@ public class LabDialysis implements Serializable{
 	
 	private static final long serialVersionUID = -3042387409531442341L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Id 
+	@SequenceGenerator(name="lab_dialysis_xray_pharmacy_sequence",sequenceName="lab_dialysis_xray_pharmacy_seq", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="lab_dialysis_xray_pharmacy_sequence")
+	@Column(name="id", unique=true, nullable=false)	
 	private Long id;
 
 	@Column(name = "lab_patients_tested")
@@ -71,9 +74,15 @@ public class LabDialysis implements Serializable{
 	@Column(name = "ph_shortage_details")
 	private String phShortageDetails;
 	
-	private HospitalMonthlyTracker hospitalMonthlyTracker;
+	@Column(name = "drug_availability")
+	private String drugAvailability;
 	
-	private DrugAvailabilityStatus drugAvailabilityStatus;
+	@Column(name = "functional_ambulance")
+	private Boolean functionalAmbulance;
+	
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "hospmonthlytrack_id", referencedColumnName="id")
+	private HospitalMonthlyTracker hospitalMonthlyTracker;
 
 	public Long getId() {
 		return id;
@@ -211,18 +220,23 @@ public class LabDialysis implements Serializable{
 		this.phShortageDetails = phShortageDetails;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
-	public DrugAvailabilityStatus getDrugAvailabilityStatus() {
-		return drugAvailabilityStatus;
+	public String getDrugAvailability() {
+		return drugAvailability;
 	}
 
-	public void setDrugAvailabilityStatus(DrugAvailabilityStatus drugAvailabilityStatus) {
-		this.drugAvailabilityStatus = drugAvailabilityStatus;
+	public void setDrugAvailability(String drugAvailability) {
+		this.drugAvailability = drugAvailability;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
+	
+	public Boolean getFunctionalAmbulance() {
+		return functionalAmbulance;
+	}
+
+	public void setFunctionalAmbulance(Boolean functionalAmbulance) {
+		this.functionalAmbulance = functionalAmbulance;
+	}
+
 	public HospitalMonthlyTracker getHospitalMonthlyTracker() {
 		return hospitalMonthlyTracker;
 	}

@@ -4,6 +4,8 @@ package com.ehealth.hmms.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,38 +111,62 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	}
 	
 	
-	public Long averageHouseVisits(Long houseVisits,int nonWorkingDays) {
-	  
-		Long averageVisits = 0L;
-		if(houseVisits!=null && nonWorkingDays!=0) {
-			averageVisits= houseVisits/nonWorkingDays;
-	   }
-		return averageVisits;
-	}
+//	public String averageHouseVisits(Long houseVisits,int nonWorkingDays) {
+//	  
+//		Long averageVisits = 0L;
+//		if(houseVisits!=null && nonWorkingDays!=0) {
+//			averageVisits= houseVisits/nonWorkingDays;
+//	   }
+//		return averageVisits.toString();
+//	}
 	
 	
-	public int countNonWorkingDays() {
-	    Calendar calendar = Calendar.getInstance();
-	    // Note that month is 0-based in calendar, bizarrely.
-	    
-		calendar.add(Calendar.MONTH, -1);
-		calendar.set(Calendar.DAY_OF_MONTH, 1);
-	   /// calendar.set(year, month - 1, 1);
-	    int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+//	public int countNonWorkingDays() {
+//	    Calendar calendar = Calendar.getInstance();
+//	    // Note that month is 0-based in calendar, bizarrely.
+//	    
+//		calendar.add(Calendar.MONTH, -1);
+//		calendar.set(Calendar.DAY_OF_MONTH, 1);
+//	   /// calendar.set(year, month - 1, 1);
+//	    int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+//
+//	    int count = 1;// 1 for second saturday
+//	    for (int day = 1; day <= daysInMonth; day++) {
+//	       // calendar.set(year, month - 1, day);
+//	    	 calendar.set(Calendar.DAY_OF_MONTH,day);
+//	        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+//	        if (dayOfWeek == Calendar.SUNDAY) {// || dayOfweek == Calendar.SATURDAY) {
+//	            count++;
+//	           
+//	        }
+//	    }
+//	    return count;
+//	}
 
-	    int count = 1;// 1 for second saturday
-	    for (int day = 1; day <= daysInMonth; day++) {
-	       // calendar.set(year, month - 1, day);
-	    	 calendar.set(Calendar.DAY_OF_MONTH,day);
-	        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-	        if (dayOfWeek == Calendar.SUNDAY) {// || dayOfweek == Calendar.SATURDAY) {
-	            count++;
-	           
-	        }
-	    }
-	    return count;
+	
+	private Result getDashboardDataForMOs(HospitalMaster hospitalMaster) throws Exception {
+		Result result = new Result();
+		Integer typeId = hospitalMaster.getHospitalTypeMaster().getId().intValue();
+		
+		switch(typeId) 
+		{
+		//phc,fhc,chc,24*7
+		case 15:
+		case 16:
+		case 17:
+		case 20:{
+			result =phcService.getPhcDynamicDataFromHospitalId(hospitalMaster.getNin());
+
+			
+			break;
+		}
+		default:
+			result.setStatus(Constants.FAILURE_STATUS);
+			break;
+		}
+		return result;
 	}
-
+	
 
 	//for viewing dashboard
 	public Result authenticateUserForDashBoard(Users user)  throws Exception{
@@ -154,41 +180,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 			
 			//if(userResult.getHospitalid())
 			HospitalMaster hospitalMaster = userResult.getHospitalid();
-			if(hospitalMaster!=null  ) {
-				
-				Integer typeId = hospitalMaster.getHospitalTypeMaster().getId().intValue();
-				
-				switch(typeId) 
-				{
-				//phc,fhc,chc,24*7
-				case 15:
-				case 16:
-				case 17:
-				case 20:{
-					result =phcService.getPhcDynamicDataFromHospitalId(hospitalMaster.getNin());
-					
-					MonthlyDataFhcChc dataFhcChc =(MonthlyDataFhcChc) result.getValue();
-					if(dataFhcChc!=null && result.getStatus().equals(Constants.SUCCESS_STATUS) ) {
-						int nonworkingDays=countNonWorkingDays();
-						dataFhcChc.setHouseVisitAsha(averageHouseVisits(dataFhcChc.getHouseVisitAsha(),nonworkingDays));
-						dataFhcChc.setHouseVisitHi(averageHouseVisits(dataFhcChc.getHouseVisitHi(),nonworkingDays));
-						dataFhcChc.setHouseVisitHs(averageHouseVisits(dataFhcChc.getHouseVisitHs(),nonworkingDays));
-						dataFhcChc.setHouseVisitJhi(averageHouseVisits(dataFhcChc.getHouseVisitJhi(),nonworkingDays));
-						dataFhcChc.setHouseVisitMo(averageHouseVisits(dataFhcChc.getHouseVisitMo(),nonworkingDays));
-						dataFhcChc.setHouseVisitPhn(averageHouseVisits(dataFhcChc.getHouseVisitPhn(),nonworkingDays));
-						dataFhcChc.setHouseVisitJphn(averageHouseVisits(dataFhcChc.getHouseVisitJphn(),nonworkingDays));
-						dataFhcChc.setHouseVisitPhns(averageHouseVisits(dataFhcChc.getHouseVisitPhns(),nonworkingDays));
-						result.setValue(dataFhcChc);
-					}
-					
-					break;
-				}
-				default:
-					result.setStatus(Constants.FAILURE_STATUS);
-					break;
-				}
+			if(hospitalMaster!=null  && userResult.getRoleid().getId()==3) {
 				
 				
+				result = getDashboardDataForMOs(hospitalMaster);
 				
 			}else {
 				result.setStatus(Constants.FAILURE_STATUS);

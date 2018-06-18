@@ -39,15 +39,14 @@ public class DashboardController {
 		return result;
 
 	}
-	
+
 	@RequestMapping(value = "/getDetailedDataForMap/{hospitalId}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public Result getDetailedDataForMap(@PathVariable("hospitalId") Long hospitalId) throws Exception {
 
-		Result result = phcService.getPhcDynamicDataFromHospitalId(hospitalId);//(hospitalId);
+		Result result = phcService.getPhcDynamicDataFromHospitalId(hospitalId);
 
 		return result;
 
 	}
-	
 
 }

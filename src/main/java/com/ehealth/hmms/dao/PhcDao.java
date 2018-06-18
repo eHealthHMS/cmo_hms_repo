@@ -18,7 +18,7 @@ public interface PhcDao {
 
 //	List<MonthlyDataFhcChc> getPhcDynamicDataForDashboard(String hospitalId) throws Exception;
 
-	MonthlyDataFhcChc getPhcDynamicDataFromHospitalId(Long hospitalId) throws Exception;
+	Map<String,String> getPhcDynamicDataFromHospitalId(Long hospitalId) throws Exception;
 
 	HospitalMonthlyTracker getHospitalTrakerForSave(HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception;
 

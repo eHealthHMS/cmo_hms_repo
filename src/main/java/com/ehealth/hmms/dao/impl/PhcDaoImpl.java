@@ -43,30 +43,24 @@ public class PhcDaoImpl implements PhcDao {
 
 		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
 
-		// Transaction transaction = null;
 		List<CategoryDetails> categoryDetails = new ArrayList<CategoryDetails>();
-		// List<Object> resultSet = new ArrayList<Object>();
 		try {
-			// transaction = session.beginTransaction();
 			String strQuery = "select cm.category_name,cd.sanctioned_post,in_position,nhm,contract,total_staff_available"
 					+ " from category_details cd inner join category_master cm on cd.category_id=cm.id"
 					+ "  where hospital_id=:hospitalid";
 
 			Query query = session.createSQLQuery(strQuery);
 			query.setLong("hospitalid", new Long(hospitalId));
-			// resultSet = query.list();
 			Iterator iterator = query.list().iterator();
 
 			while (iterator.hasNext()) {
 
-				// Map row = (Map) iterator.next();
 				Object[] row = (Object[]) iterator.next();
 
 				CategoryMaster categoryMaster = new CategoryMaster();
 				CategoryDetails categoryDetailsResult = new CategoryDetails();
 				categoryMaster.setCategoryName((String) row[0]);
 
-				// categoryDetailsResult.setSanctionedPost(castObjectToLong)
 				categoryDetailsResult.setSanctionedPost(castObjectToLong(row[1]));
 				categoryDetailsResult.setInPosition(castObjectToLong(row[2]));
 				categoryDetailsResult.setNhm(castObjectToLong(row[3]));
@@ -78,14 +72,10 @@ public class PhcDaoImpl implements PhcDao {
 			}
 
 		} catch (HibernateException e) {
-			// if (transaction != null) {
-			// transaction.rollback();
-			// }
+			
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
-			// if (transaction != null) {
-			// transaction.rollback();
-			// }
+			
 			throw new Exception("Exception : " + e.getMessage());
 
 		}
@@ -184,9 +174,17 @@ public class PhcDaoImpl implements PhcDao {
 			return null;
 		}
 		
-		
-		
+	}
+	
 
+	private String castObjectToString(Object object) {
+
+		if(object!=null) {
+			return object.toString();
+		}else {
+			return null;
+		}
+		
 	}
 
 	private Boolean castObjectToBoolean(Object object) {
@@ -272,7 +270,6 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 		Result result = new Result();
 		try {
 
-			// Query query = "update MonthlyDataFhcChc set";
 			Query query = session
 					.createQuery("from MonthlyDataFhcChc where hospitalMonthlyTracker.id=:hospitalMonthlyTrackerId");
 
@@ -293,7 +290,6 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 
 				session.update(dataFhcChcFromDb);
 				result.setStatus(Constants.SUCCESS_STATUS);
-				// Iterator iterator = phcList.iterator();
 			} else {
 				session.save(dataFhcChc);
 				result.setStatus(Constants.SUCCESS_STATUS);
@@ -337,7 +333,6 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 
 				session.update(dataFhcChcFromDb);
 				result.setStatus(Constants.SUCCESS_STATUS);
-				// Iterator iterator = phcList.iterator();
 			} else {
 				session.save(dataFhcChc);
 				result.setStatus(Constants.SUCCESS_STATUS);
@@ -401,7 +396,6 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 	 */
 	public HospitalMonthlyTracker getHospitalTrakerForSave(HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
 
-		//Long trackerid = 0L;
 		HospitalMonthlyTracker trackerForCurrentMonth =null;
 		try {
 
@@ -411,11 +405,7 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 
 				if (trackerForCurrentMonth == null) {
 					trackerForCurrentMonth = createHospitalMonthlyTracker(hospitalId);
-
 				} 
-//				else {
-//					trackerid = trackerForCurrentMonth.getId();
-//				}
 
 			}
 
@@ -438,11 +428,7 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 	 * @throws Exception
 	 */
 	public HospitalMonthlyTracker createHospitalMonthlyTracker(Long hospitalId) throws Exception {
-	//	Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
-	//	Long trackerId = 0L;
-		// Transaction transaction = null;
-		//try {
-			// transaction = session.beginTransaction();
+	
 
 			HospitalMonthlyTracker trackerForCurrentMonth = new HospitalMonthlyTracker();
 			HospitalMaster hospitalMaster = new HospitalMaster();
@@ -452,18 +438,7 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 			trackerForCurrentMonth.setCreatedDate(Calendar.getInstance().getTime());
 			trackerForCurrentMonth.setReport_date(getReportDate());// setReportMonth(new
 							return trackerForCurrentMonth;									   // Long(Calendar.getInstance().get(Calendar.MONTH)));
-			//trackerId = (Long) session.save(trackerForCurrentMonth);
-
-//		} catch (HibernateException e) {
-//			
-//			throw new HibernateException("Hibernate Exception : " + e.getMessage());
-//		} catch (Exception e) {
-//			
-//			throw new Exception("Exception : " + e.getMessage());
-//
-//		}
-
-		//return trackerId;
+			
 	}
 	
 	
@@ -506,9 +481,7 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 
 		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
 		HospitalMonthlyTracker hospitalMonthlyTracker = null;
-		// Transaction transaction = null;
 		try {
-			// transaction = session.beginTransaction();
 
 			Query query = session.createQuery(
 					"from HospitalMonthlyTracker mt where mt.report_date=:reportDate and mt.hospital.id=:hospitalId");
@@ -542,9 +515,7 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 
 		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
 		HospitalMonthlyTracker hospitalMonthlyTracker = null;
-		// Transaction transaction = null;
 		try {
-			// transaction = session.beginTransaction();
 
 			Query query = session.createQuery(
 					"from HospitalMonthlyTracker mt where mt.reportMonth=:month and mt.hospital.id=:hospitalId");
@@ -558,25 +529,16 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 			}
 
 		} catch (HibernateException e) {
-			// if (transaction != null) {
-			// transaction.rollback();
-			// }
+			
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
-			// if (transaction != null) {
-			// transaction.rollback();
-			// }
+			
 			throw new Exception("Exception : " + e.getMessage());
 
 		}
 		return hospitalMonthlyTracker;
 	}
-	// private Date getFirstDateOfMonth() {
-	// Calendar cal = Calendar.getInstance();
-	// cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
-	// return cal.getTime();
-	// }
-
+	
 	public Date getReportDate() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.MONTH, -1);
@@ -594,25 +556,8 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 	public List<MonthlyDataFhcChc> getPhcDynamicDataForDashboard(String hospitalId) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
 
-		// Transaction transaction = null;
 		List<MonthlyDataFhcChc> dataFhcChcs = null;
-		// List<CategoryDetails> categoryDetails = new ArrayList<CategoryDetails>();
-		// List<Object> resultSet = new ArrayList<Object>();
 		try {
-			// transaction = session.beginTransaction();
-			// HospitalMonthlyTracker trackerForCurrentMonth =
-			// getMonthlyTrackerForCurrentMonth(new Long(hospitalId),
-			// Calendar.getInstance().get(Calendar.MONTH));
-			//
-			// Long trackerid = -1L;
-			// int i=-1;
-			// if (trackerForCurrentMonth == null) {
-			// // to do
-			//
-			// }
-			// else {
-
-			// Long trackerid = trackerForCurrentMonth.getId();
 
 			String strQuery = "select forenoon_op_tot,afternoon_op_tot,total_precheck,patient_lab_test,total_lab_test,total_attendee,"
 					+ "housevisit_mo,housevisit_hs,housevisit_phns,housevisit_hi,housevisit_phn,housevisit_jhi,housevisit_jphn,"
@@ -620,21 +565,11 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 					+ " on md.hospmonthlytrack_id  = mt.id inner join  hospital_master hm  on mt.hospital_id=hm.gid where "
 					+ "hm.hospital_code=:hospitalCode and mt.report_date=:reportDate";
 
-			// String strQuery = "select
-			// forenoonOpTotal,afternoonOpTotal,totalPrecheck,patientLabTest,totalLabTest,totalAttendee,"
-			// +
-			// "houseVisitMo,houseVisitHs,houseVisitPhns,houseVisitHi,houseVisitPhn,houseVisitJhi,houseVisitJphn,"
-			// +
-			// "houseVisitAsha,regularScClinic,m.hospitalMonthlyTracker.hospital.subCenterCount
-			// from MonthlyDataFhcChc m "
-			// + " where m.hospitalMonthlyTracker.hospital.id=:hospitalid and
-			// m.hospitalMonthlyTracker.report_date=:reportDate";
+			
 
 			Query query = session.createSQLQuery(strQuery);
-			// query.setDate("reportDate", getReportDate());
 			query.setString("hospitalCode", hospitalId);
 
-			// resultSet = query.list();
 			Iterator iterator = query.list().iterator();
 
 			while (iterator.hasNext()) {
@@ -660,44 +595,11 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 				monthlyDataFhcChc.setHouseVisitAsha(castObjectToLong(row[13]));
 				monthlyDataFhcChc.setRegularScClinic(castObjectToLong(row[14]));
 
-				// categoryDetailsResult.setSanctionedPost(castObjectToLong(row[1]));
-				// categoryDetailsResult.setInPosition(castObjectToLong(row[2]));
 
 			}
-			// .get(Calendar.MONTH)
-
-			// Criteria cr = session.createCriteria(MonthlyDataFhcChc.class,
-			// "MonthlyDataFhcChc")
-			// .createCriteria("MonthlyDataFhcChc.hospitalMonthlyTracker", "trackerTable")
-			// // .createCriteria("trackerTable.hospital", "hospitalTable") //needs to nbe
-			// enabled
-			// .add(Restrictions.eq("trackerTable.id", new Long(hospitalId))) //needs to be
-			// commented
-			// //.add(Restrictions.eq("hospital.hospitalCode", hospitalId))//needs to nbe
-			// enabled
-			// // .add(Restrictions.eq("trackerTable.report_date",getReportDate() ))
-			// .setProjection(Projections.projectionList()
-			// .add(Projections.property("forenoonOpTotal"), "forenoonOpTotal")
-			// .add(Projections.property("afternoonOpTotal"), "afternoonOpTotal")
-			// .add(Projections.property("totalPrecheck"), "totalPrecheck")
-			// .add(Projections.property("patientLabTest"), "patientLabTest")
-			// .add(Projections.property("totallabTest"), "totallabTest")
-			// .add(Projections.property("housevisitMo"), "housevisitMo")
-			// .add(Projections.property("housevisitHs"), "housevisitHs")
-			// .add(Projections.property("housevisitPhns"), "housevisitPhns")
-			// .add(Projections.property("housevisitHi"), "housevisitHi")
-			// .add(Projections.property("housevisitPhl"), "housevisitPhl")
-			// .add(Projections.property("housevisitJhi"), "housevisitJhi")
-			// .add(Projections.property("housevisitJphn"), "housevisitJphn"))
-			// .setResultTransformer(Transformers.aliasToBean(MonthlyDataFhcChc.class));
-
-			// dataFhcChcs = cr.list();
-
-			// }
+			
 		} catch (HibernateException e) {
-			// if (transaction != null) {
-			// transaction.rollback();
-			// }
+			
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
 			throw new Exception("Exception : " + e.getMessage());
@@ -709,15 +611,11 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 	public List<MonthlyDataFhcChc> getPhcDynamicDataTrend(String hospitalId) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
 
-		// Transaction transaction = null;
 		List<MonthlyDataFhcChc> dataFhcChcs = null;
-		// List<CategoryDetails> categoryDetails = new ArrayList<CategoryDetails>();
-		// List<Object> resultSet = new ArrayList<Object>();
+	
 		try {
-			// transaction = session.beginTransaction();
 			Calendar today = Calendar.getInstance();
 			HospitalMonthlyTracker trackerForCurrentMonth = getMonthlyTrackerForCurrentMonth(new Long(hospitalId));
-			// today.get(Calendar.MONTH));
 
 			Long trackerid = 0L;
 
@@ -759,14 +657,8 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 
 			}
 		} catch (HibernateException e) {
-			// if (transaction != null) {
-			// transaction.rollback();
-			// }
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
-			// if (transaction != null) {
-			// transaction.rollback();
-			// }
 			throw new Exception("Exception : " + e.getMessage());
 
 		}
@@ -825,25 +717,50 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 	}
 	
 	
+	public String averageHouseVisits(Long houseVisits,int nonWorkingDays) {
+		  
+		Long averageVisits = 0L;
+		if(houseVisits!=null && nonWorkingDays!=0) {
+			averageVisits= houseVisits/nonWorkingDays;
+	   }
+		return averageVisits.toString();
+	}
 	
-	public MonthlyDataFhcChc getPhcDynamicDataFromHospitalId(Long hospitalId) throws Exception {
-		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
+	public int countNonWorkingDays() {
+	    Calendar calendar = Calendar.getInstance();
+	    // Note that month is 0-based in calendar, bizarrely.
+	    
+		calendar.add(Calendar.MONTH, -1);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+	   /// calendar.set(year, month - 1, 1);
+	    int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
+	    int count = 1;// 1 for second saturday
+	    for (int day = 1; day <= daysInMonth; day++) {
+	       // calendar.set(year, month - 1, day);
+	    	 calendar.set(Calendar.DAY_OF_MONTH,day);
+	        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+	        if (dayOfWeek == Calendar.SUNDAY) {// || dayOfweek == Calendar.SATURDAY) {
+	            count++;
+	           
+	        }
+	    }
+	    return count;
+	}
+	
+	
+	public Map<String,String> getPhcDynamicDataFromHospitalId(Long hospitalId) throws Exception {
+		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
+		Map<String,String> resultMap = new HashMap<String, String>();
 		MonthlyDataFhcChc monthlyDataFhcChc = null;
 		try {
 
-//			String strQuery = "select forenoon_op_totafternoon_op_tot,total_precheck,patient_lab_test,total_lab_test,total_attendee,"
-//					+ "housevisit_mo,housevisit_hs,housevisit_phns,housevisit_hi,housevisit_phn,housevisit_jhi,housevisit_jphn,"
-//					+ "housevisit_asha,regular_sc_clinic from monthlydata_fhc_chc md inner join hospital_monthlytracker mt "
-//					+ " on md.hospmonthlytrack_id  = mt.id inner join  hospital_master hm  on mt.hospital_id=hm.gid where "
-//					+ "hm.hospital_code=:hospitalCode and mt.report_date=:reportDate";
-//		
-			
 			
 			String strQuery = "select forenoon_op_tot,afternoon_op_tot,total_precheck,patient_lab_test,total_lab_test,total_attendee,"
 					+ "housevisit_mo,housevisit_hs,housevisit_phns,housevisit_hi,housevisit_phn,housevisit_jhi,housevisit_jphn,"
-					+ "housevisit_asha,regular_sc_clinic from monthlydata_fhc_chc md inner join hospital_monthlytracker mt "
-					+ " on md.hospmonthlytrack_id  = mt.id inner join  hospital_master hm  on mt.hospital_id=hm.gid where "
+					+ "housevisit_asha,regular_sc_clinic,hm.subcenter_count from monthlydata_fhc_chc md inner join hospital_monthlytracker mt "
+					+ " on md.hospmonthlytrack_id  = mt.id inner join  hospital_master hm  on mt.hospital_id=hm.gid  inner join category_details cd"
+					+ " on cd.hospital_id=hm.gid where "
 					+ "hm.nin=:hospitalCode and mt.report_date=to_date(:reportDate,'yyyy-mm-dd') and mt.final_submit_done=true";
 			Query query = session.createSQLQuery(strQuery);
 			 query.setDate("reportDate", getReportDate());
@@ -851,29 +768,30 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 
 			// resultSet = query.list();
 			Iterator iterator = query.list().iterator();
-
+			
 			while (iterator.hasNext()) {
 
-				// Map row = (Map) iterator.next();
 				Object[] row = (Object[]) iterator.next();
-				 monthlyDataFhcChc = new MonthlyDataFhcChc();
-				monthlyDataFhcChc.setForenoonOpTotal(castObjectToLong(row[0]));
-				monthlyDataFhcChc.setAfternoonOpTotal(castObjectToLong(row[1]));
-				monthlyDataFhcChc.setTotalPrecheck(castObjectToLong(row[2]));
-				monthlyDataFhcChc.setPatientLabTest(castObjectToLong(row[3]));
-				monthlyDataFhcChc.setTotalLabTest(castObjectToLong(row[4]));
-
-				monthlyDataFhcChc.setTotalAttendee(castObjectToLong(row[5]));
-				monthlyDataFhcChc.setHouseVisitMo(castObjectToLong(row[6]));
-				monthlyDataFhcChc.setHouseVisitHs(castObjectToLong(row[7]));
-
-				monthlyDataFhcChc.setHouseVisitPhns(castObjectToLong(row[8]));
-				monthlyDataFhcChc.setHouseVisitHi(castObjectToLong(row[9]));
-				monthlyDataFhcChc.setHouseVisitPhn(castObjectToLong(row[10]));
-				monthlyDataFhcChc.setHouseVisitJhi(castObjectToLong(row[11]));
-				monthlyDataFhcChc.setHouseVisitJphn(castObjectToLong(row[12]));
-				monthlyDataFhcChc.setHouseVisitAsha(castObjectToLong(row[13]));
-				monthlyDataFhcChc.setRegularScClinic(castObjectToLong(row[14]));
+				int nonworkingDays=countNonWorkingDays();
+				resultMap.put("totalFnOp", castObjectToString(row[0]));
+				resultMap.put("totalAnOp", castObjectToString(row[1]));
+				resultMap.put("PrecheckByNurses",castObjectToString(row[2]));
+				resultMap.put("patientLabTest", castObjectToString(row[3]));
+				resultMap.put("totalLabTest", castObjectToString(row[4]));
+				resultMap.put("totalAttendee",castObjectToString(row[5]));
+				
+				resultMap.put("houseVisitAsha", averageHouseVisits(castObjectToLong(row[13]),nonworkingDays));
+				resultMap.put("houseVisitHi", averageHouseVisits(castObjectToLong(row[9]),nonworkingDays));
+				resultMap.put("houseVisitHs", averageHouseVisits(castObjectToLong(row[7]),nonworkingDays));
+				resultMap.put("houseVisitJhi", averageHouseVisits(castObjectToLong(row[11]),nonworkingDays));
+				resultMap.put("houseVisitMo", averageHouseVisits(castObjectToLong(row[6]),nonworkingDays));
+				resultMap.put("houseVisitPhn", averageHouseVisits(castObjectToLong(row[10]),nonworkingDays));
+				resultMap.put("houseVisitJphn", averageHouseVisits(castObjectToLong(row[12]),nonworkingDays));
+				resultMap.put("houseVisitPhns", averageHouseVisits(castObjectToLong(row[8]),nonworkingDays));
+				Long subCentreCount=castObjectToLong(row[15]);
+				if(subCentreCount!=null) {
+					resultMap.put("irregularSc",String.valueOf(subCentreCount-castObjectToLong(row[14])));
+				}
 
 			}
 
@@ -885,7 +803,7 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 			throw new Exception("Exception : " + e.getMessage());
 
 		} 
-		return monthlyDataFhcChc;
+		return resultMap;
 	}
 
 }

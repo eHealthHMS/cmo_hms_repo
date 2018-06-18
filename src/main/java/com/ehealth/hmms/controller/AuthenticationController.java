@@ -41,52 +41,13 @@ public class AuthenticationController {
 	@RequestMapping(value = "/loginForDashboard", method = RequestMethod.POST, headers = "Accept=application/json")
 	public Result authenticateUserForDashBoard(@RequestBody Users user) throws Exception {
 
-		// AuthenticationService authenticationService = new
-		// AuthenticationServiceImpl();
+	
 		Result userResult = authenticationService.authenticateUserForDashBoard(user);
 
 		return userResult;
 
 	}
 
-	// @RequestMapping(value = "/test/{hospitalId}", method =
-	// RequestMethod.GET,headers="Accept=application/json")
-	// public String gettestData(@PathVariable("hospitalId") String hospitalId)
-	// throws Exception{
-	//
-	//
-	// return "connected";
-	//
-	// }
-
-	// @RequestMapping(value = "/loginForDashboard", method =
-	// RequestMethod.POST,headers="Accept=application/json")
-	// public Result authenticateUserForDashBoard( @RequestBody Users user) throws
-	// Exception{
-	//
-	//
-	// AuthenticationService authenticationService = new
-	// AuthenticationServiceImpl();
-	// Result userResult = authenticationService.authenticateUserForDashBoard(user);
-	//
-	//
-	//
-	// return userResult;
-	//
-	// }
-
-//	@RequestMapping(value = "/loginForTest", method = RequestMethod.POST, headers = "Accept=application/json")
-//	public Result authenticateUserForTest(@RequestBody Users user) throws Exception {
-//
-//		// AuthenticationService authenticationService = new
-//		// AuthenticationServiceImpl();
-//		Result userResult = new Result();// authenticationService.authenticate(user);
-//
-//		// userResult.setHospitalName("test Hos");
-//		userResult.setStatus('S');
-//
-//		return userResult;
-//
-//	}
+	
 
 }

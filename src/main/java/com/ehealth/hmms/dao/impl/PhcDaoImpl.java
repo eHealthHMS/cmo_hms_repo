@@ -101,7 +101,7 @@ public class PhcDaoImpl implements PhcDao {
 
 			query.setParameter("hospitalId", hospitalId);
 
-			query.setParameter("date", getReportDate());
+			query.setParameter("date", getReportDate(-1));
 
 			List<MonthlyDataFhcChc> phcList = query.list();
 
@@ -436,7 +436,7 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 			trackerForCurrentMonth.setHospital(hospitalMaster);
 			trackerForCurrentMonth.setLastModified(Calendar.getInstance().getTime());
 			trackerForCurrentMonth.setCreatedDate(Calendar.getInstance().getTime());
-			trackerForCurrentMonth.setReport_date(getReportDate());// setReportMonth(new
+			trackerForCurrentMonth.setReport_date(getReportDate(-1));// setReportMonth(new
 							return trackerForCurrentMonth;									   // Long(Calendar.getInstance().get(Calendar.MONTH)));
 			
 	}
@@ -485,7 +485,7 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 
 			Query query = session.createQuery(
 					"from HospitalMonthlyTracker mt where mt.report_date=:reportDate and mt.hospital.id=:hospitalId");
-			query.setDate("reportDate", getReportDate());
+			query.setDate("reportDate", getReportDate(-1));
 			query.setLong("hospitalId", hospitalId);
 
 			List<HospitalMonthlyTracker> hospitalMonthlyTrackers = query.list();
@@ -539,9 +539,9 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 		return hospitalMonthlyTracker;
 	}
 	
-	public Date getReportDate() {
+	private Date getReportDate(int value) {
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.MONTH, -1);
+		calendar.add(Calendar.MONTH, value);
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		calendar.clear(Calendar.HOUR_OF_DAY);
 		calendar.clear(Calendar.AM_PM);
@@ -629,6 +629,15 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 				// to do
 
 			} else {
+				
+				String strQuery = "select forenoon_op_tot,afternoon_op_tot,total_precheck,patient_lab_test,total_lab_test,total_attendee,"
+						+ "housevisit_mo,housevisit_hs,housevisit_phns,housevisit_hi,housevisit_phn,housevisit_jhi,housevisit_jphn,"
+						+ "housevisit_asha,regular_sc_clinic,hm.subcenter_count from monthlydata_fhc_chc md inner join hospital_monthlytracker mt "
+						+ " on md.hospmonthlytrack_id  = mt.id inner join  hospital_master hm  on mt.hospital_id=hm.gid  inner join category_details cd"
+						+ " on cd.hospital_id=hm.gid where "
+						+ "hm.nin=:hospitalCode and mt.report_date=to_date(:reportDate,'yyyy-mm-dd') and mt.final_submit_done=true";				
+				
+				
 
 				String query = "select forenoonOpTotal,afternoonOpTotal,totalPrecheck,patientLabTest,totallabTest,housevisitMo,housevisitHs,"
 						+ "housevisitPhns,housevisitHi,housevisitPhl,housevisitJhi,housevisitJphn from MonthlyDataFhcChc where hospitalMonthlyTracker.reportMonth in ()";
@@ -676,7 +685,7 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 					+ " on md.hospmonthlytrack_id  = mt.id inner join  hospital_master hm  on mt.hospital_id=hm.gid where "
 					+ "hm.nin=:hospitalId and mt.report_date=to_date(:reportDate,'yyyy-mm-dd') and final_submit_done=true";
 			Query query = session.createSQLQuery(strQuery);
-			query.setDate("reportDate", getReportDate());
+			query.setDate("reportDate", getReportDate(-1));
 			query.setLong("hospitalId", hospitalId);
 
 			List resultSet = query.list();
@@ -749,10 +758,10 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 	}
 	
 	
-	public Map<String,String> getPhcDynamicDataFromHospitalId(Long hospitalId) throws Exception {
+	public List<Map<String,String>> getPhcDynamicDataFromHospitalId(Long hospitalId) throws Exception {
 		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
 		Map<String,String> resultMap = new HashMap<String, String>();
-		MonthlyDataFhcChc monthlyDataFhcChc = null;
+		List<Map<String,String>> resultList = new ArrayList<Map<String,String>>();
 		try {
 
 			
@@ -761,9 +770,11 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 					+ "housevisit_asha,regular_sc_clinic,hm.subcenter_count from monthlydata_fhc_chc md inner join hospital_monthlytracker mt "
 					+ " on md.hospmonthlytrack_id  = mt.id inner join  hospital_master hm  on mt.hospital_id=hm.gid  inner join category_details cd"
 					+ " on cd.hospital_id=hm.gid where "
-					+ "hm.nin=:hospitalCode and mt.report_date=to_date(:reportDate,'yyyy-mm-dd') and mt.final_submit_done=true";
+					+ "hm.nin=:hospitalCode and mt.report_date between to_date(:startReportDate,'yyyy-mm-dd') and  to_date(:endReportDate,'yyyy-mm-dd') and mt.final_submit_done=true";
+					//+ "hm.nin=:hospitalCode and mt.report_date=to_date(:reportDate,'yyyy-mm-dd') and mt.final_submit_done=true";
 			Query query = session.createSQLQuery(strQuery);
-			 query.setDate("reportDate", getReportDate());
+			 query.setDate("startReportDate", getReportDate(-1));
+			 query.setDate("endReportDate", getReportDate(-6));
 			 query.setLong("hospitalCode", hospitalId);
 
 			// resultSet = query.list();
@@ -792,6 +803,7 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 				if(subCentreCount!=null) {
 					resultMap.put("irregularSc",String.valueOf(subCentreCount-castObjectToLong(row[14])));
 				}
+				resultList.add(resultMap);
 
 			}
 
@@ -803,7 +815,7 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 			throw new Exception("Exception : " + e.getMessage());
 
 		} 
-		return resultMap;
+		return resultList;
 	}
 
 }

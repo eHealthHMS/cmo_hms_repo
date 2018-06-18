@@ -1,5 +1,6 @@
 package com.ehealth.hmms.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,11 +120,11 @@ public class PhcServiceImpl implements PhcService {
 	public Result getPhcDynamicDataFromHospitalId(Long hospitalId)  throws Exception {
 		Result result = new Result();
 		try {
-			Map<String,String> resultMap = phcDao.getPhcDynamicDataFromHospitalId(hospitalId);
+			List<Map<String,String>> resultList = phcDao.getPhcDynamicDataFromHospitalId(hospitalId);
 
-			if (resultMap != null && !resultMap.isEmpty()) {
+			if (resultList != null && !resultList.isEmpty()) {
 				
-				result.setValue(resultMap);
+				result.setValue(resultList);
 				result.setStatus(Constants.SUCCESS_STATUS);
 
 			} else {

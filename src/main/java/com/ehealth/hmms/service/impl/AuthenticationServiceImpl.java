@@ -131,38 +131,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	}
 	
 	
-//	public String averageHouseVisits(Long houseVisits,int nonWorkingDays) {
-//	  
-//		Long averageVisits = 0L;
-//		if(houseVisits!=null && nonWorkingDays!=0) {
-//			averageVisits= houseVisits/nonWorkingDays;
-//	   }
-//		return averageVisits.toString();
-//	}
-	
-	
-//	public int countNonWorkingDays() {
-//	    Calendar calendar = Calendar.getInstance();
-//	    // Note that month is 0-based in calendar, bizarrely.
-//	    
-//		calendar.add(Calendar.MONTH, -1);
-//		calendar.set(Calendar.DAY_OF_MONTH, 1);
-//	   /// calendar.set(year, month - 1, 1);
-//	    int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-//
-//	    int count = 1;// 1 for second saturday
-//	    for (int day = 1; day <= daysInMonth; day++) {
-//	       // calendar.set(year, month - 1, day);
-//	    	 calendar.set(Calendar.DAY_OF_MONTH,day);
-//	        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-//	        if (dayOfWeek == Calendar.SUNDAY) {// || dayOfweek == Calendar.SATURDAY) {
-//	            count++;
-//	           
-//	        }
-//	    }
-//	    return count;
-//	}
+	public Result changePassword(Users user) throws Exception {
+		Result result = new Result();
 
+		try {
+			logger.info("Entered AuthenticationServiceImpl:changePassword");
+			Users userResult = authenticationDao.authenticate(user);
+			if (userResult != null) {
+				userResult.setPassword(user.getNewPassword());
+				authenticationDao.changePassword(userResult);
+				
+			} else {
+				result.setStatus(Constants.FAILURE_STATUS);
+				result.setErrorMessage("Invalid Credentials");
+			}
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+			logger.error(e);
+		}
+		logger.info("Exited AuthenticationServiceImpl:changePassword");
+		return result;
+	}
 	
 	private Result getDashboardDataForMOs(HospitalMaster hospitalMaster) throws Exception {
 		Result result = new Result();

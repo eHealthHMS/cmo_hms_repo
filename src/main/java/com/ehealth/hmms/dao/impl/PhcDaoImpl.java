@@ -1,5 +1,7 @@
 package com.ehealth.hmms.dao.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -539,15 +541,26 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 		return hospitalMonthlyTracker;
 	}
 	
-	private Date getReportDate(int value) {
+	private Date getReportDate(int value)  throws ParseException{
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.MONTH, value);
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		
+		
+		
+		
 		calendar.clear(Calendar.HOUR_OF_DAY);
 		calendar.clear(Calendar.AM_PM);
 		calendar.clear(Calendar.MINUTE);
 		calendar.clear(Calendar.SECOND);
 		calendar.clear(Calendar.MILLISECOND);
+		
+//		SimpleDateFormat dmyFormat = new SimpleDateFormat("yyyy-MM-dd");
+//		String dmy = dmyFormat.format(calendar.getTime());
+//		return dmyFormat.parse(dmy);
+		
+		
+	
 		return calendar.getTime();
 	}
 
@@ -765,19 +778,23 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 		try {
 
 			
-			String strQuery = "select forenoon_op_tot,afternoon_op_tot,total_precheck,patient_lab_test,total_lab_test,total_attendee,"
-					+ "housevisit_mo,housevisit_hs,housevisit_phns,housevisit_hi,housevisit_phn,housevisit_jhi,housevisit_jphn,"
-					+ "housevisit_asha,regular_sc_clinic,hm.subcenter_count from monthlydata_fhc_chc md inner join hospital_monthlytracker mt "
-					+ " on md.hospmonthlytrack_id  = mt.id inner join  hospital_master hm  on mt.hospital_id=hm.gid  inner join category_details cd"
-					+ " on cd.hospital_id=hm.gid where "
-					+ "hm.nin=:hospitalCode and mt.report_date between to_date(:startReportDate,'yyyy-mm-dd') and  to_date(:endReportDate,'yyyy-mm-dd') and mt.final_submit_done=true";
-					//+ "hm.nin=:hospitalCode and mt.report_date=to_date(:reportDate,'yyyy-mm-dd') and mt.final_submit_done=true";
+			String strQuery = "	 select forenoon_op_tot,afternoon_op_tot,total_precheck,patient_lab_test,total_lab_test,total_attendee,housevisit_mo,"
+		+"	 housevisit_hs,housevisit_phns,housevisit_hi,housevisit_phn,housevisit_jhi,housevisit_jphn,housevisit_asha,regular_sc_clinic,"
+		+"		 hm.subcenter_count from  hospital_master hm  inner join hospital_monthlytracker mt on mt.hospital_id=hm.gid  inner join "
+		+"		 monthlydata_fhc_chc md  on md.hospmonthlytrack_id  = mt.id where hm.nin=:hospitalCode  and mt.report_date between "
+		+"		 to_date(:startReportDate,'yyyy-mm-dd') and  to_date(:endReportDate,'yyyy-mm-dd')  and mt.final_submit_done=true";
+			
+
 			Query query = session.createSQLQuery(strQuery);
-			 query.setDate("startReportDate", getReportDate(-1));
-			 query.setDate("endReportDate", getReportDate(-6));
+			
+			
+			SimpleDateFormat dmyFormat = new SimpleDateFormat("yyyy-MM-dd");
+			
+			
+			 query.setString("endReportDate", dmyFormat.format(getReportDate(-1)));
+			 query.setString("startReportDate",  dmyFormat.format(getReportDate(-6)));
 			 query.setLong("hospitalCode", hospitalId);
 
-			// resultSet = query.list();
 			Iterator iterator = query.list().iterator();
 			while (iterator.hasNext()) {
 

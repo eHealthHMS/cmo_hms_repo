@@ -1,5 +1,7 @@
 package com.ehealth.hmms.service.impl;
 
+
+
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -127,24 +129,77 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		logger.info("Exited AuthenticationServiceImpl:authenticate");
 		return result;
 	}
+	
+	
+	public Result changePassword(Users user) throws Exception {
+		Result result = new Result();
 
-	// for viewing dashboard
-	public Result authenticateUserForDashBoard(Users user) throws Exception {
-		logger.info("Entered AuthenticationServiceImpl:authenticateUserForDashBoard");
-		Result result = null;
 		try {
+			logger.info("Entered AuthenticationServiceImpl:changePassword");
 			Users userResult = authenticationDao.authenticate(user);
-
 			if (userResult != null) {
+				userResult.setPassword(user.getNewPassword());
+				authenticationDao.changePassword(userResult);
+				
+			} else {
+				result.setStatus(Constants.FAILURE_STATUS);
+				result.setErrorMessage("Invalid Credentials");
+			}
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+			logger.error(e);
+		}
+		logger.info("Exited AuthenticationServiceImpl:changePassword");
+		return result;
+	}
+	
+	private Result getDashboardDataForMOs(HospitalMaster hospitalMaster) throws Exception {
+		Result result = new Result();
+		Integer typeId = hospitalMaster.getHospitalTypeMaster().getId().intValue();
+		
+		switch(typeId) 
+		{
+		//phc,fhc,chc,24*7
+		case 15:
+		case 16:
+		case 17:
+		case 20:{
+			result =phcService.getPhcDynamicDataFromHospitalId(hospitalMaster.getNin());
 
-				HospitalMaster hospitalMaster = userResult.getHospitalid();
-				if (hospitalMaster != null) {
-					result = phcService.getPhcDynamicDataFromHospitalId(hospitalMaster.getId());// DataForDashboard(hospitalMaster.getId());
-				} else {
+			
+			break;
+		}
+		default:
+			result.setStatus(Constants.FAILURE_STATUS);
+			break;
+		}
+		return result;
+	}
+	
+
+	//for viewing dashboard
+	public Result authenticateUserForDashBoard(Users user)  throws Exception{
+		 Result result = new Result();
+		// authenticationDao = new AuthenticationDaoImpl();
+		try {
+		Users  userResult = authenticationDao.authenticate(user);
+		
+		if(userResult!=null ) 
+		{
+			
+			//if(userResult.getHospitalid())
+			HospitalMaster hospitalMaster = userResult.getHospitalid();
+			if(hospitalMaster!=null  && userResult.getRoleid().getId()==3) {
+				
+				
+				result = getDashboardDataForMOs(hospitalMaster);
+				
+			}else {
 					result.setStatus(Constants.FAILURE_STATUS);
 				}
 
 			} else {
+
 				result.setStatus(Constants.FAILURE_STATUS);
 				result.setErrorMessage("Invalid Credentials");
 			}

@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "users")
@@ -32,13 +33,16 @@ public class Users implements Serializable {
 
 	@Column(name = "password")
 	private String password;
+	
+	@Transient
+	private String newPassword;
 
 	@Column(name = "status")
-	private String status;
+	private Boolean status;
 	
 	 
 	@Column(name = "app_version")
-	private String appVersion;
+	private Integer appVersion;
 
 
 	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
@@ -46,7 +50,8 @@ public class Users implements Serializable {
 	private HospitalMaster hospitalid;
 	
 	@ManyToOne(targetEntity=Role.class, fetch=FetchType.EAGER)
-	@JoinColumn(name = "roleid", insertable=false, updatable=false)
+
+	@JoinColumn(name = "roleid",referencedColumnName="id", insertable=false, updatable=false)
 	private Role roleid;
 
 	/**
@@ -94,11 +99,11 @@ public class Users implements Serializable {
 		this.password = password;
 	}
 
-	public String getStatus() {
+	public Boolean getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Boolean status) {
 		this.status = status;
 	}
 
@@ -118,14 +123,28 @@ public class Users implements Serializable {
 		this.hospitalid = hospitalid;
 	}
 	
-	  public String getAppVersion() {
+	  public Integer getAppVersion() {
 	    return appVersion;
 	 
 	  }
-	  public void setAppVersion(String appVersion) {
+	  public void setAppVersion(Integer appVersion) {
 	    this.appVersion = appVersion;
 	 
 	  }
+
+	/**
+	 * @return the newPassword
+	 */
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	/**
+	 * @param newPassword the oldPassword to set
+	 */
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
 	 
 	  
 	 

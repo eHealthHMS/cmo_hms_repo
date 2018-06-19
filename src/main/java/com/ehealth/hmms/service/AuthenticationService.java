@@ -6,11 +6,9 @@ import com.ehealth.hmms.pojo.Users;
 
 public interface AuthenticationService {
 
-//	String markAttendence(String tokenId);
-//	
-//	List<Attendence> getTokens();
-	
 	Result authenticate(Users user) throws Exception;
+	
+	Result changePassword(Users user) throws Exception;
 	
 	Result authenticateUserForDashBoard(Users user) throws Exception;
 	

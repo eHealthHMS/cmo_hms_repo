@@ -6,6 +6,7 @@ import java.util.Map;
 import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
 import com.ehealth.hmms.pojo.FundExpenditure;
 import com.ehealth.hmms.pojo.LabDialysis;
+import com.ehealth.hmms.pojo.MonthlyDataTh;
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.ServiceAreaOthers;
@@ -26,5 +27,7 @@ public interface ThService {
 	Result saveAndUpdateLabDialysis(LabDialysis labDialysis) throws Exception;
 	
 	Map<String,String>  getThalukBasicData(Long nin)throws Exception;
+
+	Result saveAndUpdateThTransactionalData(MonthlyDataTh monthlyDataTh)throws Exception;
 
 }

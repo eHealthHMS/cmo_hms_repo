@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
 import com.ehealth.hmms.pojo.FundExpenditure;
 import com.ehealth.hmms.pojo.LabDialysis;
+import com.ehealth.hmms.pojo.MonthlyDataTh;
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.ServiceAreaOthers;
@@ -76,6 +77,15 @@ public class ThController {
 	public Result saveAndUpdateLabDialysis(@RequestBody LabDialysis labDialysis) throws Exception {
 		logger.info("Entered ThController:saveAndUpdateLabDialysis");
 		Result result = thService.saveAndUpdateLabDialysis(labDialysis);
+		logger.info("Exited ThController:saveAndUpdateLabDialysis");
+		return result;
+
+	}
+	
+	@RequestMapping(value = "/saveAndUpdateThTransactionalData", method = RequestMethod.POST, headers = "Accept=application/json")
+	public Result saveAndUpdateThData(@RequestBody MonthlyDataTh monthlyDataTh) throws Exception {
+		logger.info("Entered ThController:saveAndUpdateLabDialysis");
+		Result result = thService.saveAndUpdateThTransactionalData(monthlyDataTh);
 		logger.info("Exited ThController:saveAndUpdateLabDialysis");
 		return result;
 

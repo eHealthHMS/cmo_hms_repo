@@ -11,7 +11,7 @@ import com.ehealth.hmms.dao.ThDao;
 import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
 import com.ehealth.hmms.pojo.FundExpenditure;
 import com.ehealth.hmms.pojo.LabDialysis;
-import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
+import com.ehealth.hmms.pojo.MonthlyDataTh;
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.ServiceAreaOthers;
@@ -36,134 +36,15 @@ public class ThServiceImpl implements ThService{
 		this.thDao = thDao;
 	}
 
-	public Result saveAndUpdateOpIpDetails(OpIpDetails opIpDetails) throws Exception {
-		logger.info("Entered ThServiceImpl: saveAndUpdateOpIpDetails");
 
-		Result result = new Result();
-		try {
-
-			Boolean resultFlag = thDao.saveAndUpdateOpIpDetails(opIpDetails);
-
-			if (resultFlag.equals(true)) {
-				result.setStatus(Constants.SUCCESS_STATUS);
-
-			} else {
-				result.setStatus(Constants.FAILURE_STATUS);
-			}
-
-		} catch (Exception e) {
-			result.setStatus(Constants.FAILURE_STATUS);
-		}
-		logger.info("Exited ThServiceImpl: saveAndUpdateOpIpDetails");
-
-		return result;
-	}
 	
-	public Result saveOrUpdateDeptWiseIpOpDetails(List<DepartmentWiseOpIp> departmentWiseOpIpList) throws Exception{
-		logger.info("Entered ThServiceImpl: saveOrUpdateDeptWiseIpOpDetails");
-
-		Result result = new Result();
-		try {
-
-			Boolean resultFlag = thDao.saveOrUpdateDeptWiseIpOpDetails(departmentWiseOpIpList);
-
-
-			if (resultFlag.equals(true)) {
-				result.setStatus(Constants.SUCCESS_STATUS);
-
-			} else {
-				result.setStatus(Constants.FAILURE_STATUS);
-			}
-
-		} catch (Exception e) {
-			result.setStatus(Constants.FAILURE_STATUS);
-		}
-		logger.info("Exited ThServiceImpl: saveOrUpdateDeptWiseIpOpDetails");
-
-		return result;
-		
-	}
-	
-	public Result saveOrUpdateServiceAreaOthers(ServiceAreaOthers serviceAreaOthers) throws Exception{
-		logger.info("Entered ThServiceImpl: saveOrUpdateServiceAreaOthers");
-
-		Result result = new Result();
-		try {
-
-			Boolean resultFlag = thDao.saveOrUpdateServiceAreaOthers(serviceAreaOthers);
-
-
-			if (resultFlag.equals(true)) {
-				result.setStatus(Constants.SUCCESS_STATUS);
-
-			} else {
-				result.setStatus(Constants.FAILURE_STATUS);
-			}
-
-		} catch (Exception e) {
-			result.setStatus(Constants.FAILURE_STATUS);
-		}
-		
-		logger.info("Exited ThServiceImpl: saveOrUpdateServiceAreaOthers");
-
-		return result;
-		
-	}
-	
-	public Result saveOrUpdateFundExpenditure(FundExpenditure fundExpenditure) throws Exception{
-		logger.info("Entered ThServiceImpl: saveOrUpdateFundExpenditure");
-
-		Result result = new Result();
-		try {
-
-			Boolean resultFlag = thDao.saveOrUpdateFundExpenditure(fundExpenditure);
-
-			if (resultFlag.equals(true)) {
-				result.setStatus(Constants.SUCCESS_STATUS);
-
-			} else {
-				result.setStatus(Constants.FAILURE_STATUS);
-			}
-
-		} catch (Exception e) {
-			result.setStatus(Constants.FAILURE_STATUS);
-		}
-		logger.info("Exited ThServiceImpl: saveOrUpdateFundExpenditure");
-
-		return result;
-	}
-	
-	public Result saveAndUpdateSpecialityClinicData(List<SpecialityClinicData> specialityClinicDataList) throws Exception{
-		logger.info("Entered ThServiceImpl: saveAndUpdateSpecialityClinicData");
-
-		Result result = new Result();
-		try {
-
-			Boolean resultFlag = thDao.saveAndUpdateSpecialityClinicData(specialityClinicDataList);
-
-
-			if (resultFlag.equals(true)) {
-				result.setStatus(Constants.SUCCESS_STATUS);
-
-			} else {
-				result.setStatus(Constants.FAILURE_STATUS);
-			}
-
-		} catch (Exception e) {
-			result.setStatus(Constants.FAILURE_STATUS);
-		}
-		logger.info("Exited ThServiceImpl: saveAndUpdateSpecialityClinicData");
-
-		return result;
-	}
-	
-	public Result saveAndUpdateLabDialysis(LabDialysis labDialysis) throws Exception{
+	public Result saveAndUpdateThTransactionalData(MonthlyDataTh monthlyDataTh) throws Exception{
 		logger.info("Entered ThServiceImpl: saveAndUpdateLabDialysis");
 
 		Result result = new Result();
 		try {
 
-			Boolean resultFlag = thDao.saveAndUpdateLabDialysis(labDialysis);
+			Boolean resultFlag = thDao.saveAndUpdateThTransactionalData(monthlyDataTh);
 
 
 			if (resultFlag.equals(true)) {
@@ -180,10 +61,53 @@ public class ThServiceImpl implements ThService{
 
 		return result;
 	}
+
 	
 	public Map<String,String> getThalukBasicData(Long nin) throws Exception {
 		
 		return thDao.getThalukBasicData(nin);
+	}
+
+
+
+	public Result saveAndUpdateOpIpDetails(OpIpDetails opIpDetails) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	public Result saveOrUpdateDeptWiseIpOpDetails(List<DepartmentWiseOpIp> departmentWiseOpIpList) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	public Result saveOrUpdateServiceAreaOthers(ServiceAreaOthers serviceAreaOthers) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	public Result saveOrUpdateFundExpenditure(FundExpenditure fundExpenditure) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	public Result saveAndUpdateSpecialityClinicData(List<SpecialityClinicData> specialityClinicData) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	public Result saveAndUpdateLabDialysis(LabDialysis labDialysis) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

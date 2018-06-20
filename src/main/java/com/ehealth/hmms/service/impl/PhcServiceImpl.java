@@ -1,5 +1,6 @@
 package com.ehealth.hmms.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -127,11 +128,12 @@ public class PhcServiceImpl implements PhcService {
 		logger.info("Entered PhcServiceImpl:getPhcDynamicDataFromHospitalId");
 		Result result = new Result();
 		try {
-			MonthlyDataFhcChc dataFhcChc = phcDao.getPhcDynamicDataFromHospitalId(hospitalId);
+			List<Map<String,String>> resultList = phcDao.getPhcDynamicDataFromHospitalId(hospitalId);
 
-			if (dataFhcChc != null) {
+			if (resultList != null && !resultList.isEmpty()) {
+				
+				result.setValue(resultList);
 
-				result.setValue(dataFhcChc);
 				result.setStatus(Constants.SUCCESS_STATUS);
 
 			} else {

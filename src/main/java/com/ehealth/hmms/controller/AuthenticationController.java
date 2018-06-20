@@ -47,42 +47,17 @@ public class AuthenticationController {
 
 	}
 
-	// @RequestMapping(value = "/test/{hospitalId}", method =
-	// RequestMethod.GET,headers="Accept=application/json")
-	// public String gettestData(@PathVariable("hospitalId") String hospitalId)
-	// throws Exception{
-	//
-	//
-	// return "connected";
-	//
-	// }
+	
 
-	// @RequestMapping(value = "/loginForDashboard", method =
-	// RequestMethod.POST,headers="Accept=application/json")
-	// public Result authenticateUserForDashBoard( @RequestBody Users user) throws
-	// Exception{
-	//
-	//
-	// AuthenticationService authenticationService = new
-	// AuthenticationServiceImpl();
-	// Result userResult = authenticationService.authenticateUserForDashBoard(user);
-	//
-	//
-	//
-	// return userResult;
-	//
-	// }
+	@RequestMapping(value = "/changePassword", method = RequestMethod.POST, headers = "Accept=application/json")
+	public Result changePassword(@RequestBody Users user) throws Exception {
 
-	@RequestMapping(value = "/loginForTest", method = RequestMethod.POST, headers = "Accept=application/json")
-	public Result authenticateUserForTest(@RequestBody Users user) throws Exception {
-
-		logger.info("Entered AuthenticationController:authenticateUserForTest");
-		Result userResult = new Result();// authenticationService.authenticate(user);
-		logger.info("Exited AuthenticationController:authenticateUserForTest");
+		logger.info("Entered AuthenticationController:changePassword");
+		Result userResult =  authenticationService.changePassword(user);
+		logger.info("Exited AuthenticationController:changePassword");
 		userResult.setStatus('S');
 
 		return userResult;
 
 	}
-
 }

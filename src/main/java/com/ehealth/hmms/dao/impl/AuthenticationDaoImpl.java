@@ -22,6 +22,25 @@ public class AuthenticationDaoImpl implements AuthenticationDao {
 	private SessionFactory sessionFactory;
 	final static Logger logger = Logger.getLogger(AuthenticationDaoImpl.class);
 
+	
+	
+	public Users changePassword(Users user) throws Exception {
+
+		Session session = this.sessionFactory.getCurrentSession();
+		Users userResult = null;
+		try {
+			logger.info("Entered AuthenticationDaoImpl:changePassword");
+			session.update(user);
+		} catch (HibernateException e) {
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			throw new Exception("Exception : " + e.getMessage());
+		}
+		logger.info("Exited AuthenticationDaoImpl:changePassword");
+		return userResult;
+	}
+	
+	
 	public Users authenticate(Users user) throws Exception {
 
 		Session session = this.sessionFactory.getCurrentSession();

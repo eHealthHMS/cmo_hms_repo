@@ -48,7 +48,6 @@ public class DashboardController {
 		Result result = phcService.getPhcDynamicDataFromHospitalId(hospitalId);// (hospitalId);
 		logger.info("Exited DashboardController:getDetailedDataForMap");
 		return result;
-
 	}
 
 	@RequestMapping(value = "/getThalukBasicData/{hospitalId}", method = RequestMethod.GET, headers = "Accept=application/json")

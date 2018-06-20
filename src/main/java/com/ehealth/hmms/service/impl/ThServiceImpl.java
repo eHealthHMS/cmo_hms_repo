@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 import com.ehealth.hmms.dao.ThDao;
 import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
 import com.ehealth.hmms.pojo.FundExpenditure;
+import com.ehealth.hmms.pojo.IdlingMajorEquipment;
 import com.ehealth.hmms.pojo.LabDialysis;
 import com.ehealth.hmms.pojo.MonthlyDataTh;
 import com.ehealth.hmms.pojo.OpIpDetails;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.ServiceAreaOthers;
 import com.ehealth.hmms.pojo.SpecialityClinicData;
+import com.ehealth.hmms.pojo.SurgeryDetailsThDhGh;
 import com.ehealth.hmms.service.ThService;
 import com.ehealth.hmms.util.Constants;
 
@@ -36,8 +38,6 @@ public class ThServiceImpl implements ThService{
 		this.thDao = thDao;
 	}
 
-
-	
 	public Result saveAndUpdateThTransactionalData(MonthlyDataTh monthlyDataTh) throws Exception{
 		logger.info("Entered ThServiceImpl: saveAndUpdateLabDialysis");
 
@@ -62,52 +62,186 @@ public class ThServiceImpl implements ThService{
 		return result;
 	}
 
-	
-	public Map<String,String> getThalukBasicData(Long nin) throws Exception {
-		
-		return thDao.getThalukBasicData(nin);
+	public Result fetchOpIpDetails(Long hospitalId) throws Exception {
+		logger.info("Entered ThServiceImpl: fetchOpIpDetails");
+
+		Result result = new Result();
+		try {
+			OpIpDetails resultList = thDao.fetchOpIpDetails(hospitalId);
+
+			if (resultList != null) {	
+				result.setValue(resultList);
+				result.setStatus(Constants.SUCCESS_STATUS);
+			} else {
+				result.setStatus(Constants.FAILURE_STATUS);
+				result.setErrorMessage("Data not available");
+			}
+
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+		}
+		logger.info("Exited ThServiceImpl: fetchOpIpDetails");
+
+		return result;
 	}
 
+	public Result fetchDeptOpIpDetails(Long hospitalId) throws Exception {
+		logger.info("Entered ThServiceImpl: fetchDeptOpIpDetails");
 
+		Result result = new Result();
+		try {
+			List<DepartmentWiseOpIp> resultList = thDao.fetchDeptOpIpDetails(hospitalId);
 
-	public Result saveAndUpdateOpIpDetails(OpIpDetails opIpDetails) throws Exception {
+			if (resultList != null) {	
+				result.setValue(resultList);
+				result.setStatus(Constants.SUCCESS_STATUS);
+			} else {
+				result.setStatus(Constants.FAILURE_STATUS);
+				result.setErrorMessage("Data not available");
+			}
+
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+		}
+		logger.info("Exited ThServiceImpl: fetchDeptOpIpDetails");
+		return result;
+	}
+
+	public  Result fetchSurgeryDetailsThDhGh(Long hospitalId) throws Exception {
+		logger.info("Entered ThServiceImpl: fetchSurgeryDetailsThDhGh");
+
+		Result result = new Result();
+		try {
+			List<SurgeryDetailsThDhGh> resultList = thDao.fetchSurgeryDetailsThDhGh(hospitalId);
+
+			if (resultList != null) {	
+				result.setValue(resultList);
+				result.setStatus(Constants.SUCCESS_STATUS);
+			} else {
+				result.setStatus(Constants.FAILURE_STATUS);
+				result.setErrorMessage("Data not available");
+			}
+
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+		}
+		logger.info("Exited ThServiceImpl: fetchSurgeryDetailsThDhGh");
+		return result;
+	}
+
+	public Result fetchSpecialityClinicData(Long hospitalId) throws Exception {
+		logger.info("Entered ThServiceImpl: fetchSpecialityClinicData");
+
+		Result result = new Result();
+		try {
+			List<SpecialityClinicData> resultList = thDao.fetchSpecialityClinicData(hospitalId);
+
+			if (resultList != null) {	
+				result.setValue(resultList);
+				result.setStatus(Constants.SUCCESS_STATUS);
+			} else {
+				result.setStatus(Constants.FAILURE_STATUS);
+				result.setErrorMessage("Data not available");
+			}
+
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+		}
+		logger.info("Exited ThServiceImpl: fetchSpecialityClinicData");
+		return result;
+	}
+
+	public Result fetchLabDialysis(Long hospitalId) throws Exception {
+		logger.info("Entered ThServiceImpl: fetchLabDialysis");
+
+		Result result = new Result();
+		try {
+			LabDialysis resultList = thDao.fetchLabDialysis(hospitalId);
+
+			if (resultList != null) {	
+				result.setValue(resultList);
+				result.setStatus(Constants.SUCCESS_STATUS);
+			} else {
+				result.setStatus(Constants.FAILURE_STATUS);
+				result.setErrorMessage("Data not available");
+			}
+
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+		}
+		logger.info("Exited ThServiceImpl: fetchLabDialysis");
+		return result;
+	}
+
+	public Result fetchFundExpenditure(Long hospitalId) throws Exception {
+		logger.info("Entered ThServiceImpl: fetchFundExpenditure");
+
+		Result result = new Result();
+		try {
+			FundExpenditure resultList = thDao.fetchFundExpenditure(hospitalId);
+
+			if (resultList != null) {	
+				result.setValue(resultList);
+				result.setStatus(Constants.SUCCESS_STATUS);
+			} else {
+				result.setStatus(Constants.FAILURE_STATUS);
+				result.setErrorMessage("Data not available");
+			}
+
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+		}
+		logger.info("Exited ThServiceImpl: fetchFundExpenditure");
+		return result;
+	}
+
+	public Result fetchServiceAreaOthers(Long hospitalId) throws Exception {
+		logger.info("Entered ThServiceImpl: fetchServiceAreaOthers");
+
+		Result result = new Result();
+		try {
+			ServiceAreaOthers resultList = thDao.fetchServiceAreaOthers(hospitalId);
+
+			if (resultList != null) {	
+				result.setValue(resultList);
+				result.setStatus(Constants.SUCCESS_STATUS);
+			} else {
+				result.setStatus(Constants.FAILURE_STATUS);
+				result.setErrorMessage("Data not available");
+			}
+
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+		}
+		logger.info("Exited ThServiceImpl: fetchServiceAreaOthers");
+		return result;
+	}
+
+	public Result fetchIdlingMajorEquipment(Long hospitalId) throws Exception {
+		logger.info("Entered ThServiceImpl: fetchIdlingMajorEquipment");
+
+		Result result = new Result();
+		try {
+			List<IdlingMajorEquipment> resultList = thDao.fetchIdlingMajorEquipment(hospitalId);
+
+			if (resultList != null) {	
+				result.setValue(resultList);
+				result.setStatus(Constants.SUCCESS_STATUS);
+			} else {
+				result.setStatus(Constants.FAILURE_STATUS);
+				result.setErrorMessage("Data not available");
+			}
+
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+		}
+		logger.info("Exited ThServiceImpl: fetchIdlingMajorEquipment");
+		return result;
+	}
+
+	public Map<String, String> getThalukBasicData(Long nin) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
-
-	public Result saveOrUpdateDeptWiseIpOpDetails(List<DepartmentWiseOpIp> departmentWiseOpIpList) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-	public Result saveOrUpdateServiceAreaOthers(ServiceAreaOthers serviceAreaOthers) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-	public Result saveOrUpdateFundExpenditure(FundExpenditure fundExpenditure) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-	public Result saveAndUpdateSpecialityClinicData(List<SpecialityClinicData> specialityClinicData) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-	public Result saveAndUpdateLabDialysis(LabDialysis labDialysis) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 }

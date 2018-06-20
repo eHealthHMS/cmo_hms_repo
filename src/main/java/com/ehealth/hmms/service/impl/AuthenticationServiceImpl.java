@@ -102,6 +102,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 					logger.info("Entered autenticate service for fetching phc/chc data while user login");
 					MonthlyDataFhcChc monthlyPhcResult = phcDao.fetchPhcRecord(hospitalId);
 					HospitalMonthlyTracker hospitalMonthlyTracker = monthlyPhcResult.getHospitalMonthlyTracker();
+					if(hospitalMonthlyTracker == null)
+					{
+						hospitalMonthlyTracker = new HospitalMonthlyTracker();
+					}
 					hospitalMonthlyTracker.setHospital(hospitalMaster);
 					monthlyPhcResult.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 					result.setValue(monthlyPhcResult);
@@ -111,6 +115,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 							"Entered authenticate service for fetching the taluk hospital related data on user login");
 					MonthlyDataTh monthlyDataTh = thDao.fetchMonthlyDataTh(hospitalId);
 					HospitalMonthlyTracker hospitalMonthlyTracker = monthlyDataTh.getHospitalMonthlyTracker();
+					if(hospitalMonthlyTracker == null)
+					{
+						hospitalMonthlyTracker = new HospitalMonthlyTracker();
+					}
 					hospitalMonthlyTracker.setHospital(hospitalMaster);
 					monthlyDataTh.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 					result.setValue(monthlyDataTh);

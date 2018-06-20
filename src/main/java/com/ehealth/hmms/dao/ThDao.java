@@ -31,5 +31,7 @@ public interface ThDao {
 	
 	Map<String,String> getThalukBasicData(Long nin)throws Exception;
 	
+	Map<String,String> getDashboardSummaryForThaluk(Long nin) throws Exception;
+	
 	
 }

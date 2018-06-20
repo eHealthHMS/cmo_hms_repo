@@ -158,4 +158,9 @@ public class ThServiceImpl implements ThService{
 		return thDao.getThalukBasicData(nin);
 	}
 	
+	
+	public Map<String,String> getDashboardSummaryForThaluk(Long nin) throws Exception{
+		
+		return thDao.getDashboardSummaryForThaluk(nin);
+	}
 }

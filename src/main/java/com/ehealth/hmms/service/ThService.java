@@ -26,5 +26,7 @@ public interface ThService {
 	Result saveAndUpdateLabDialysis(LabDialysis labDialysis) throws Exception;
 	
 	Map<String,String>  getThalukBasicData(Long nin)throws Exception;
+	
+	Map<String,String> getDashboardSummaryForThaluk(Long nin) throws Exception;
 
 }

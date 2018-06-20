@@ -17,7 +17,7 @@
         <mapping class="com.ehealth.hmms.pojo.OpIpDetails"/>
         <mapping class="com.ehealth.hmms.pojo.ServiceAreaOthers"/>
         <mapping class="com.ehealth.hmms.pojo.FundExpenditure"/>
-         <mapping class="com.ehealth.hmms.pojo.SpecialityClinic"/>
+        <mapping class="com.ehealth.hmms.pojo.SpecialityClinic"/>
         <mapping class="com.ehealth.hmms.pojo.SpecialityClinicData"/>
         <mapping class="com.ehealth.hmms.pojo.LabDialysis"/>
         <mapping class="com.ehealth.hmms.pojo.IdlingMajorEquipment"/>

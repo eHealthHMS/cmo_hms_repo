@@ -560,7 +560,6 @@ public class ThDaoImpl implements ThDao {
 			query.setParameter("hospitalId", hospitalId);
 			query.setParameter("date", getReportDate());
 			List<DepartmentWiseOpIp> thDeptOpIpList = query.list();
-
 			if (thDeptOpIpList != null && !thDeptOpIpList.isEmpty()) {
 				Iterator iterator = thDeptOpIpList.iterator();
 				while (iterator.hasNext()) {
@@ -573,6 +572,43 @@ public class ThDaoImpl implements ThDao {
 					departmentWiseOpIp.setId(castObjectToLong(row[4]));
 					deptOpIpListUpdated.add(departmentWiseOpIp);
 				}
+			}else
+			{
+				DepartmentWiseOpIp departmentWiseOpIp1 = new DepartmentWiseOpIp();
+				departmentWiseOpIp1.setCategoryMasterId(castObjectToCategryMastr(4));
+				deptOpIpListUpdated.add(departmentWiseOpIp1);
+				
+				DepartmentWiseOpIp departmentWiseOpIp2 = new DepartmentWiseOpIp();
+				departmentWiseOpIp2.setCategoryMasterId(castObjectToCategryMastr(5));
+				deptOpIpListUpdated.add(departmentWiseOpIp2);
+				
+				DepartmentWiseOpIp departmentWiseOpIp3 = new DepartmentWiseOpIp();
+				departmentWiseOpIp3.setCategoryMasterId(castObjectToCategryMastr(8));
+				deptOpIpListUpdated.add(departmentWiseOpIp3);
+				
+				DepartmentWiseOpIp departmentWiseOpIp4 = new DepartmentWiseOpIp();
+				departmentWiseOpIp4.setCategoryMasterId(castObjectToCategryMastr(9));
+				deptOpIpListUpdated.add(departmentWiseOpIp4);
+				
+				DepartmentWiseOpIp departmentWiseOpIp5 = new DepartmentWiseOpIp();
+				departmentWiseOpIp5.setCategoryMasterId(castObjectToCategryMastr(10));
+				deptOpIpListUpdated.add(departmentWiseOpIp5);
+				
+				DepartmentWiseOpIp departmentWiseOpIp6 = new DepartmentWiseOpIp();
+				departmentWiseOpIp6.setCategoryMasterId(castObjectToCategryMastr(6));
+				deptOpIpListUpdated.add(departmentWiseOpIp6);
+				
+				DepartmentWiseOpIp departmentWiseOpIp7 = new DepartmentWiseOpIp();
+				departmentWiseOpIp7.setCategoryMasterId(castObjectToCategryMastr(7));
+				deptOpIpListUpdated.add(departmentWiseOpIp7);
+				
+				DepartmentWiseOpIp departmentWiseOpIp8 = new DepartmentWiseOpIp();
+				departmentWiseOpIp8.setCategoryMasterId(castObjectToCategryMastr(8));
+				deptOpIpListUpdated.add(departmentWiseOpIp8);
+				
+				DepartmentWiseOpIp departmentWiseOpIp9 = new DepartmentWiseOpIp();
+				departmentWiseOpIp9.setCategoryMasterId(castObjectToCategryMastr(9));
+				deptOpIpListUpdated.add(departmentWiseOpIp9);	
 			}
 
 		} catch (HibernateException e) {
@@ -610,6 +646,31 @@ public class ThDaoImpl implements ThDao {
 					surgeryDetails.setId(castObjectToLong(row[4]));
 					surgeryDetailsUpdated.add(surgeryDetails);
 				}
+			}else
+			{
+				SurgeryDetailsThDhGh surgeryDetailsThDhGh1 = new SurgeryDetailsThDhGh();
+				surgeryDetailsThDhGh1.setCategoryMaster(castObjectToCategryMastr(5));
+				surgeryDetailsUpdated.add(surgeryDetailsThDhGh1);
+				
+				SurgeryDetailsThDhGh surgeryDetailsThDhGh2 = new SurgeryDetailsThDhGh();
+				surgeryDetailsThDhGh2.setCategoryMaster(castObjectToCategryMastr(8));
+				surgeryDetailsUpdated.add(surgeryDetailsThDhGh2);
+				
+				SurgeryDetailsThDhGh surgeryDetailsThDhGh3 = new SurgeryDetailsThDhGh();
+				surgeryDetailsThDhGh3.setCategoryMaster(castObjectToCategryMastr(9));
+				surgeryDetailsUpdated.add(surgeryDetailsThDhGh3);
+				
+				SurgeryDetailsThDhGh surgeryDetailsThDhGh4 = new SurgeryDetailsThDhGh();
+				surgeryDetailsThDhGh4.setCategoryMaster(castObjectToCategryMastr(10));
+				surgeryDetailsUpdated.add(surgeryDetailsThDhGh4);
+				
+				SurgeryDetailsThDhGh surgeryDetailsThDhGh5 = new SurgeryDetailsThDhGh();
+				surgeryDetailsThDhGh5.setCategoryMaster(castObjectToCategryMastr(21));
+				surgeryDetailsUpdated.add(surgeryDetailsThDhGh5);
+				
+				SurgeryDetailsThDhGh surgeryDetailsThDhGh6 = new SurgeryDetailsThDhGh();
+				surgeryDetailsThDhGh6.setCategoryMaster(castObjectToCategryMastr(6));
+				surgeryDetailsUpdated.add(surgeryDetailsThDhGh6);
 			}
 
 		} catch (HibernateException e) {
@@ -651,6 +712,35 @@ public class ThDaoImpl implements ThDao {
 					specialityClinicData.setId(castObjectToLong(row[6]));
 					specialityClinicDataUpdated.add(specialityClinicData);
 				}
+			}else
+			{
+				SpecialityClinicData specialityClinicData1 = new SpecialityClinicData();
+				specialityClinicData1.setSpecialityClinic(castObjectToSpecialityClinic(1));
+				specialityClinicDataUpdated.add(specialityClinicData1);
+				
+				SpecialityClinicData specialityClinicData2 = new SpecialityClinicData();
+				specialityClinicData2.setSpecialityClinic(castObjectToSpecialityClinic(2));
+				specialityClinicDataUpdated.add(specialityClinicData2);
+				
+				SpecialityClinicData specialityClinicData3 = new SpecialityClinicData();
+				specialityClinicData3.setSpecialityClinic(castObjectToSpecialityClinic(3));
+				specialityClinicDataUpdated.add(specialityClinicData3);
+				
+				SpecialityClinicData specialityClinicData4 = new SpecialityClinicData();
+				specialityClinicData4.setSpecialityClinic(castObjectToSpecialityClinic(4));
+				specialityClinicDataUpdated.add(specialityClinicData4);
+				
+				SpecialityClinicData specialityClinicData5 = new SpecialityClinicData();
+				specialityClinicData5.setSpecialityClinic(castObjectToSpecialityClinic(5));
+				specialityClinicDataUpdated.add(specialityClinicData5);
+				
+				SpecialityClinicData specialityClinicData6 = new SpecialityClinicData();
+				specialityClinicData6.setSpecialityClinic(castObjectToSpecialityClinic(6));
+				specialityClinicDataUpdated.add(specialityClinicData6);
+				
+				SpecialityClinicData specialityClinicData7 = new SpecialityClinicData();
+				specialityClinicData7.setSpecialityClinic(castObjectToSpecialityClinic(7));
+				specialityClinicDataUpdated.add(specialityClinicData7);
 			}
 
 		} catch (HibernateException e) {
@@ -877,8 +967,12 @@ public class ThDaoImpl implements ThDao {
 				monthlyDataTh.setIdlingEquipment(true);
 			}
 
-			HospitalMonthlyTracker hospitalMonthlyTracker = new HospitalMonthlyTracker();
-			hospitalMonthlyTracker.setId(opIpDetails.getHospitalMonthlyTracker().getId());
+			HospitalMonthlyTracker hospitalMonthlyTracker = opIpDetails.getHospitalMonthlyTracker();
+			if(hospitalMonthlyTracker != null)
+			{
+				Long hospMonthTrackId = opIpDetails.getHospitalMonthlyTracker().getId();
+				hospitalMonthlyTracker.setId(hospMonthTrackId);
+			}
 			monthlyDataTh.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 
 		} catch (HibernateException e) {

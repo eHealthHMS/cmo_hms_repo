@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,8 +32,12 @@ public class SurgeryDetailsThDhGh implements Serializable {
 	@Column(name = "minorsurgery")
 	private Long minorSurgery;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "category_id", referencedColumnName="id")
 	private CategoryMaster categoryMaster;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "hosp_monthly_trackid", referencedColumnName="id")
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 	
 	public Long getId() {
@@ -59,8 +64,6 @@ public class SurgeryDetailsThDhGh implements Serializable {
 		this.minorSurgery = minorSurgery;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
 	public CategoryMaster getCategoryMaster() {
 		return categoryMaster;
 	}
@@ -68,17 +71,15 @@ public class SurgeryDetailsThDhGh implements Serializable {
 	public void setCategoryMaster(CategoryMaster categoryMaster) {
 		this.categoryMaster = categoryMaster;
 	}
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
-	public HospitalMonthlyTracker getHospitalMaster() {
+	
+	public HospitalMonthlyTracker getHospitalMonthlyTracker() {
 		return hospitalMonthlyTracker;
 	}
 
-	public void setHospitalMaster(HospitalMonthlyTracker hospitalMonthlyTracker) {
+	public void setHospitalMonthlyTracker(HospitalMonthlyTracker hospitalMonthlyTracker) {
 		this.hospitalMonthlyTracker = hospitalMonthlyTracker;
 	}
-	
+
 	
 	
 }

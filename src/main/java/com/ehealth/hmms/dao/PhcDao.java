@@ -16,9 +16,10 @@ public interface PhcDao {
 
 	List<CategoryDetails> getPhcStaticData(String hospitalId) throws Exception;
 
-//	List<MonthlyDataFhcChc> getPhcDynamicDataForDashboard(String hospitalId) throws Exception;
+	// List<MonthlyDataFhcChc> getPhcDynamicDataForDashboard(String hospitalId)
+	// throws Exception;
 
-	MonthlyDataFhcChc getPhcDynamicDataFromHospitalId(Long hospitalId) throws Exception;
+	 List<Map<String,String>>  getPhcDynamicDataFromHospitalId(Long hospitalId) throws Exception;
 
 	HospitalMonthlyTracker getHospitalTrakerForSave(HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception;
 
@@ -26,13 +27,10 @@ public interface PhcDao {
 
 	Result saveSubCentreDetails(MonthlyDataFhcChc dataFhcChc) throws Exception;
 
-
 	Result saveFieldWorks(MonthlyDataFhcChc dataFhcChc) throws Exception;
-	
-	Map<String,String> getDataForMap(Long hospitalId) throws Exception;
-	
-	
-	//Long saveHospitalMonthlyTracker(Long hospitalId) throws Exception;
 
+	Map<String, String> getDataForMap(Long hospitalId) throws Exception;
+
+	// Long saveHospitalMonthlyTracker(Long hospitalId) throws Exception;
 
 }

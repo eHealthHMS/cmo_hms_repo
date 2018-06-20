@@ -243,5 +243,9 @@ public class ThServiceImpl implements ThService{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	public Map<String,String> getDashboardSummaryForThaluk(Long nin) throws Exception{
+		
+		return thDao.getDashboardSummaryForThaluk(nin);
+	}
 }

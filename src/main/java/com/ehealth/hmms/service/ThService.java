@@ -25,5 +25,7 @@ public interface ThService {
 	 
 	Result fetchServiceAreaOthers(Long hospitalId) throws Exception;
 	
+	Map<String,String> getDashboardSummaryForThaluk(Long nin) throws Exception;
+
 	Result fetchIdlingMajorEquipment(Long hospitalId) throws Exception;
 }

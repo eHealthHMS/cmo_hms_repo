@@ -986,6 +986,39 @@ public class ThDaoImpl implements ThDao {
 		return monthlyDataTh;
 	}
 
+	public Map<String,String> getDashboardSummaryForThaluk(Long nin) throws Exception {
+		
+		Session session = this.sessionFactory.getCurrentSession();
+		Object[] dashBoardSummary = null;
+
+		Long hosptialId = (Long) session.createQuery("select id from HospitalMaster hm where hm.nin =:nin").setParameter("nin", nin).uniqueResult();
+		HospitalMaster hospitalMaster = (HospitalMaster) session.get(HospitalMaster.class, hosptialId);
+		if(hospitalMaster!=null) {
+			
+			Query query = session.createQuery("from HospitalMonthlyTracker hmt where hmt.hospital.id=:hospital_id and hmt.report_date=:report_date and hmt.finalSubmitDone=true" );
+			HospitalMonthlyTracker hospitalMonthlyTracker = (HospitalMonthlyTracker) query.setParameter("hospital_id", hospitalMaster.getId())
+																						   .setParameter("report_date", getReportDate()).uniqueResult();
+			if(hospitalMonthlyTracker != null) {
+				dashBoardSummary = (Object[]) session.createSQLQuery("select opip.forenoon_op_total+opip.afternoon_op_total as optotal, opip.ip_admissions_total,"
+						+ "sao.og_lscs_count+sao.og_normal_delivery_count as deliverycount, lab.dia_patient_count, lab.lab_patients_tested, "
+						+ "lab.drug_availability, sao.major_surgery_count, opip.emr_patinet_attended from op_ip_th_gh_dh opip inner join "
+						+ "servicearea_others sao on "
+						+ "opip.hospmonthlytrack_id = sao.hosp_tracker_id "
+						+ "inner join lab_dialysis_xray_pharmacy lab "
+						+ "on lab.hospmonthlytrack_id=sao.hosp_tracker_id "
+						+ "where "
+						+ "sao.hosp_tracker_id=:hospmonthlytrack_id "
+						+ "and opip.hospmonthlytrack_id=:hospmonthlytrack_id "
+						+ "and lab.hospmonthlytrack_id=:hospmonthlytrack_id")
+						.setParameter("hospmonthlytrack_id", hospitalMonthlyTracker.getId())
+						.uniqueResult();
+			}
+			
+			
+			//HospitalMonthlyTracker hospitalMonthlyTracker = session.get(HospitalMonthlyTracker.class, hospitalMaster.)
+		}
+		return null;
+	}
 	// **************************< Fetch monthly record of TH ends
 	// >***************************************
 	private Long castObjectToLong(Object object) {

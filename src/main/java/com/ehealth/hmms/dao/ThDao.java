@@ -37,5 +37,7 @@ public interface ThDao {
 	
 	List<IdlingMajorEquipment> fetchIdlingMajorEquipment(Long hospitalId) throws Exception;
 	
+	Map<String,String> getDashboardSummaryForThaluk(Long nin) throws Exception;
+	
 	
 }

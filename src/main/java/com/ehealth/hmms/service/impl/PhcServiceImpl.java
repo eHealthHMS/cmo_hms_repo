@@ -43,18 +43,22 @@ public class PhcServiceImpl implements PhcService {
 				switch (type) {
 				case 1: {
 					 result = phcDao.saveInstitutionalData(dataFhcChc);
+					 phcDao.updateHospitalMonthlyTracker(dataFhcChc.getHospitalMonthlyTracker(),false);
 					break;
 				}
 				case 2: {
 					result = phcDao.saveMeetings(dataFhcChc);
+					 phcDao.updateHospitalMonthlyTracker(dataFhcChc.getHospitalMonthlyTracker(),false);
 					break;
 				}
 				case 3: {
 					result = phcDao.saveSubCentreDetails(dataFhcChc);
+					 phcDao.updateHospitalMonthlyTracker(dataFhcChc.getHospitalMonthlyTracker(),false);
 					break;
 				}
 				case 4: {
 					result = phcDao.saveFieldWorks(dataFhcChc);
+					 phcDao.updateHospitalMonthlyTracker(dataFhcChc.getHospitalMonthlyTracker(),false);
 					break;
 				}
 				case 5: {
@@ -76,7 +80,7 @@ public class PhcServiceImpl implements PhcService {
 					if(result.getStatus().equals(Constants.SUCCESS_STATUS)) {
 						//todo update final submit status
 					//	hospitalMonthlyTracker.
-					//	phcDao.updateHospitalMonthlyTracker(dataFhcChc.getHospitalMonthlyTracker(),true);
+						phcDao.updateHospitalMonthlyTracker(dataFhcChc.getHospitalMonthlyTracker(),true);
 						break;
 					}
 					break;
@@ -96,34 +100,57 @@ public class PhcServiceImpl implements PhcService {
 		return result;
 	}
 
-	// public Result getPhcStaticData(String hospitalId) throws Exception {
-	// Result result = new Result();
-	// try {
-	// List<CategoryDetails> categoryDetailsList =
-	// phcDao.getPhcStaticData(hospitalId);
-	//
-	// if (categoryDetailsList != null && !categoryDetailsList.isEmpty()) {
-	//
-	// result.setValue(categoryDetailsList);
-	// result.setStatus(Constants.SUCCESS_STATUS);
-	//
-	// } else {
-	// result.setStatus(Constants.FAILURE_STATUS);
-	// result.setErrorMessage("Data not available");
-	// }
-	// } catch (Exception e) {
-	// result.setStatus(Constants.FAILURE_STATUS);
-	// }
-	// return result;
-	//
-	// }
-	//
-	//
-	//
-	//
-	//
-	//
-	//
+	
+	public Result getPhcDynamicDataForDistrict(Long districtId) throws Exception {
+		logger.info("Entered PhcServiceImpl:getPhcDynamicDataForDistrict");
+		Result result = new Result();
+		try {
+			List<Map<String,String>> resultList = phcDao.getPhcDynamicDataForDistrict(districtId);
+
+			if (resultList != null && !resultList.isEmpty()) {
+				
+				result.setValue(resultList);
+
+				result.setStatus(Constants.SUCCESS_STATUS);
+
+			} else {
+				result.setStatus(Constants.FAILURE_STATUS);
+				result.setErrorMessage("Data not available");
+			}
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+		}
+		logger.info("Exited PhcServiceImpl:getPhcDynamicDataForDistrict");
+
+		return result;
+
+	}
+	
+	public Result getPhcDynamicDataForState() throws Exception {
+		logger.info("Entered PhcServiceImpl: getPhcDynamicDataForState");
+		Result result = new Result();
+		try {
+			List<Map<String,String>> resultList = phcDao.getPhcDynamicDataForState();
+
+			if (resultList != null && !resultList.isEmpty()) {
+				
+				result.setValue(resultList);
+
+				result.setStatus(Constants.SUCCESS_STATUS);
+
+			} else {
+				result.setStatus(Constants.FAILURE_STATUS);
+				result.setErrorMessage("Data not available");
+			}
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+		}
+		logger.info("Exited PhcServiceImpl: getPhcDynamicDataForState");
+
+		return result;
+
+	}
+	
 	public Result getPhcDynamicDataFromHospitalId(Long hospitalId) throws Exception {
 		logger.info("Entered PhcServiceImpl:getPhcDynamicDataFromHospitalId");
 		Result result = new Result();

@@ -45,12 +45,17 @@ public class Users implements Serializable {
 	private Integer appVersion;
 
 
+	
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "district_id", referencedColumnName="id")
+	private DistrictMaster district;
+	
+
 	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "hospital_id", referencedColumnName="gid")
 	private HospitalMaster hospitalid;
 	
 	@ManyToOne(targetEntity=Role.class, fetch=FetchType.EAGER)
-
 	@JoinColumn(name = "roleid",referencedColumnName="id", insertable=false, updatable=false)
 	private Role roleid;
 
@@ -144,6 +149,20 @@ public class Users implements Serializable {
 	 */
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
+	}
+
+	/**
+	 * @return the district
+	 */
+	public DistrictMaster getDistrict() {
+		return district;
+	}
+
+	/**
+	 * @param district the district to set
+	 */
+	public void setDistrict(DistrictMaster district) {
+		this.district = district;
 	}
 	 
 	  

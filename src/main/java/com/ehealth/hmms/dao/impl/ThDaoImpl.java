@@ -43,73 +43,92 @@ public class ThDaoImpl implements ThDao {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public Boolean saveOrUpdateDeptWiseIpOpDetails(List<DepartmentWiseOpIp> departmentWiseOpIpList, HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
+	public Boolean saveOrUpdateDeptWiseIpOpDetails(List<DepartmentWiseOpIp> departmentWiseOpIpList,
+			HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
 		logger.info("Entered ThDaoImpl:saveOrUpdateDeptWiseIpOpDetails");
 		Session session = this.sessionFactory.getCurrentSession();
-		Date todaysDate = new Date();
-		for (DepartmentWiseOpIp departmentWiseOpIp : departmentWiseOpIpList) {
-			if (hospitalMonthlyTracker == null) {
-				HospitalMonthlyTracker hospitalMonthlyTrackerNullVal = new HospitalMonthlyTracker();
-				hospitalMonthlyTrackerNullVal.setReport_date(getFirstDateOfMonth());
-				hospitalMonthlyTrackerNullVal.setLastModified(todaysDate);
-				hospitalMonthlyTrackerNullVal.setCreatedDate(todaysDate);
-				session.saveOrUpdate(hospitalMonthlyTrackerNullVal);
-				departmentWiseOpIp.setHospitalMonthlyTrackerId(hospitalMonthlyTrackerNullVal);
-			} else {
-				hospitalMonthlyTracker.setLastModified(new Date());
-				session.saveOrUpdate(hospitalMonthlyTracker);
-				departmentWiseOpIp.setHospitalMonthlyTrackerId(hospitalMonthlyTracker);
+		try {
+			if ((hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() != null
+					&& hospitalMonthlyTracker.getId() == -1)
+					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
+				Long id = (Long) session.save(hospitalMonthlyTracker);
+				hospitalMonthlyTracker.setId(id);
 			}
-			session.saveOrUpdate(departmentWiseOpIp);
+			for (DepartmentWiseOpIp departmentWiseOpIp : departmentWiseOpIpList) {
+				if (departmentWiseOpIp.getId() != null && departmentWiseOpIp.getId() == -1) {
+					departmentWiseOpIp.setId(null);
+				}
+				hospitalMonthlyTracker.setLastModified(new Date());
+				departmentWiseOpIp.setHospitalMonthlyTrackerId(hospitalMonthlyTracker);
+				session.saveOrUpdate(departmentWiseOpIp);
+			}
+		} catch (HibernateException e) {
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			logger.error("Exception occured in ThDaoImpl:saveOrUpdateDeptWiseIpOpDetails: " + e.getMessage());
+			throw new Exception("Exception : " + e.getMessage());
+
 		}
 		logger.info("Exited ThDaoImpl:saveOrUpdateDeptWiseIpOpDetails");
 		return true;
 	}
-	
-		public Boolean saveOrUpdateSurgeryDetails(List<SurgeryDetailsThDhGh> surgeryDetailsList, HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
-			logger.info("Entered ThDaoImpl: saveOrUpdateSurgeryDetails");
-			Session session = this.sessionFactory.getCurrentSession();
+
+	public Boolean saveOrUpdateSurgeryDetails(List<SurgeryDetailsThDhGh> surgeryDetailsList,
+			HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
+		logger.info("Entered ThDaoImpl: saveOrUpdateSurgeryDetails");
+		Session session = this.sessionFactory.getCurrentSession();
+		try {
+			if ((hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() != null
+					&& hospitalMonthlyTracker.getId() == -1)
+					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
+				Long id = (Long) session.save(hospitalMonthlyTracker);
+				hospitalMonthlyTracker.setId(id);
+			}
 			for (SurgeryDetailsThDhGh surgeryDetailsThDhGh : surgeryDetailsList) {
-				if (hospitalMonthlyTracker == null) {
-					HospitalMonthlyTracker hospitalMonthlyTrackerNullVal = new HospitalMonthlyTracker();
-					hospitalMonthlyTrackerNullVal.setReport_date(getFirstDateOfMonth());
-					hospitalMonthlyTrackerNullVal.setLastModified(new Date());
-					hospitalMonthlyTrackerNullVal.setCreatedDate(new Date());
-					session.saveOrUpdate(hospitalMonthlyTrackerNullVal);
-					surgeryDetailsThDhGh.setHospitalMonthlyTracker(hospitalMonthlyTrackerNullVal);
-				}  else {
-					hospitalMonthlyTracker.setLastModified(new Date());
-					session.saveOrUpdate(hospitalMonthlyTracker);
-					surgeryDetailsThDhGh.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+				if (surgeryDetailsThDhGh.getId() != null && surgeryDetailsThDhGh.getId() == -1) {
+					surgeryDetailsThDhGh.setId(null);
 				}
-				session.clear();
+				hospitalMonthlyTracker.setLastModified(new Date());
+				surgeryDetailsThDhGh.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 				session.saveOrUpdate(surgeryDetailsThDhGh);
 			}
-			logger.info("Exited ThDaoImpl: saveOrUpdateSurgeryDetails");
-			return true;
+		} catch (HibernateException e) {
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			logger.error("Exception occured in ThDaoImpl:saveOrUpdateSurgeryDetails: " + e.getMessage());
+			throw new Exception("Exception : " + e.getMessage());
 		}
-	
-	
-	public Boolean saveOrUpdateIdilingEquipment(List<IdlingMajorEquipment> IdlingMajorEquipmentList, HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
+		logger.info("Exited ThDaoImpl: saveOrUpdateSurgeryDetails");
+		return true;
+	}
+
+	public Boolean saveOrUpdateIdilingEquipment(List<IdlingMajorEquipment> IdlingMajorEquipmentList,
+			HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
 		logger.info("Entered ThDaoImpl: saveOrUpdateIdilingEquipment");
 		Session session = this.sessionFactory.getCurrentSession();
-		for (IdlingMajorEquipment idlingMajorEquipment : IdlingMajorEquipmentList) {
-			if (hospitalMonthlyTracker == null) {
-				HospitalMonthlyTracker hospitalMonthlyTrackerNullVal = new HospitalMonthlyTracker();
-				hospitalMonthlyTrackerNullVal.setReport_date(getFirstDateOfMonth());
-				hospitalMonthlyTrackerNullVal.setLastModified(new Date());
-				hospitalMonthlyTrackerNullVal.setCreatedDate(new Date());
-				session.saveOrUpdate(hospitalMonthlyTrackerNullVal);
-				idlingMajorEquipment.setHospitalMonthlyTracker(hospitalMonthlyTrackerNullVal);
-			} else {
-				hospitalMonthlyTracker.setLastModified(new Date());
-				session.saveOrUpdate(hospitalMonthlyTracker);
-				idlingMajorEquipment.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+		try {
+			if ((hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() != null
+					&& hospitalMonthlyTracker.getId() == -1)
+					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
+				Long id = (Long) session.save(hospitalMonthlyTracker);
+				hospitalMonthlyTracker.setId(id);
 			}
-			session.saveOrUpdate(idlingMajorEquipment);
+			for (IdlingMajorEquipment idlingMajorEquipment : IdlingMajorEquipmentList) {
+				if (idlingMajorEquipment.getId() != null && idlingMajorEquipment.getId() == -1) {
+					idlingMajorEquipment.setId(null);
+				}
+				hospitalMonthlyTracker.setLastModified(new Date());
+				idlingMajorEquipment.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+				session.saveOrUpdate(idlingMajorEquipment);
+			}
+			logger.info("Exited ThDaoImpl: saveOrUpdateIdilingEquipment");
+			return true;
+		} catch (HibernateException e) {
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			logger.error("Exception occured in ThDaoImpl: saveOrUpdateIdilingEquipment: " + e.getMessage());
+			throw new Exception("Exception : " + e.getMessage());
 		}
-		logger.info("Exited ThDaoImpl: saveOrUpdateIdilingEquipment");
-		return true;
 	}
 
 	public Map<String, String> getThalukBasicData(Long nin) {
@@ -157,53 +176,83 @@ public class ThDaoImpl implements ThDao {
 		return basicData;
 	}
 
-	public Boolean saveOrUpdateServiceAreaOthers(ServiceAreaOthers serviceAreaOthers, HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
+	public Boolean saveOrUpdateServiceAreaOthers(ServiceAreaOthers serviceAreaOthers,
+			HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
 		logger.info("Entered ThDaoImpl:saveOrUpdateServiceAreaOthers");
 		Session session = this.sessionFactory.getCurrentSession();
-		if (hospitalMonthlyTracker == null) {
-			HospitalMonthlyTracker hospitalMonthlyTrackerNullVal = new HospitalMonthlyTracker();
-			hospitalMonthlyTrackerNullVal.setReport_date(getFirstDateOfMonth());
-			hospitalMonthlyTrackerNullVal.setLastModified(new Date());
-			hospitalMonthlyTrackerNullVal.setCreatedDate(new Date());
-			session.saveOrUpdate(hospitalMonthlyTrackerNullVal);
-			serviceAreaOthers.setHospitalMonthlyTracker(hospitalMonthlyTrackerNullVal);
-		} else {
+		try {
+			if ((hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() != null
+					&& hospitalMonthlyTracker.getId() == -1)
+					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
+				Long id = (Long) session.save(hospitalMonthlyTracker);
+				hospitalMonthlyTracker.setId(id);
+			}
+			if (serviceAreaOthers.getId() != null && serviceAreaOthers.getId() == -1) {
+				serviceAreaOthers.setId(null);
+			}
 			hospitalMonthlyTracker.setLastModified(new Date());
 			serviceAreaOthers.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+			session.saveOrUpdate(serviceAreaOthers);
+			logger.info("Exited ThDaoImpl: saveOrUpdateServiceAreaOthers");
+			return true;
+		} catch (HibernateException e) {
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			logger.error("Exception occured in ThDaoImpl: saveOrUpdateServiceAreaOthers: " + e.getMessage());
+			throw new Exception("Exception : " + e.getMessage());
 		}
-		session.saveOrUpdate(serviceAreaOthers);
-		logger.info("Exited ThDaoImpl:saveOrUpdateServiceAreaOthers");
-		return true;
+
 	}
 
-	public Boolean saveOrUpdateFundExpenditure(FundExpenditure fundExpenditure, HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
+	public Boolean saveOrUpdateFundExpenditure(FundExpenditure fundExpenditure,
+			HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
 		logger.info("Entered ThDaoImpl:saveOrUpdateFundExpenditure");
 		Session session = this.sessionFactory.getCurrentSession();
-		if (hospitalMonthlyTracker == null) {
-			HospitalMonthlyTracker hospitalMonthlyTrackerNullVal = new HospitalMonthlyTracker();
-			hospitalMonthlyTrackerNullVal.setReport_date(getFirstDateOfMonth());
-			hospitalMonthlyTrackerNullVal.setLastModified(new Date());
-			hospitalMonthlyTrackerNullVal.setCreatedDate(new Date());
-			session.saveOrUpdate(hospitalMonthlyTrackerNullVal);
-			fundExpenditure.setHospitalMonthlyTracker(hospitalMonthlyTrackerNullVal);
-		} else {
+		try {
+			if ((hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() != null
+					&& hospitalMonthlyTracker.getId() == -1)
+					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
+				Long id = (Long) session.save(hospitalMonthlyTracker);
+				hospitalMonthlyTracker.setId(id);
+			}
+			if (fundExpenditure.getId() != null && fundExpenditure.getId() == -1) {
+				fundExpenditure.setId(null);
+			}
 			hospitalMonthlyTracker.setLastModified(new Date());
 			fundExpenditure.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+			session.saveOrUpdate(fundExpenditure);
+
+			logger.info("Exited ThDaoImpl: saveOrUpdateFundExpenditure");
+			return true;
+		} catch (HibernateException e) {
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			logger.error("Exception occured in ThDaoImpl: saveOrUpdateFundExpenditure: " + e.getMessage());
+			throw new Exception("Exception : " + e.getMessage());
 		}
-		session.saveOrUpdate(fundExpenditure);
-		logger.info("Exited ThDaoImpl:saveOrUpdateFundExpenditure");
-		return true;
 	}
 
 	// Saving or updating the OP and IP details of taluk hospital.
 
-	public Boolean saveAndUpdateOpIpDetails(OpIpDetails opIpDetails, HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
+	public Boolean saveAndUpdateOpIpDetails(OpIpDetails opIpDetails, HospitalMonthlyTracker hospitalMonthlyTracker)
+			throws Exception {
 		logger.info("Entered ThDaoImpl:saveAndUpdateOpIpDetails");
 		Session session = this.sessionFactory.getCurrentSession();
 
 		Boolean resultFlag = false;
 
 		try {
+			if ((hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() != null
+					&& hospitalMonthlyTracker.getId() == -1)
+					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
+				Long id = (Long) session.save(hospitalMonthlyTracker);
+				hospitalMonthlyTracker.setId(id);
+			}
+			if (opIpDetails.getId() != null && opIpDetails.getId() == -1) {
+				opIpDetails.setId(null);
+			}
+			hospitalMonthlyTracker.setLastModified(new Date());
+			opIpDetails.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 
 			Long forenoonOpMale = opIpDetails.getForenoonOpMale();
 			Long forenoonOpFemale = opIpDetails.getForenoonOpFemale();
@@ -266,117 +315,131 @@ public class ThDaoImpl implements ThDao {
 				}
 			} else {
 				session.save(opIpDetails);
-				resultFlag = true;
+				return true;
 			}
 
 		} catch (HibernateException e) {
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
+			logger.error("Exception occured in ThDaoImpl: saveAndUpdateOpIpDetails: " + e.getMessage());
 			throw new Exception("Exception : " + e.getMessage());
 		}
-		logger.info("Exited ThDaoImpl:saveAndUpdateOpIpDetails");
+		logger.info("Exited ThDaoImpl: saveAndUpdateOpIpDetails");
 		return resultFlag;
 
 	}
 
 	// Saving or updating the speciality clinics of taluk hospital.
 
-	public Boolean saveAndUpdateSpecialityClinicData(List<SpecialityClinicData> specialityClinicDataList,  HospitalMonthlyTracker hospitalMonthlyTracker)
-			throws Exception {
+	public Boolean saveAndUpdateSpecialityClinicData(List<SpecialityClinicData> specialityClinicDataList,
+			HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
 		logger.info("Entered ThDaoImpl:saveAndUpdateSpecialityClinicData");
 		Session session = this.sessionFactory.getCurrentSession();
-		for (SpecialityClinicData specialityClinicData : specialityClinicDataList) {
-			if (hospitalMonthlyTracker == null) {
-				HospitalMonthlyTracker hospitalMonthlyTrackerNullVal = new HospitalMonthlyTracker();
-				hospitalMonthlyTrackerNullVal.setReport_date(getFirstDateOfMonth());
-				hospitalMonthlyTrackerNullVal.setLastModified(new Date());
-				hospitalMonthlyTrackerNullVal.setCreatedDate(new Date());
-				session.saveOrUpdate(hospitalMonthlyTrackerNullVal);
-				specialityClinicData.setHospitalMonthlyTracker(hospitalMonthlyTrackerNullVal);
-			} else {
+		try {
+			if ((hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() != null
+					&& hospitalMonthlyTracker.getId() == -1)
+					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
+				Long id = (Long) session.save(hospitalMonthlyTracker);
+				hospitalMonthlyTracker.setId(id);
+			}
+			for (SpecialityClinicData specialityClinicData : specialityClinicDataList) {
+				if (specialityClinicData.getId() != null && specialityClinicData.getId() == -1) {
+					specialityClinicData.setId(null);
+				}
 				hospitalMonthlyTracker.setLastModified(new Date());
 				specialityClinicData.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+				session.saveOrUpdate(specialityClinicData);
 			}
-			session.saveOrUpdate(specialityClinicData);
-		}
-		logger.info("Exited ThDaoImpl:saveAndUpdateSpecialityClinicData");
-		return true;
-	}
 
-	public Boolean saveAndUpdateLabDialysis(LabDialysis labDialysis, HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
-		logger.info("Entered ThDaoImpl:saveAndUpdateLabDialysis");
-		Session session = this.sessionFactory.getCurrentSession();
-		if (hospitalMonthlyTracker == null) {
-			HospitalMonthlyTracker hospitalMonthlyTrackerNullVal = new HospitalMonthlyTracker();
-			hospitalMonthlyTrackerNullVal.setReport_date(getFirstDateOfMonth());
-			hospitalMonthlyTrackerNullVal.setLastModified(new Date());
-			hospitalMonthlyTrackerNullVal.setCreatedDate(new Date());
-			session.saveOrUpdate(hospitalMonthlyTrackerNullVal);
-			labDialysis.setHospitalMonthlyTracker(hospitalMonthlyTrackerNullVal);
-		} else {
-			hospitalMonthlyTracker.setLastModified(new Date());
-			labDialysis.setHospitalMonthlyTracker(hospitalMonthlyTracker);
-		}
-		session.saveOrUpdate(labDialysis);
-		logger.info("Exited ThDaoImpl:saveAndUpdateLabDialysis");
-		return true;
-	}
-	
-	
-	public Boolean saveAndUpdateThTransactionalData(MonthlyDataTh monthlyDataTh) throws Exception
-	{
-		logger.info("Entered ThDaoImpl: saveAndUpdateThTransactionalData");
-
-		try {
-		
-		HospitalMonthlyTracker hospitalMonthlyTracker = new HospitalMonthlyTracker();
-		hospitalMonthlyTracker = monthlyDataTh.getHospitalMonthlyTracker();
-			
-		List<DepartmentWiseOpIp> departmentWiseOpIpList = new ArrayList<DepartmentWiseOpIp>();
-		departmentWiseOpIpList = monthlyDataTh.getDepartmentWiseOpIp();
-		saveOrUpdateDeptWiseIpOpDetails(departmentWiseOpIpList,hospitalMonthlyTracker);
-		
-		if(monthlyDataTh.isIdlingEquipment())
-		{
-			List<IdlingMajorEquipment> idlingMajorEquipments = new ArrayList<IdlingMajorEquipment>();
-			idlingMajorEquipments = monthlyDataTh.getIdlingMajorEquipments();
-			saveOrUpdateIdilingEquipment(idlingMajorEquipments,hospitalMonthlyTracker);
-		}
-		
-		List<SpecialityClinicData> specialityClinicDatas = new ArrayList<SpecialityClinicData>();
-		specialityClinicDatas = monthlyDataTh.getSpecialityClinicData();
-		saveAndUpdateSpecialityClinicData(specialityClinicDatas,hospitalMonthlyTracker);
-		
-		List<SurgeryDetailsThDhGh> surgeryDetailsThDhGhs = new ArrayList<SurgeryDetailsThDhGh>();
-		surgeryDetailsThDhGhs = monthlyDataTh.getSurgeryDetailsThDhGh();
-		saveOrUpdateSurgeryDetails(surgeryDetailsThDhGhs,hospitalMonthlyTracker);
-		
-		LabDialysis talukFacilityDetails = new LabDialysis();
-		talukFacilityDetails = monthlyDataTh.getTalukFacilityDetails();
-		saveAndUpdateLabDialysis(talukFacilityDetails,hospitalMonthlyTracker);
-		
-		FundExpenditure talukFundDetails = new FundExpenditure();
-		talukFundDetails = monthlyDataTh.getTalukFundDetails();
-		saveOrUpdateFundExpenditure(talukFundDetails,hospitalMonthlyTracker);
-		
-		OpIpDetails talukOpIpDetails = new OpIpDetails();
-		talukOpIpDetails = monthlyDataTh.getTalukOpIpDetails();
-		saveAndUpdateOpIpDetails(talukOpIpDetails,hospitalMonthlyTracker);
-		
-		ServiceAreaOthers talukOtherServiceDetails = new  ServiceAreaOthers();
-		talukOtherServiceDetails = monthlyDataTh.getTalukOtherServiceDetails();
-		saveOrUpdateServiceAreaOthers(talukOtherServiceDetails,hospitalMonthlyTracker);
-		
+			logger.info("Exited ThDaoImpl: saveAndUpdateSpecialityClinicData");
+			return true;
 		} catch (HibernateException e) {
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
+			logger.error("Exception occured in ThDaoImpl: saveAndUpdateSpecialityClinicData: " + e.getMessage());
+			throw new Exception("Exception : " + e.getMessage());
+		}
+	}
+
+	public Boolean saveAndUpdateLabDialysis(LabDialysis labDialysis, HospitalMonthlyTracker hospitalMonthlyTracker)
+			throws Exception {
+		logger.info("Entered ThDaoImpl:saveAndUpdateLabDialysis");
+		Session session = this.sessionFactory.getCurrentSession();
+		try {
+			if ((hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() != null
+					&& hospitalMonthlyTracker.getId() == -1)
+					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
+				Long id = (Long) session.save(hospitalMonthlyTracker);
+				hospitalMonthlyTracker.setId(id);
+			}
+			if (labDialysis.getId() != null && labDialysis.getId() == -1) {
+				labDialysis.setId(null);
+			}
+			hospitalMonthlyTracker.setLastModified(new Date());
+			labDialysis.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+			session.saveOrUpdate(labDialysis);
+			logger.info("Exited ThDaoImpl: saveAndUpdateLabDialysis");
+			return true;
+		} catch (HibernateException e) {
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			logger.error("Exception occured in ThDaoImpl: saveAndUpdateLabDialysis: " + e.getMessage());
+			throw new Exception("Exception : " + e.getMessage());
+		}
+	}
+
+	public Boolean saveAndUpdateThTransactionalData(MonthlyDataTh monthlyDataTh) throws Exception {
+		logger.info("Entered ThDaoImpl: saveAndUpdateThTransactionalData");
+
+		try {
+
+			HospitalMonthlyTracker hospitalMonthlyTracker = new HospitalMonthlyTracker();
+			hospitalMonthlyTracker = monthlyDataTh.getHospitalMonthlyTracker();
+
+			List<DepartmentWiseOpIp> departmentWiseOpIpList = new ArrayList<DepartmentWiseOpIp>();
+			departmentWiseOpIpList = monthlyDataTh.getDepartmentWiseOpIp();
+			saveOrUpdateDeptWiseIpOpDetails(departmentWiseOpIpList, hospitalMonthlyTracker);
+
+			if (monthlyDataTh.isIdlingEquipment()) {
+				List<IdlingMajorEquipment> idlingMajorEquipments = new ArrayList<IdlingMajorEquipment>();
+				idlingMajorEquipments = monthlyDataTh.getIdlingMajorEquipments();
+				saveOrUpdateIdilingEquipment(idlingMajorEquipments, hospitalMonthlyTracker);
+			}
+
+			List<SpecialityClinicData> specialityClinicDatas = new ArrayList<SpecialityClinicData>();
+			specialityClinicDatas = monthlyDataTh.getSpecialityClinicData();
+			saveAndUpdateSpecialityClinicData(specialityClinicDatas, hospitalMonthlyTracker);
+
+			List<SurgeryDetailsThDhGh> surgeryDetailsThDhGhs = new ArrayList<SurgeryDetailsThDhGh>();
+			surgeryDetailsThDhGhs = monthlyDataTh.getSurgeryDetailsThDhGh();
+			saveOrUpdateSurgeryDetails(surgeryDetailsThDhGhs, hospitalMonthlyTracker);
+
+			LabDialysis talukFacilityDetails = new LabDialysis();
+			talukFacilityDetails = monthlyDataTh.getTalukFacilityDetails();
+			saveAndUpdateLabDialysis(talukFacilityDetails, hospitalMonthlyTracker);
+
+			FundExpenditure talukFundDetails = new FundExpenditure();
+			talukFundDetails = monthlyDataTh.getTalukFundDetails();
+			saveOrUpdateFundExpenditure(talukFundDetails, hospitalMonthlyTracker);
+
+			OpIpDetails talukOpIpDetails = new OpIpDetails();
+			talukOpIpDetails = monthlyDataTh.getTalukOpIpDetails();
+			saveAndUpdateOpIpDetails(talukOpIpDetails, hospitalMonthlyTracker);
+
+			ServiceAreaOthers talukOtherServiceDetails = new ServiceAreaOthers();
+			talukOtherServiceDetails = monthlyDataTh.getTalukOtherServiceDetails();
+			saveOrUpdateServiceAreaOthers(talukOtherServiceDetails, hospitalMonthlyTracker);
+
+		} catch (HibernateException e) {
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			logger.error("Exception occured in ThDaoImpl: saveAndUpdateThTransactionalData: " + e.getMessage());
 			throw new Exception("Exception : " + e.getMessage());
 		}
 		logger.info("Exited ThDaoImpl: saveAndUpdateThTransactionalData");
 		return true;
 	}
-	
-	
+
 	/*
 	 * private Date getFirstDateOfMonth() throws ParseException { Calendar c =
 	 * Calendar.getInstance(); // this takes current date
@@ -473,9 +536,10 @@ public class ThDaoImpl implements ThDao {
 		} catch (HibernateException e) {
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
+			logger.error("Exception occured in ThDaoImpl: saveHospitalMonthlyTracker: " + e.getMessage());
 			throw new Exception("Exception : " + e.getMessage());
 		}
-		logger.info("Exited ThDaoImpl:saveHospitalMonthlyTracker");
+		logger.info("Exited ThDaoImpl: saveHospitalMonthlyTracker");
 		return trackerId;
 	}
 
@@ -543,9 +607,10 @@ public class ThDaoImpl implements ThDao {
 		} catch (HibernateException e) {
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
+			logger.error("Exception occured in ThDaoImpl: fetchOpIpDetails: " + e.getMessage());
 			throw new Exception("Exception : " + e.getMessage());
 		}
-		logger.info("Exited ThDaoImpl:fetchOpIpDetails");
+		logger.info("Exited ThDaoImpl: fetchOpIpDetails");
 		return opIpDetails;
 	}
 
@@ -572,53 +637,52 @@ public class ThDaoImpl implements ThDao {
 					departmentWiseOpIp.setId(castObjectToLong(row[4]));
 					deptOpIpListUpdated.add(departmentWiseOpIp);
 				}
-			}else
-			{
+			} else {
 				DepartmentWiseOpIp departmentWiseOpIp1 = new DepartmentWiseOpIp();
 				departmentWiseOpIp1.setCategoryMasterId(castObjectToCategryMastr(4));
 				deptOpIpListUpdated.add(departmentWiseOpIp1);
-				
+
 				DepartmentWiseOpIp departmentWiseOpIp2 = new DepartmentWiseOpIp();
 				departmentWiseOpIp2.setCategoryMasterId(castObjectToCategryMastr(5));
 				deptOpIpListUpdated.add(departmentWiseOpIp2);
-				
+
 				DepartmentWiseOpIp departmentWiseOpIp3 = new DepartmentWiseOpIp();
 				departmentWiseOpIp3.setCategoryMasterId(castObjectToCategryMastr(8));
 				deptOpIpListUpdated.add(departmentWiseOpIp3);
-				
+
 				DepartmentWiseOpIp departmentWiseOpIp4 = new DepartmentWiseOpIp();
 				departmentWiseOpIp4.setCategoryMasterId(castObjectToCategryMastr(9));
 				deptOpIpListUpdated.add(departmentWiseOpIp4);
-				
+
 				DepartmentWiseOpIp departmentWiseOpIp5 = new DepartmentWiseOpIp();
 				departmentWiseOpIp5.setCategoryMasterId(castObjectToCategryMastr(10));
 				deptOpIpListUpdated.add(departmentWiseOpIp5);
-				
+
 				DepartmentWiseOpIp departmentWiseOpIp6 = new DepartmentWiseOpIp();
 				departmentWiseOpIp6.setCategoryMasterId(castObjectToCategryMastr(6));
 				deptOpIpListUpdated.add(departmentWiseOpIp6);
-				
+
 				DepartmentWiseOpIp departmentWiseOpIp7 = new DepartmentWiseOpIp();
 				departmentWiseOpIp7.setCategoryMasterId(castObjectToCategryMastr(7));
 				deptOpIpListUpdated.add(departmentWiseOpIp7);
-				
+
 				DepartmentWiseOpIp departmentWiseOpIp8 = new DepartmentWiseOpIp();
 				departmentWiseOpIp8.setCategoryMasterId(castObjectToCategryMastr(8));
 				deptOpIpListUpdated.add(departmentWiseOpIp8);
-				
+
 				DepartmentWiseOpIp departmentWiseOpIp9 = new DepartmentWiseOpIp();
 				departmentWiseOpIp9.setCategoryMasterId(castObjectToCategryMastr(9));
-				deptOpIpListUpdated.add(departmentWiseOpIp9);	
+				deptOpIpListUpdated.add(departmentWiseOpIp9);
 			}
 
 		} catch (HibernateException e) {
 
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
-
+			logger.error("Exception occured in ThDaoImpl: fetchDeptOpIpDetails: " + e.getMessage());
 			throw new Exception("Exception : " + e.getMessage());
 		}
-		logger.info("Exited ThDaoImpl:fetchDeptOpIpDetails");
+		logger.info("Exited ThDaoImpl: fetchDeptOpIpDetails");
 		return deptOpIpListUpdated;
 	}
 
@@ -646,28 +710,27 @@ public class ThDaoImpl implements ThDao {
 					surgeryDetails.setId(castObjectToLong(row[4]));
 					surgeryDetailsUpdated.add(surgeryDetails);
 				}
-			}else
-			{
+			} else {
 				SurgeryDetailsThDhGh surgeryDetailsThDhGh1 = new SurgeryDetailsThDhGh();
 				surgeryDetailsThDhGh1.setCategoryMaster(castObjectToCategryMastr(5));
 				surgeryDetailsUpdated.add(surgeryDetailsThDhGh1);
-				
+
 				SurgeryDetailsThDhGh surgeryDetailsThDhGh2 = new SurgeryDetailsThDhGh();
 				surgeryDetailsThDhGh2.setCategoryMaster(castObjectToCategryMastr(8));
 				surgeryDetailsUpdated.add(surgeryDetailsThDhGh2);
-				
+
 				SurgeryDetailsThDhGh surgeryDetailsThDhGh3 = new SurgeryDetailsThDhGh();
 				surgeryDetailsThDhGh3.setCategoryMaster(castObjectToCategryMastr(9));
 				surgeryDetailsUpdated.add(surgeryDetailsThDhGh3);
-				
+
 				SurgeryDetailsThDhGh surgeryDetailsThDhGh4 = new SurgeryDetailsThDhGh();
 				surgeryDetailsThDhGh4.setCategoryMaster(castObjectToCategryMastr(10));
 				surgeryDetailsUpdated.add(surgeryDetailsThDhGh4);
-				
+
 				SurgeryDetailsThDhGh surgeryDetailsThDhGh5 = new SurgeryDetailsThDhGh();
 				surgeryDetailsThDhGh5.setCategoryMaster(castObjectToCategryMastr(21));
 				surgeryDetailsUpdated.add(surgeryDetailsThDhGh5);
-				
+
 				SurgeryDetailsThDhGh surgeryDetailsThDhGh6 = new SurgeryDetailsThDhGh();
 				surgeryDetailsThDhGh6.setCategoryMaster(castObjectToCategryMastr(6));
 				surgeryDetailsUpdated.add(surgeryDetailsThDhGh6);
@@ -677,10 +740,10 @@ public class ThDaoImpl implements ThDao {
 
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
-
+			logger.error("Exception occured in ThDaoImpl: fetchSurgeryDetailsThDhGh: " + e.getMessage());
 			throw new Exception("Exception : " + e.getMessage());
 		}
-		logger.info("Exited ThDaoImpl:fetchSurgeryDetailsThDhGh");
+		logger.info("Exited ThDaoImpl: fetchSurgeryDetailsThDhGh");
 		return surgeryDetailsUpdated;
 	}
 
@@ -712,32 +775,31 @@ public class ThDaoImpl implements ThDao {
 					specialityClinicData.setId(castObjectToLong(row[6]));
 					specialityClinicDataUpdated.add(specialityClinicData);
 				}
-			}else
-			{
+			} else {
 				SpecialityClinicData specialityClinicData1 = new SpecialityClinicData();
 				specialityClinicData1.setSpecialityClinic(castObjectToSpecialityClinic(1));
 				specialityClinicDataUpdated.add(specialityClinicData1);
-				
+
 				SpecialityClinicData specialityClinicData2 = new SpecialityClinicData();
 				specialityClinicData2.setSpecialityClinic(castObjectToSpecialityClinic(2));
 				specialityClinicDataUpdated.add(specialityClinicData2);
-				
+
 				SpecialityClinicData specialityClinicData3 = new SpecialityClinicData();
 				specialityClinicData3.setSpecialityClinic(castObjectToSpecialityClinic(3));
 				specialityClinicDataUpdated.add(specialityClinicData3);
-				
+
 				SpecialityClinicData specialityClinicData4 = new SpecialityClinicData();
 				specialityClinicData4.setSpecialityClinic(castObjectToSpecialityClinic(4));
 				specialityClinicDataUpdated.add(specialityClinicData4);
-				
+
 				SpecialityClinicData specialityClinicData5 = new SpecialityClinicData();
 				specialityClinicData5.setSpecialityClinic(castObjectToSpecialityClinic(5));
 				specialityClinicDataUpdated.add(specialityClinicData5);
-				
+
 				SpecialityClinicData specialityClinicData6 = new SpecialityClinicData();
 				specialityClinicData6.setSpecialityClinic(castObjectToSpecialityClinic(6));
 				specialityClinicDataUpdated.add(specialityClinicData6);
-				
+
 				SpecialityClinicData specialityClinicData7 = new SpecialityClinicData();
 				specialityClinicData7.setSpecialityClinic(castObjectToSpecialityClinic(7));
 				specialityClinicDataUpdated.add(specialityClinicData7);
@@ -747,10 +809,10 @@ public class ThDaoImpl implements ThDao {
 
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
-
+			logger.error("Exception occured in ThDaoImpl: fetchSpecialityClinicData: " + e.getMessage());
 			throw new Exception("Exception : " + e.getMessage());
 		}
-		logger.info("Exited ThDaoImpl:fetchSpecialityClinicData");
+		logger.info("Exited ThDaoImpl: fetchSpecialityClinicData");
 		return specialityClinicDataUpdated;
 	}
 
@@ -798,10 +860,10 @@ public class ThDaoImpl implements ThDao {
 
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
-
+			logger.error("Exception occured in ThDaoImpl: fetchLabDialysis: " + e.getMessage());
 			throw new Exception("Exception : " + e.getMessage());
 		}
-		logger.info("Exited ThDaoImpl:fetchLabDialysis");
+		logger.info("Exited ThDaoImpl: fetchLabDialysis");
 		return labDialysis;
 	}
 
@@ -846,10 +908,10 @@ public class ThDaoImpl implements ThDao {
 
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
-
+			logger.error("Exception occured in ThDaoImpl: fetchFundExpenditure: " + e.getMessage());
 			throw new Exception("Exception : " + e.getMessage());
 		}
-		logger.info("Exited ThDaoImpl:fetchFundExpenditure");
+		logger.info("Exited ThDaoImpl: fetchFundExpenditure");
 		return fundExpenditure;
 	}
 
@@ -889,10 +951,10 @@ public class ThDaoImpl implements ThDao {
 
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
-
+			logger.error("Exception occured in ThDaoImpl: fetchServiceAreaOthers: " + e.getMessage());
 			throw new Exception("Exception : " + e.getMessage());
 		}
-		logger.info("Exited ThDaoImpl:fetchServiceAreaOthers");
+		logger.info("Exited ThDaoImpl: fetchServiceAreaOthers");
 		return serviceAreaOthers;
 	}
 
@@ -926,10 +988,10 @@ public class ThDaoImpl implements ThDao {
 
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
-
+			logger.error("Exception occured in ThDaoImpl: fetchIdlingMajorEquipment: " + e.getMessage());
 			throw new Exception("Exception : " + e.getMessage());
 		}
-		logger.info("Exited ThDaoImpl:fetchIdlingMajorEquipment");
+		logger.info("Exited ThDaoImpl : fetchIdlingMajorEquipment");
 		return idlingMajorEquipmentUpdated;
 	}
 
@@ -968,8 +1030,7 @@ public class ThDaoImpl implements ThDao {
 			}
 
 			HospitalMonthlyTracker hospitalMonthlyTracker = opIpDetails.getHospitalMonthlyTracker();
-			if(hospitalMonthlyTracker != null)
-			{
+			if (hospitalMonthlyTracker != null) {
 				Long hospMonthTrackId = opIpDetails.getHospitalMonthlyTracker().getId();
 				hospitalMonthlyTracker.setId(hospMonthTrackId);
 			}
@@ -979,10 +1040,10 @@ public class ThDaoImpl implements ThDao {
 
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
-
+			logger.error("Exception occured in ThDaoImpl: fetchMonthlyDataTh: " + e.getMessage());
 			throw new Exception("Exception : " + e.getMessage());
 		}
-		logger.info("Exited ThDaoImpl:fetchMonthlyDataTh");
+		logger.info("Exited ThDaoImpl: fetchMonthlyDataTh");
 		return monthlyDataTh;
 	}
 
@@ -1022,5 +1083,30 @@ public class ThDaoImpl implements ThDao {
 		hospMonTrack.setId(new Long((Integer) ((object != null) ? object : 0)));
 		return hospMonTrack;
 	}
+
+	/*
+	 * public HospitalMonthlyTracker fetchHospitalMonthlyTrackId(Long hospitalId)
+	 * throws Exception {
+	 * logger.info("Entered ThDaoImpl: fetchHospitalMonthlyTrackId"); Session
+	 * session = this.sessionFactory.getCurrentSession(); HospitalMonthlyTracker
+	 * hospitalMonthlyTracker1 = new HospitalMonthlyTracker();
+	 * 
+	 * try { String sql =
+	 * "select id from hospital_monthlytracker where hospital_id=:hospitalId"; Query
+	 * query = session.createSQLQuery(sql); query.setParameter("hospitalId",
+	 * hospitalId); Object thHospitalMonthlyTrackerId = query.uniqueResult();
+	 * 
+	 * if (thHospitalMonthlyTrackerId != null) {
+	 * hospitalMonthlyTracker1.setId(thHospitalMonthlyTrackerId); }
+	 * 
+	 * } catch (HibernateException e) {
+	 * 
+	 * throw new HibernateException("Hibernate Exception : " + e.getMessage()); }
+	 * catch (Exception e) {
+	 * 
+	 * throw new Exception("Exception : " + e.getMessage()); }
+	 * logger.info("Exited ThDaoImpl:fetchServiceAreaOthers"); return
+	 * serviceAreaOthers; }
+	 */
 
 }

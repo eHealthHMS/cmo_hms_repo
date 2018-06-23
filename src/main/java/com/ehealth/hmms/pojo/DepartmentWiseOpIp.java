@@ -39,8 +39,8 @@ public class DepartmentWiseOpIp implements Serializable{
 	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "hospital_track_id", referencedColumnName="id")
 	private HospitalMonthlyTracker hospitalMonthlyTrackerId;
-	
-	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	//cascade = CascadeType.ALL
+	@OneToOne( fetch=FetchType.EAGER)
 	@JoinColumn(name = "category_id", referencedColumnName="id")
 	private CategoryMaster categoryMasterId;
 

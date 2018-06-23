@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
 import com.ehealth.hmms.pojo.FundExpenditure;
+import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.IdlingMajorEquipment;
 import com.ehealth.hmms.pojo.LabDialysis;
 import com.ehealth.hmms.pojo.MonthlyDataTh;
@@ -36,6 +37,7 @@ public interface ThDao {
 	ServiceAreaOthers fetchServiceAreaOthers(Long hospitalId) throws Exception;
 	
 	List<IdlingMajorEquipment> fetchIdlingMajorEquipment(Long hospitalId) throws Exception;
+	
 	
 	
 }

@@ -31,6 +31,8 @@ public interface PhcDao {
 
 	Map<String, String> getDataForMap(Long hospitalId) throws Exception;
 
+	HospitalMonthlyTracker createHospitalMonthlyTracker(Long hospitalId)throws Exception;
+
 	// Long saveHospitalMonthlyTracker(Long hospitalId) throws Exception;
 
 }

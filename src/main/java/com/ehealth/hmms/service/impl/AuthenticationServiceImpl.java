@@ -103,26 +103,41 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				if (hospitalTypeId == 15 || hospitalTypeId == 16 || hospitalTypeId == 17 || hospitalTypeId == 20) {
 					logger.info("Entered autenticate service for fetching phc/chc data while user login");
 					MonthlyDataFhcChc monthlyPhcResult = phcDao.fetchPhcRecord(hospitalId);
-					HospitalMonthlyTracker hospitalMonthlyTracker = monthlyPhcResult.getHospitalMonthlyTracker();
-					if(hospitalMonthlyTracker == null)
+					HospitalMonthlyTracker hospitalMonthlyTracker = new HospitalMonthlyTracker();
+					if(monthlyPhcResult.getHospitalMonthlyTracker() == null)
+					{
+						monthlyPhcResult.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+						monthlyPhcResult.getHospitalMonthlyTracker().setHospital(hospitalMaster);
+					}
+					hospitalMonthlyTracker = phcDao.getHospitalTrakerForSave(monthlyPhcResult.getHospitalMonthlyTracker());
+					if(hospitalMonthlyTracker.getId() == null)
 					{
 						hospitalMonthlyTracker = new HospitalMonthlyTracker();
+						hospitalMonthlyTracker.setHospital(hospitalMaster);
+						hospitalMonthlyTracker = thDao.saveHospitalMonthlyTracker(hospitalId);
 					}
-					hospitalMonthlyTracker.setHospital(hospitalMaster);
-					monthlyPhcResult.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+					result.setHospitalMonthlyTracker(hospitalMonthlyTracker); 
 					result.setValue(monthlyPhcResult);
 					result.setStatus(Constants.SUCCESS_STATUS);
 				} else if (hospitalTypeId == 18 || hospitalTypeId == 19) {
 					logger.info(
 							"Entered authenticate service for fetching the taluk hospital related data on user login");
 					MonthlyDataTh monthlyDataTh = thDao.fetchMonthlyDataTh(hospitalId);
-					HospitalMonthlyTracker hospitalMonthlyTracker = monthlyDataTh.getHospitalMonthlyTracker();
-					if(hospitalMonthlyTracker == null)
+					HospitalMonthlyTracker hospitalMonthlyTracker = new HospitalMonthlyTracker();
+					if(monthlyDataTh.getHospitalMonthlyTracker() == null)
+					{
+						monthlyDataTh.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+						 monthlyDataTh.getHospitalMonthlyTracker().setHospital(hospitalMaster);
+					}
+					hospitalMonthlyTracker = phcDao.getHospitalTrakerForSave(monthlyDataTh.getHospitalMonthlyTracker());
+					if(hospitalMonthlyTracker.getId() == null)
 					{
 						hospitalMonthlyTracker = new HospitalMonthlyTracker();
+						hospitalMonthlyTracker.setHospital(hospitalMaster);
+						hospitalMonthlyTracker = thDao.saveHospitalMonthlyTracker(hospitalId);
 					}
-					hospitalMonthlyTracker.setHospital(hospitalMaster);
-					monthlyDataTh.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+					result.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+					result.getHospitalMonthlyTracker().setHospital(hospitalMaster);
 					result.setValue(monthlyDataTh);
 					result.setStatus(Constants.SUCCESS_STATUS);
 				}

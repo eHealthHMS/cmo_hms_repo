@@ -51,8 +51,7 @@ public class ThDaoImpl implements ThDao {
 			if ((hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() != null
 					&& hospitalMonthlyTracker.getId() == -1)
 					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
-				Long id = (Long) session.save(hospitalMonthlyTracker);
-				hospitalMonthlyTracker.setId(id);
+				throw new Exception("Exception : " + "Hospital Monthly Tracker is missing");
 			}
 			for (DepartmentWiseOpIp departmentWiseOpIp : departmentWiseOpIpList) {
 				if (departmentWiseOpIp.getId() != null && departmentWiseOpIp.getId() == -1) {
@@ -81,8 +80,7 @@ public class ThDaoImpl implements ThDao {
 			if ((hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() != null
 					&& hospitalMonthlyTracker.getId() == -1)
 					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
-				Long id = (Long) session.save(hospitalMonthlyTracker);
-				hospitalMonthlyTracker.setId(id);
+				throw new Exception("Exception : " + "Hospital Monthly Tracker is missing");
 			}
 			for (SurgeryDetailsThDhGh surgeryDetailsThDhGh : surgeryDetailsList) {
 				if (surgeryDetailsThDhGh.getId() != null && surgeryDetailsThDhGh.getId() == -1) {
@@ -110,8 +108,7 @@ public class ThDaoImpl implements ThDao {
 			if ((hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() != null
 					&& hospitalMonthlyTracker.getId() == -1)
 					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
-				Long id = (Long) session.save(hospitalMonthlyTracker);
-				hospitalMonthlyTracker.setId(id);
+				throw new Exception("Exception : " + "Hospital Monthly Tracker is missing");
 			}
 			for (IdlingMajorEquipment idlingMajorEquipment : IdlingMajorEquipmentList) {
 				if (idlingMajorEquipment.getId() != null && idlingMajorEquipment.getId() == -1) {
@@ -184,8 +181,7 @@ public class ThDaoImpl implements ThDao {
 			if ((hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() != null
 					&& hospitalMonthlyTracker.getId() == -1)
 					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
-				Long id = (Long) session.save(hospitalMonthlyTracker);
-				hospitalMonthlyTracker.setId(id);
+				throw new Exception("Exception : " + "Hospital Monthly Tracker is missing");
 			}
 			if (serviceAreaOthers.getId() != null && serviceAreaOthers.getId() == -1) {
 				serviceAreaOthers.setId(null);
@@ -212,8 +208,7 @@ public class ThDaoImpl implements ThDao {
 			if ((hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() != null
 					&& hospitalMonthlyTracker.getId() == -1)
 					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
-				Long id = (Long) session.save(hospitalMonthlyTracker);
-				hospitalMonthlyTracker.setId(id);
+				throw new Exception("Exception : " + "Hospital Monthly Tracker is missing");
 			}
 			if (fundExpenditure.getId() != null && fundExpenditure.getId() == -1) {
 				fundExpenditure.setId(null);
@@ -245,8 +240,7 @@ public class ThDaoImpl implements ThDao {
 			if ((hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() != null
 					&& hospitalMonthlyTracker.getId() == -1)
 					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
-				Long id = (Long) session.save(hospitalMonthlyTracker);
-				hospitalMonthlyTracker.setId(id);
+				throw new Exception("Exception : " + "Hospital Monthly Tracker is missing");
 			}
 			if (opIpDetails.getId() != null && opIpDetails.getId() == -1) {
 				opIpDetails.setId(null);
@@ -339,8 +333,7 @@ public class ThDaoImpl implements ThDao {
 			if ((hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() != null
 					&& hospitalMonthlyTracker.getId() == -1)
 					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
-				Long id = (Long) session.save(hospitalMonthlyTracker);
-				hospitalMonthlyTracker.setId(id);
+				throw new Exception("Exception : " + "Hospital Monthly Tracker is missing");
 			}
 			for (SpecialityClinicData specialityClinicData : specialityClinicDataList) {
 				if (specialityClinicData.getId() != null && specialityClinicData.getId() == -1) {
@@ -369,8 +362,7 @@ public class ThDaoImpl implements ThDao {
 			if ((hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() != null
 					&& hospitalMonthlyTracker.getId() == -1)
 					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
-				Long id = (Long) session.save(hospitalMonthlyTracker);
-				hospitalMonthlyTracker.setId(id);
+				throw new Exception("Exception : " + "Hospital Monthly Tracker is missing");
 			}
 			if (labDialysis.getId() != null && labDialysis.getId() == -1) {
 				labDialysis.setId(null);
@@ -519,20 +511,20 @@ public class ThDaoImpl implements ThDao {
 		return reportDate;
 	}
 
-	public Long saveHospitalMonthlyTracker(Long hospitalId) throws Exception {
+	public HospitalMonthlyTracker saveHospitalMonthlyTracker(Long hospitalId) throws Exception {
 		logger.info("Entered ThDaoImpl:saveHospitalMonthlyTracker");
 		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
 		Long trackerId = 0L;
+		HospitalMonthlyTracker trackerForCurrentMonth = new HospitalMonthlyTracker();
 		try {
-			HospitalMonthlyTracker trackerForCurrentMonth = new HospitalMonthlyTracker();
 			HospitalMaster hospitalMaster = new HospitalMaster();
 			hospitalMaster.setId(hospitalId);
 			trackerForCurrentMonth.setHospital(hospitalMaster);
 			trackerForCurrentMonth.setLastModified(Calendar.getInstance().getTime());
-			trackerForCurrentMonth.setReport_date(getReportDate());// setReportMonth(new
-																	// Long(Calendar.getInstance().get(Calendar.MONTH)));
+			trackerForCurrentMonth.setCreatedDate(Calendar.getInstance().getTime());
+			trackerForCurrentMonth.setReport_date(getReportDate());
 			trackerId = (Long) session.save(trackerForCurrentMonth);
-
+			trackerForCurrentMonth.setId(trackerId);
 		} catch (HibernateException e) {
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
@@ -540,7 +532,7 @@ public class ThDaoImpl implements ThDao {
 			throw new Exception("Exception : " + e.getMessage());
 		}
 		logger.info("Exited ThDaoImpl: saveHospitalMonthlyTracker");
-		return trackerId;
+		return trackerForCurrentMonth;
 	}
 
 	public Date getReportDate() {
@@ -1082,6 +1074,13 @@ public class ThDaoImpl implements ThDao {
 		HospitalMonthlyTracker hospMonTrack = new HospitalMonthlyTracker();
 		hospMonTrack.setId(new Long((Integer) ((object != null) ? object : 0)));
 		return hospMonTrack;
+	}
+	
+	public HospitalMonthlyTracker saveHospitalMonthlyTracker(HospitalMonthlyTracker hospitalMonthlyTracker)
+	{
+		
+		return hospitalMonthlyTracker;
+		
 	}
 
 	/*

@@ -37,6 +37,8 @@ public interface ThDao {
 	ServiceAreaOthers fetchServiceAreaOthers(Long hospitalId) throws Exception;
 	
 	List<IdlingMajorEquipment> fetchIdlingMajorEquipment(Long hospitalId) throws Exception;
+
+	HospitalMonthlyTracker saveHospitalMonthlyTracker(Long hospitalId) throws Exception;
 	
 	
 	

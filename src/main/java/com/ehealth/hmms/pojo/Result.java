@@ -6,11 +6,10 @@ public class Result {
 	
 	private Character status;//login status
 	
-	private HospitalMaster hospitalMaster;
+	private HospitalMonthlyTracker hospitalMonthlyTracker;
 	
 	private Boolean editable;// view mode or edit mode
 
-	
 	private Long hospitalType;
 
 	private String errorMessage;
@@ -73,13 +72,14 @@ public class Result {
 	}
 
 
-	public HospitalMaster getHospitalMaster() {
-		return hospitalMaster;
+
+	public HospitalMonthlyTracker getHospitalMonthlyTracker() {
+		return hospitalMonthlyTracker;
 	}
 
 
-	public void setHospitalMaster(HospitalMaster hospitalMaster) {
-		this.hospitalMaster = hospitalMaster;
+	public void setHospitalMonthlyTracker(HospitalMonthlyTracker hospitalMonthlyTracker) {
+		this.hospitalMonthlyTracker = hospitalMonthlyTracker;
 	}
 
 

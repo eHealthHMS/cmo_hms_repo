@@ -33,6 +33,8 @@ public interface PhcDao {
 
 	HospitalMonthlyTracker createHospitalMonthlyTracker(Long hospitalId)throws Exception;
 
+	HospitalMonthlyTracker getMonthlyTrackerForCurrentMonth(Long hospitalId)throws Exception;
+
 	// Long saveHospitalMonthlyTracker(Long hospitalId) throws Exception;
 
 }

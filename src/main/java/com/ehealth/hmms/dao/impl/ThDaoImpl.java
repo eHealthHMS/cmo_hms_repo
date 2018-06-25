@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ehealth.hmms.dao.PhcDao;
 import com.ehealth.hmms.dao.ThDao;
 import com.ehealth.hmms.pojo.CategoryMaster;
 import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
@@ -42,6 +43,17 @@ public class ThDaoImpl implements ThDao {
 
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	@Autowired
+	public PhcDao phcDao ;
+
+	public PhcDao getPhcDao() {
+		return phcDao;
+	}
+
+	public void setPhcDao(PhcDao phcDao) {
+		this.phcDao = phcDao;
+	}
 
 	public Boolean saveOrUpdateDeptWiseIpOpDetails(List<DepartmentWiseOpIp> departmentWiseOpIpList,
 			HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
@@ -1021,10 +1033,11 @@ public class ThDaoImpl implements ThDao {
 				monthlyDataTh.setIdlingEquipment(true);
 			}
 
-			HospitalMonthlyTracker hospitalMonthlyTracker = opIpDetails.getHospitalMonthlyTracker();
+			HospitalMonthlyTracker hospitalMonthlyTracker = new HospitalMonthlyTracker();
 			if (hospitalMonthlyTracker != null) {
-				Long hospMonthTrackId = opIpDetails.getHospitalMonthlyTracker().getId();
-				hospitalMonthlyTracker.setId(hospMonthTrackId);
+			//	Long hospMonthTrackId = opIpDetails.getHospitalMonthlyTracker().getId();
+				hospitalMonthlyTracker = phcDao.getMonthlyTrackerForCurrentMonth(hospitalId);
+				//hospitalMonthlyTracker.setId(hospitalMonthlyTracker);
 			}
 			monthlyDataTh.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 

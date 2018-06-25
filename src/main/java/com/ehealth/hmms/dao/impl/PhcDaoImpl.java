@@ -493,7 +493,7 @@ public class PhcDaoImpl implements PhcDao {
 	 * @return
 	 * @throws Exception
 	 */
-	private HospitalMonthlyTracker getMonthlyTrackerForCurrentMonth(Long hospitalId) throws Exception {
+	public HospitalMonthlyTracker getMonthlyTrackerForCurrentMonth(Long hospitalId) throws Exception {
 		logger.info("Entered PhcDaoImpl : getMonthlyTrackerForCurrentMonth");
 		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
 		HospitalMonthlyTracker hospitalMonthlyTracker = null;

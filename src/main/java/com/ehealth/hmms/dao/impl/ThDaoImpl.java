@@ -532,8 +532,8 @@ public class ThDaoImpl implements ThDao {
 			HospitalMaster hospitalMaster = new HospitalMaster();
 			hospitalMaster.setId(hospitalId);
 			trackerForCurrentMonth.setHospital(hospitalMaster);
-			trackerForCurrentMonth.setLastModified(Calendar.getInstance().getTime());
-			trackerForCurrentMonth.setCreatedDate(Calendar.getInstance().getTime());
+			trackerForCurrentMonth.setLastModified(new Date());
+			trackerForCurrentMonth.setCreatedDate(new Date());
 			trackerForCurrentMonth.setReport_date(getReportDate());
 			trackerId = (Long) session.save(trackerForCurrentMonth);
 			trackerForCurrentMonth.setId(trackerId);

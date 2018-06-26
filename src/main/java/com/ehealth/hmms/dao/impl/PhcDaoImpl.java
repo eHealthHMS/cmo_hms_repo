@@ -448,8 +448,8 @@ public class PhcDaoImpl implements PhcDao {
 			HospitalMaster hospitalMaster = new HospitalMaster();
 			hospitalMaster.setId(hospitalId);
 			trackerForCurrentMonth.setHospital(hospitalMaster);
-			trackerForCurrentMonth.setLastModified(Calendar.getInstance().getTime());
-			trackerForCurrentMonth.setCreatedDate(Calendar.getInstance().getTime());
+			trackerForCurrentMonth.setLastModified(new Date());
+			trackerForCurrentMonth.setCreatedDate(new Date());
 			trackerForCurrentMonth.setReport_date(getReportDate(-1));// setReportMonth(new
 							return trackerForCurrentMonth;									   // Long(Calendar.getInstance().get(Calendar.MONTH)));
 			

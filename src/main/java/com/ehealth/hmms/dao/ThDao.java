@@ -38,7 +38,9 @@ public interface ThDao {
 	
 	List<IdlingMajorEquipment> fetchIdlingMajorEquipment(Long hospitalId) throws Exception;
 
-	HospitalMonthlyTracker saveHospitalMonthlyTracker(Long hospitalId) throws Exception;
+	Long saveHospitalMonthlyTracker(Long hospitalId) throws Exception;
+
+	HospitalMonthlyTracker fetchHospitalMonthlyTracker(Long hospitalId)throws Exception;
 	
 	
 	

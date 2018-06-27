@@ -32,10 +32,7 @@ public class HospitalMonthlyTracker implements Serializable{
 	
 	@Column(name = "report_date")
 	private Date report_date;
-	
-	
-	
-	
+
 	@Column(name = "final_submit_done")
 	private Boolean finalSubmitDone;
 	

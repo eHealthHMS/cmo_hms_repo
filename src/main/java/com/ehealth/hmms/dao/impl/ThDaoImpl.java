@@ -130,6 +130,7 @@ public class ThDaoImpl implements ThDao {
 				idlingMajorEquipment.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 				session.saveOrUpdate(idlingMajorEquipment);
 			}
+			deleteIdilingEquipment(IdlingMajorEquipmentList,hospitalMonthlyTracker);
 			logger.info("Exited ThDaoImpl: saveOrUpdateIdilingEquipment");
 			return true;
 		} catch (HibernateException e) {
@@ -138,6 +139,33 @@ public class ThDaoImpl implements ThDao {
 			logger.error("Exception occured in ThDaoImpl: saveOrUpdateIdilingEquipment: " + e.getMessage());
 			throw new Exception("Exception : " + e.getMessage());
 		}
+	}
+	
+	public Boolean deleteIdilingEquipment(List<IdlingMajorEquipment> IdlingMajorEquipmentList,
+			HospitalMonthlyTracker hospitalMonthlyTracker) throws Exception {
+		logger.info("Entered ThDaoImpl: saveOrUpdateIdilingEquipment");
+		Session session = this.sessionFactory.getCurrentSession();
+		try {
+			List<Long> idlingMajorEquipmentId = new ArrayList<Long>();
+			for (IdlingMajorEquipment idlingMajorEquipment : IdlingMajorEquipmentList) {
+					if (idlingMajorEquipment.getId() != null || idlingMajorEquipment.getId() != -1) {
+						idlingMajorEquipmentId.add(idlingMajorEquipment.getId());
+					}
+				}
+			String sql = "delete from idling_major_equipment where id not in (:idlingMajorEquipmentId) and hosp_track_id =:hospTrackId";
+			Query query = session.createSQLQuery(sql);
+			query.setParameter("hospTrackId", hospitalMonthlyTracker.getId());
+			query.setParameterList("idlingMajorEquipmentId", idlingMajorEquipmentId);
+			query.executeUpdate();
+
+		}catch (HibernateException e) {
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			logger.error("Exception occured in ThDaoImpl: saveOrUpdateIdilingEquipment: " + e.getMessage());
+			throw new Exception("Exception : " + e.getMessage());
+		}
+		
+	return true;
 	}
 
 	public Map<String, String> getThalukBasicData(Long nin) {
@@ -523,7 +551,7 @@ public class ThDaoImpl implements ThDao {
 		return reportDate;
 	}
 
-	public HospitalMonthlyTracker saveHospitalMonthlyTracker(Long hospitalId) throws Exception {
+	public Long saveHospitalMonthlyTracker(Long hospitalId) throws Exception {
 		logger.info("Entered ThDaoImpl:saveHospitalMonthlyTracker");
 		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
 		Long trackerId = 0L;
@@ -536,7 +564,8 @@ public class ThDaoImpl implements ThDao {
 			trackerForCurrentMonth.setCreatedDate(new Date());
 			trackerForCurrentMonth.setReport_date(getReportDate());
 			trackerId = (Long) session.save(trackerForCurrentMonth);
-			trackerForCurrentMonth.setId(trackerId);
+		/*	trackerForCurrentMonth = new HospitalMonthlyTracker();
+			trackerForCurrentMonth = fetchHospitalMonthlyTracker(hospitalId);*/
 		} catch (HibernateException e) {
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {
@@ -544,6 +573,43 @@ public class ThDaoImpl implements ThDao {
 			throw new Exception("Exception : " + e.getMessage());
 		}
 		logger.info("Exited ThDaoImpl: saveHospitalMonthlyTracker");
+		return trackerId;
+	}
+	
+	
+	public HospitalMonthlyTracker fetchHospitalMonthlyTracker(Long hospitalId) throws Exception {
+		logger.info("Entered ThDaoImpl: fetchHospitalMonthlyTracker");
+		Session session = this.sessionFactory.getCurrentSession();
+		HospitalMonthlyTracker trackerForCurrentMonth = new HospitalMonthlyTracker();
+		try {
+		String sql ="select id ,last_modified,report_date,created_date from hospital_monthlytracker where hospital_id=:hospitalId and report_date =to_date(:date,'yyyy-mm-dd')";
+		Query query = session.createSQLQuery(sql);
+		query.setParameter("hospitalId", hospitalId);
+		query.setParameter("date", getReportDate());
+		
+		List<HospitalMonthlyTracker> hospitalMonthlyTrackerList = query.list();
+		
+			if (hospitalMonthlyTrackerList != null && !hospitalMonthlyTrackerList.isEmpty()) {
+				Iterator iterator = hospitalMonthlyTrackerList.iterator();
+	
+				while (iterator.hasNext()) {
+					Object[] row = (Object[]) iterator.next();
+	
+					trackerForCurrentMonth.setId(castObjectToLong(row[0]));
+					trackerForCurrentMonth.setLastModified((Date)(row[1]));
+					trackerForCurrentMonth.setReport_date((Date)(row[2]));
+					trackerForCurrentMonth.setCreatedDate((Date)(row[3]));
+					
+				}
+			}
+		}
+		catch (HibernateException e) {
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			logger.error("Exception occured in ThDaoImpl: saveHospitalMonthlyTracker: " + e.getMessage());
+			throw new Exception("Exception : " + e.getMessage());
+		}
+		logger.info("Exited ThDaoImpl: fetchHospitalMonthlyTracker");
 		return trackerForCurrentMonth;
 	}
 
@@ -941,7 +1007,7 @@ public class ThDaoImpl implements ThDao {
 					serviceAreaOthers.setOgNormalDeliveryCount(castObjectToLong(row[1]));
 					serviceAreaOthers.setOgLscsCount(castObjectToLong(row[2]));
 					serviceAreaOthers.setOgMaternalDeathCount(castObjectToLong(row[3]));
-					serviceAreaOthers.setLasthmcMeeting((Date) (row[4]));
+					serviceAreaOthers.setLasthmcMeeting((Date)(row[4]));
 					serviceAreaOthers.setOgReferredCasesCount(castObjectToLong(row[5]));
 					serviceAreaOthers.setMajorSurgeryCount(castObjectToLong(row[6]));
 					serviceAreaOthers.setScHighDependencyUnit(castObjectToBoolean(row[7]));
@@ -1036,7 +1102,7 @@ public class ThDaoImpl implements ThDao {
 			HospitalMonthlyTracker hospitalMonthlyTracker = new HospitalMonthlyTracker();
 			if (hospitalMonthlyTracker != null) {
 			//	Long hospMonthTrackId = opIpDetails.getHospitalMonthlyTracker().getId();
-				hospitalMonthlyTracker = phcDao.getMonthlyTrackerForCurrentMonth(hospitalId);
+				hospitalMonthlyTracker = fetchHospitalMonthlyTracker(hospitalId);
 				//hospitalMonthlyTracker.setId(hospitalMonthlyTracker);
 			}
 			monthlyDataTh.setHospitalMonthlyTracker(hospitalMonthlyTracker);

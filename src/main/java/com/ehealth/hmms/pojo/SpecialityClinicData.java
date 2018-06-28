@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,8 +38,12 @@ public class SpecialityClinicData implements Serializable {
 	@Column(name = "total")
 	private Long total;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "specialityclinic_id", referencedColumnName="id")
 	private SpecialityClinic specialityClinic;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "hosp_track_id", referencedColumnName="id")
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 	
 
@@ -81,9 +86,7 @@ public class SpecialityClinicData implements Serializable {
 	public void setTgCount(Long tgCount) {
 		this.tgCount = tgCount;
 	}
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
+	
 	public SpecialityClinic getSpecialityClinic() {
 		return specialityClinic;
 	}
@@ -92,8 +95,6 @@ public class SpecialityClinicData implements Serializable {
 		this.specialityClinic = specialityClinic;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
 	public HospitalMonthlyTracker getHospitalMonthlyTracker() {
 		return hospitalMonthlyTracker;
 	}

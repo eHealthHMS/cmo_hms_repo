@@ -59,4 +59,12 @@ public class DashboardController {
 
 	}
 
+	@RequestMapping(value = "/getDashboardSummaryForThaluk/{hospitalId}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public Map<String, String> getDashboardSummaryForThaluk(@PathVariable("hospitalId") Long hospitalId) throws Exception {
+
+		Map<String, String> result = thService.getDashboardSummaryForThaluk(hospitalId);//(hospitalId);
+
+		return result;
+
+	}
 }

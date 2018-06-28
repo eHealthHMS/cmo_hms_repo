@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,6 +33,8 @@ public class IdlingMajorEquipment implements Serializable{
 	@Column(name = "acquisition_date")
 	private Date acquisitionDate;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "hosp_track_id", referencedColumnName="id")
 	private HospitalMonthlyTracker hospitalMonthlyTrackerId;
 
 	public Long getId() {
@@ -58,8 +61,6 @@ public class IdlingMajorEquipment implements Serializable{
 		this.acquisitionDate = acquisitionDate;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
 	public HospitalMonthlyTracker getHospitalMonthlyTracker() {
 		return hospitalMonthlyTrackerId;
 	}

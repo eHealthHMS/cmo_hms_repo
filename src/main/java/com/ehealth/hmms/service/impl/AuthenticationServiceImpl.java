@@ -1,8 +1,5 @@
 package com.ehealth.hmms.service.impl;
 
-
-
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -211,18 +208,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	//for viewing dashboard
 	public Result authenticateUserForDashBoard(Users user)  throws Exception{
 		 Result result = new Result();
-		// authenticationDao = new AuthenticationDaoImpl();
 		try {
 		Users  userResult = authenticationDao.authenticate(user);
 		
 		if(userResult!=null ) 
 		{
-			
-			//if(userResult.getHospitalid())
 			HospitalMaster hospitalMaster = userResult.getHospitalid();
 			if(hospitalMaster!=null  && userResult.getRoleid().getId()==3) {
-				
-				
 				result = getDashboardDataForMOs(hospitalMaster);
 				
 			}else {

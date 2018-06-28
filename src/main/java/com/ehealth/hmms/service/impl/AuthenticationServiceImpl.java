@@ -10,6 +10,7 @@ import com.ehealth.hmms.dao.AuthenticationDao;
 import com.ehealth.hmms.dao.LookupDao;
 import com.ehealth.hmms.dao.PhcDao;
 import com.ehealth.hmms.dao.ThDao;
+import com.ehealth.hmms.pojo.DistrictMaster;
 import com.ehealth.hmms.pojo.HospitalMaster;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
@@ -204,6 +205,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		return result;
 	}
 	
+	
+	
+	private Result getDashboardForDistrict(DistrictMaster districtMaster) throws Exception {
+		Result result = new Result();
+		//Integer typeId = hospitalMaster.getHospitalTypeMaster().getId().intValue();
+		result =phcService.getPhcDynamicDataForDistrict(districtMaster.getId());
+		// todo taluk and others
+		return result;
+	}
+	
+	private Result getDashboardForState() throws Exception {
+		Result result = new Result();
+		//Integer typeId = hospitalMaster.getHospitalTypeMaster().getId().intValue();
+		result =phcService.getPhcDynamicDataForState();
+		// todo taluk and others
+		return result;
+	}
+	
 
 	//for viewing dashboard
 	public Result authenticateUserForDashBoard(Users user)  throws Exception{
@@ -216,8 +235,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 			HospitalMaster hospitalMaster = userResult.getHospitalid();
 			if(hospitalMaster!=null  && userResult.getRoleid().getId()==3) {
 				result = getDashboardDataForMOs(hospitalMaster);
+				result.setHospitalMaster(hospitalMaster);
 				
-			}else {
+			}
+			else if(userResult.getRoleid().getId()==1) {
+				
+				
+				result = getDashboardForState();
+				
+			}else if(userResult.getRoleid().getId()==2) {
+				if(userResult.getDistrict()!=null && userResult.getDistrict().getId()!=null)
+				{
+				result.setDistrictId(userResult.getDistrict().getId().intValue());
+				}
+				result = getDashboardForDistrict(user.getDistrict());
+			}
+			else {
 					result.setStatus(Constants.FAILURE_STATUS);
 				}
 

@@ -43,5 +43,7 @@ public interface ThDao {
 	HospitalMonthlyTracker fetchHospitalMonthlyTracker(Long hospitalId)throws Exception;
 	
 	
+	Map<String,String> getDashboardSummaryForThaluk(Long nin) throws Exception;
+	
 	
 }

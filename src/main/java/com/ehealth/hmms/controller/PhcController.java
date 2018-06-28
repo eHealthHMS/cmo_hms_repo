@@ -40,6 +40,13 @@ public class PhcController {
 
 	}
 
+	/**
+	 * method to get the data for
+	 * 
+	 * @param hospitalId
+	 * @return
+	 * @throws Exception
+	 */
 	// coding done;testing pending
 	@RequestMapping(value = "/getDataForMap/{hospitalId}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public Map<String, String> getDataForMap(@PathVariable("hospitalId") Long hospitalId) throws Exception {
@@ -50,18 +57,30 @@ public class PhcController {
 
 	}
 
-	// //tested
-	// @RequestMapping(value = "/getStaticData/{hospitalId}", method =
-	// RequestMethod.GET,headers="Accept=application/json")
-	// public Result getPhcStaticData(@PathVariable("hospitalId") String hospitalId)
-	// throws Exception{
-	// //System.out.println("123");
-	// //PhcService phcService = new PhcServiceImpl();
-	// Result result = phcService.getPhcStaticData(hospitalId);
-	//
-	// return result;
-	//
-	// }
+	// tested
+	@RequestMapping(value = "/getStaticDataForMO/{nin}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public Result getPhcStaticDataForMO(@PathVariable("nin") Long nin) throws Exception {
+		Result result = phcService.getPhcStaticData(nin);
+
+		return result;
+
+	}
+
+	@RequestMapping(value = "/getStaticDataForDistrict/{districtId}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public Result getPhcStaticDataForDistrict(@PathVariable("districtId") Long nin) throws Exception {
+		Result result = phcService.getPhcStaticDataForDistrict(nin);
+
+		return result;
+
+	}
+	
+	@RequestMapping(value = "/getStaticDataForState", method = RequestMethod.GET, headers = "Accept=application/json")
+	public Result getPhcStaticDataForState() throws Exception {
+		//Result result = phcService.getPhcStaticDataForDistrict(nin);
+
+		return null;
+
+	}
 	// //coding done;testing pending
 	// @RequestMapping(value = "/getDynamicData/{hospitalId}", method =
 	// RequestMethod.GET,headers="Accept=application/json")

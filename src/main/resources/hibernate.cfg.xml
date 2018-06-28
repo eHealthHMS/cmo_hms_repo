@@ -20,9 +20,8 @@
         <mapping class="com.ehealth.hmms.pojo.SpecialityClinic"/>
         <mapping class="com.ehealth.hmms.pojo.SpecialityClinicData"/>
         <mapping class="com.ehealth.hmms.pojo.LabDialysis"/>
+         <mapping class="com.ehealth.hmms.pojo.CategoryDetails"/>
         <mapping class="com.ehealth.hmms.pojo.IdlingMajorEquipment"/>
         <mapping class="com.ehealth.hmms.pojo.SurgeryDetailsThDhGh"/>
-        
-        
     </session-factory>
 </hibernate-configuration>

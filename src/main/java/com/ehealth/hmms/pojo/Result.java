@@ -11,6 +11,8 @@ public class Result {
 	private Boolean editable;// view mode or edit mode
 
 	private Long hospitalType;
+	
+	private Integer districtId;
 
 	private String errorMessage;
 
@@ -96,6 +98,22 @@ public class Result {
 	 */
 	public void setHospitalType(Long hospitalType) {
 		this.hospitalType = hospitalType;
+	}
+
+
+	/**
+	 * @return the districtId
+	 */
+	public Integer getDistrictId() {
+		return districtId;
+	}
+
+
+	/**
+	 * @param districtId the districtId to set
+	 */
+	public void setDistrictId(Integer districtId) {
+		this.districtId = districtId;
 	}
 
 	

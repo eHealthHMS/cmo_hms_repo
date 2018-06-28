@@ -12,6 +12,8 @@ public class MonthlyDataTh {
 	 * type 9: lab and facility 
 	 * type 10: fund
 	 */
+	private Long type;
+	
 	private String deviceId;
 
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
@@ -32,6 +34,13 @@ public class MonthlyDataTh {
 	private boolean idlingEquipment;
 	private List<IdlingMajorEquipment> idlingMajorEquipments = new ArrayList<IdlingMajorEquipment>();
 
+	
+	public Long getType() {
+		return type;
+	}
+	public void setType(Long type) {
+		this.type = type;
+	}
 	public String getDeviceId() {
 		return deviceId;
 	}

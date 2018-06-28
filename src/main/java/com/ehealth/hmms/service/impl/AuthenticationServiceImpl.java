@@ -1,7 +1,5 @@
 package com.ehealth.hmms.service.impl;
 
-
-
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -104,29 +102,51 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				if (hospitalTypeId == 15 || hospitalTypeId == 16 || hospitalTypeId == 17 || hospitalTypeId == 20) {
 					logger.info("Entered autenticate service for fetching phc/chc data while user login");
 					MonthlyDataFhcChc monthlyPhcResult = phcDao.fetchPhcRecord(hospitalId);
-					HospitalMonthlyTracker hospitalMonthlyTracker = monthlyPhcResult.getHospitalMonthlyTracker();
-					if(hospitalMonthlyTracker == null)
+					HospitalMonthlyTracker hospitalMonthlyTracker = new HospitalMonthlyTracker();
+					if(monthlyPhcResult.getHospitalMonthlyTracker().getId() == null)
 					{
-						hospitalMonthlyTracker = new HospitalMonthlyTracker();
+						thDao.saveHospitalMonthlyTracker(hospitalId);
+						hospitalMonthlyTracker = thDao.fetchHospitalMonthlyTracker(hospitalId);
+						monthlyPhcResult.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 					}
-					hospitalMonthlyTracker.setHospital(hospitalMaster);
-					monthlyPhcResult.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+					else
+					{
+						hospitalMonthlyTracker = monthlyPhcResult.getHospitalMonthlyTracker();
+					}
+					result.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+					result.getHospitalMonthlyTracker().setHospital(hospitalMaster);
 					result.setValue(monthlyPhcResult);
 					result.setStatus(Constants.SUCCESS_STATUS);
 				} else if (hospitalTypeId == 18 || hospitalTypeId == 19) {
 					logger.info(
 							"Entered authenticate service for fetching the taluk hospital related data on user login");
 					MonthlyDataTh monthlyDataTh = thDao.fetchMonthlyDataTh(hospitalId);
-					HospitalMonthlyTracker hospitalMonthlyTracker = monthlyDataTh.getHospitalMonthlyTracker();
-					if(hospitalMonthlyTracker == null)
+					monthlyDataTh.getHospitalMonthlyTracker().setHospital(hospitalMaster);
+					HospitalMonthlyTracker hospitalMonthlyTracker = new HospitalMonthlyTracker();
+					if(monthlyDataTh.getHospitalMonthlyTracker().getId() == null)
 					{
-						hospitalMonthlyTracker = new HospitalMonthlyTracker();
+						thDao.saveHospitalMonthlyTracker(hospitalId);
+						hospitalMonthlyTracker = thDao.fetchHospitalMonthlyTracker(hospitalId);
+						monthlyDataTh.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 					}
-					hospitalMonthlyTracker.setHospital(hospitalMaster);
-					monthlyDataTh.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+					else
+					{
+						hospitalMonthlyTracker = monthlyDataTh.getHospitalMonthlyTracker();
+					}
+					result.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+					result.getHospitalMonthlyTracker().setHospital(hospitalMaster);
 					result.setValue(monthlyDataTh);
 					result.setStatus(Constants.SUCCESS_STATUS);
+					if(monthlyDataTh.getType() == 11)
+					{
+						result.getHospitalMonthlyTracker().setFinalSubmitDone(true);
+					}
+					else
+					{
+						result.getHospitalMonthlyTracker().setFinalSubmitDone(false);
+					}
 				}
+		
 			} else {
 				result.setStatus(Constants.FAILURE_STATUS);
 				result.setErrorMessage("Invalid Credentials");
@@ -207,18 +227,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	//for viewing dashboard
 	public Result authenticateUserForDashBoard(Users user)  throws Exception{
 		 Result result = new Result();
-		// authenticationDao = new AuthenticationDaoImpl();
 		try {
 		Users  userResult = authenticationDao.authenticate(user);
 		
 		if(userResult!=null ) 
 		{
-			
-			//if(userResult.getHospitalid())
 			HospitalMaster hospitalMaster = userResult.getHospitalid();
 			if(hospitalMaster!=null  && userResult.getRoleid().getId()==3) {
-				
-				
 				result = getDashboardDataForMOs(hospitalMaster);
 				result.setHospitalMaster(hospitalMaster);
 				

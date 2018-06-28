@@ -48,8 +48,6 @@ public class AuthenticationController {
 
 	}
 
-	
-
 	@RequestMapping(value = "/changePassword", method = RequestMethod.POST, headers = "Accept=application/json")
 	public Result changePassword(@RequestBody Users user) throws Exception {
 

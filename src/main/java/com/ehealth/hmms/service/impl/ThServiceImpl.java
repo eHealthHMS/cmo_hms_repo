@@ -7,9 +7,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ehealth.hmms.dao.PhcDao;
 import com.ehealth.hmms.dao.ThDao;
 import com.ehealth.hmms.pojo.DepartmentWiseOpIp;
 import com.ehealth.hmms.pojo.FundExpenditure;
+import com.ehealth.hmms.pojo.HospitalMaster;
+import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.IdlingMajorEquipment;
 import com.ehealth.hmms.pojo.LabDialysis;
 import com.ehealth.hmms.pojo.MonthlyDataTh;
@@ -30,6 +33,8 @@ public class ThServiceImpl implements ThService{
 	@Autowired
 	private ThDao thDao;
 	
+	@Autowired
+	private PhcDao phcDao;
 
 	/**
 	 * @param thDao the thDao to set
@@ -38,12 +43,27 @@ public class ThServiceImpl implements ThService{
 		this.thDao = thDao;
 	}
 
+	public PhcDao getPhcDao() {
+		return phcDao;
+	}
+
+	public void setPhcDao(PhcDao phcDao) {
+		this.phcDao = phcDao;
+	}
+
 	public Result saveAndUpdateThTransactionalData(MonthlyDataTh monthlyDataTh) throws Exception{
 		logger.info("Entered ThServiceImpl: saveAndUpdateLabDialysis");
 
 		Result result = new Result();
 		try {
-
+			HospitalMaster hospital = monthlyDataTh.getHospitalMonthlyTracker().getHospital();
+			if(monthlyDataTh.getHospitalMonthlyTracker() == null || (monthlyDataTh.getHospitalMonthlyTracker() != null && monthlyDataTh.getHospitalMonthlyTracker().getId() !=null && monthlyDataTh.getHospitalMonthlyTracker().getId() == -1) || (monthlyDataTh.getHospitalMonthlyTracker() != null && monthlyDataTh.getHospitalMonthlyTracker().getId() == null))
+			{
+				HospitalMonthlyTracker hospitalMonthlyTracker = new HospitalMonthlyTracker();
+				hospitalMonthlyTracker.setHospital(hospital);
+				hospitalMonthlyTracker = phcDao.getHospitalTrakerForSave(hospitalMonthlyTracker);
+				monthlyDataTh.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+			}
 			Boolean resultFlag = thDao.saveAndUpdateThTransactionalData(monthlyDataTh);
 
 

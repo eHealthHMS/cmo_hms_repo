@@ -3,7 +3,6 @@ package com.ehealth.hmms.pojo;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,10 +31,7 @@ public class HospitalMonthlyTracker implements Serializable{
 	
 	@Column(name = "report_date")
 	private Date report_date;
-	
-	
-	
-	
+
 	@Column(name = "final_submit_done")
 	private Boolean finalSubmitDone;
 	

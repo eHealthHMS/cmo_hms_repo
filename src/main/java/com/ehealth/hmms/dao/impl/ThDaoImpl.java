@@ -737,7 +737,7 @@ public class ThDaoImpl implements ThDao {
 				deptOpIpListUpdated.add(departmentWiseOpIp7);
 
 				DepartmentWiseOpIp departmentWiseOpIp8 = new DepartmentWiseOpIp();
-				departmentWiseOpIp8.setCategoryMasterId(castObjectToCategryMastr(31));
+				departmentWiseOpIp8.setCategoryMasterId(castObjectToCategryMastr(39));
 				deptOpIpListUpdated.add(departmentWiseOpIp8);
 
 				DepartmentWiseOpIp departmentWiseOpIp9 = new DepartmentWiseOpIp();

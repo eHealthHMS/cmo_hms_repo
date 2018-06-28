@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -49,8 +50,12 @@ public class CategoryDetails implements Serializable {
 	@Column(name = "total_staff_available")
 	private Long totalStaffAvailable;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(name = "hospital_id", referencedColumnName="gid")
 	private HospitalMaster hospital;
 	
+	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name = "category_id", referencedColumnName="id")
 	private CategoryMaster categoryMaster;
 
 	public Long getId() {
@@ -126,7 +131,7 @@ public class CategoryDetails implements Serializable {
 	}
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
+	//@JoinColumn(name = "id")
 	public CategoryMaster getCategoryMaster() {
 		return categoryMaster;
 	}
@@ -134,9 +139,9 @@ public class CategoryDetails implements Serializable {
 	public void setCategoryMaster(CategoryMaster categoryMaster) {
 		this.categoryMaster = categoryMaster;
 	}
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "gid")
+//	
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "gid")
 	public HospitalMaster getHospital() {
 		return hospital;
 	}

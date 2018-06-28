@@ -19,7 +19,12 @@ public interface PhcService {
 	
 	Result getPhcDynamicDataForState() throws Exception;
 	
-//	Result getPhcDynamicDataForDashboard(String hospitalId) throws Exception;
+	Result getPhcStaticData(Long nin) throws Exception;
+	
+	
+	Result getPhcStaticDataForDistrict(Long nin) throws Exception;
+	
+	
 	Result getPhcDynamicDataFromHospitalId(Long hospitalId) throws Exception;
 	Map<String,String>  getDataForMap( Long hospitalId) throws Exception;
 	

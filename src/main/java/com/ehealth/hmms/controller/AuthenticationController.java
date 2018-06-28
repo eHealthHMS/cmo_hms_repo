@@ -11,6 +11,7 @@ import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.Users;
 import com.ehealth.hmms.service.AuthenticationService;
 
+
 @RestController
 @RequestMapping("/hmms")
 public class AuthenticationController {
@@ -36,7 +37,7 @@ public class AuthenticationController {
 		return userResult;
 
 	}
-
+	
 	@RequestMapping(value = "/loginForDashboard", method = RequestMethod.POST, headers = "Accept=application/json")
 	public Result authenticateUserForDashBoard(@RequestBody Users user) throws Exception {
 
@@ -55,7 +56,6 @@ public class AuthenticationController {
 		logger.info("Entered AuthenticationController:changePassword");
 		Result userResult =  authenticationService.changePassword(user);
 		logger.info("Exited AuthenticationController:changePassword");
-		userResult.setStatus('S');
 
 		return userResult;
 

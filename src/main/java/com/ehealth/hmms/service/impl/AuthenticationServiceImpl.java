@@ -212,6 +212,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				
 				
 				result = getDashboardDataForMOs(hospitalMaster);
+				result.setHospitalMaster(hospitalMaster);
 				
 			}
 			else if(userResult.getRoleid().getId()==1) {
@@ -220,6 +221,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				result = getDashboardForState();
 				
 			}else if(userResult.getRoleid().getId()==2) {
+				if(userResult.getDistrict()!=null && userResult.getDistrict().getId()!=null)
+				{
+				result.setDistrictId(userResult.getDistrict().getId().intValue());
+				}
 				result = getDashboardForDistrict(user.getDistrict());
 			}
 			else {

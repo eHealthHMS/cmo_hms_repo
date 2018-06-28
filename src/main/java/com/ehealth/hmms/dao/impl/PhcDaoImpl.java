@@ -10,13 +10,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Projections;
-import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,38 +36,104 @@ public class PhcDaoImpl implements PhcDao {
 	private SessionFactory sessionFactory;
 
 	/**
-	 * method to save phc static data
+	 * method to fetch the consolidated phc static data for an institution
+	 * @return
+	 * @throws Exception
 	 */
-	public List<CategoryDetails> getPhcStaticData(String hospitalId) throws Exception {
+	public List<CategoryDetails> getPhcStaticData(Long nin) throws Exception {
 
 		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
 
 		List<CategoryDetails> categoryDetails = new ArrayList<CategoryDetails>();
 		try {
-			String strQuery = "select cm.category_name,cd.sanctioned_post,in_position,nhm,contract,total_staff_available"
-					+ " from category_details cd inner join category_master cm on cd.category_id=cm.id"
-					+ "  where hospital_id=:hospitalid";
 
-			Query query = session.createSQLQuery(strQuery);
-			query.setLong("hospitalid", new Long(hospitalId));
+			String hibernateQuery = "from CategoryDetails cd inner join cd.hospital hm where hm.nin=:nin";//cd.hospital=:nin";
+			Query query = session.createQuery(hibernateQuery);
+			query.setLong("nin", nin);
 			Iterator iterator = query.list().iterator();
-
+			
 			while (iterator.hasNext()) {
-
 				Object[] row = (Object[]) iterator.next();
-
-				CategoryMaster categoryMaster = new CategoryMaster();
-				CategoryDetails categoryDetailsResult = new CategoryDetails();
-				categoryMaster.setCategoryName((String) row[0]);
-
-				categoryDetailsResult.setSanctionedPost(castObjectToLong(row[1]));
-				categoryDetailsResult.setInPosition(castObjectToLong(row[2]));
-				categoryDetailsResult.setNhm(castObjectToLong(row[3]));
-				categoryDetailsResult.setContract(castObjectToLong(row[4]));
-				categoryDetailsResult.setTotalStaffAvailable(castObjectToLong(row[5]));
-				categoryDetailsResult.setCategoryMaster(categoryMaster);
+				CategoryDetails categoryDetailsResult = (CategoryDetails) row[0];
 				categoryDetails.add(categoryDetailsResult);
+			}
 
+		} catch (HibernateException e) {
+			
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			
+			throw new Exception("Exception : " + e.getMessage());
+
+		}
+		return categoryDetails;
+	}
+	
+	/**
+	 * method to fetch the consolidated phc static data for a district
+	 * @return
+	 * @throws Exception
+	 */
+	public List<CategoryDetails> getPhcStaticDataForDistrict(Long districtId) throws Exception {
+
+		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
+
+		List<CategoryDetails> categoryDetails = new ArrayList<CategoryDetails>();
+		try {
+//select hm.gid,sum() from category_details cd inner join
+			
+			String hibernateQuery = "select cm.id,cm.categoryName,sum(cd.sanctionedPost),sum(cd.inPosition),sum(cd.nhm),sum(cd.contract),sum(cd.totalStaffAvailable)  from CategoryDetails cd inner join "
+					+ "cd.hospital hm inner join cd.categoryMaster cm where  hm.hospitalTypeMaster in (15,16,17,20)  and hm.districtMaster=:districtId "
+					+ " group by cm.id";//hm.id ";//cd.hospital=:nin";
+			Query query = session.createQuery(hibernateQuery);
+			query.setLong("districtId", districtId);
+			Iterator iterator = query.list().iterator();
+			
+			while (iterator.hasNext()) {
+				Object[] row = (Object[]) iterator.next();
+				CategoryMaster categoryMaster = new CategoryMaster();
+				categoryMaster.setId((Long)row[0]);
+				categoryMaster.setCategoryName(castObjectToString(row[1]));
+				
+				CategoryDetails categoryDetailsResult = new CategoryDetails();
+				categoryDetailsResult.setCategoryMaster(categoryMaster);
+				categoryDetailsResult.setSanctionedPost((Long)row[2]);
+				categoryDetails.add(categoryDetailsResult);
+			}
+
+		} catch (HibernateException e) {
+			
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			
+			throw new Exception("Exception : " + e.getMessage());
+
+		}
+		return categoryDetails;
+	}
+	
+	/**
+	 * method to fetch the consolidated phc static data for state
+	 * @return
+	 * @throws Exception
+	 */
+	
+	public List<CategoryDetails> getPhcStaticDataForState() throws Exception {
+
+		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
+
+		List<CategoryDetails> categoryDetails = new ArrayList<CategoryDetails>();
+		try {
+
+			String hibernateQuery = "select  from CategoryDetails cd inner join cd.hospital hm where hm.nin=:nin and hm.hospitaltype_id in (15,16,17,20)  and hm.district_id=:districtId ";//cd.hospital=:nin";
+			Query query = session.createQuery(hibernateQuery);
+			//query.setLong("districtId", districtId);
+			Iterator iterator = query.list().iterator();
+			
+			while (iterator.hasNext()) {
+				Object[] row = (Object[]) iterator.next();
+				CategoryDetails categoryDetailsResult = (CategoryDetails) row[0];
+				categoryDetails.add(categoryDetailsResult);
 			}
 
 		} catch (HibernateException e) {
@@ -438,8 +501,9 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 			trackerForCurrentMonth.setHospital(hospitalMaster);
 			trackerForCurrentMonth.setLastModified(Calendar.getInstance().getTime());
 			trackerForCurrentMonth.setCreatedDate(Calendar.getInstance().getTime());
-			trackerForCurrentMonth.setReport_date(getReportDate(-1));// setReportMonth(new
-							return trackerForCurrentMonth;									   // Long(Calendar.getInstance().get(Calendar.MONTH)));
+			trackerForCurrentMonth.setFinalSubmitDone(false);
+			trackerForCurrentMonth.setReport_date(getReportDate(-1));
+							return trackerForCurrentMonth;
 			
 	}
 	
@@ -449,7 +513,7 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 	 */
 	public HospitalMonthlyTracker updateHospitalMonthlyTracker(HospitalMonthlyTracker hospitalMonthlyTracker,Boolean isFinal) throws Exception {
 
-		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
+		Session session = this.sessionFactory.getCurrentSession();
 		HospitalMonthlyTracker hospitalMonthlyTrackerResult = null;
 		try {
 
@@ -512,34 +576,34 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 	 * @return
 	 * @throws Exception
 	 */
-	private HospitalMonthlyTracker getMonthlyTrackerForTrend(Long hospitalId, int currentMonth) throws Exception {
-
-		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
-		HospitalMonthlyTracker hospitalMonthlyTracker = null;
-		try {
-
-			Query query = session.createQuery(
-					"from HospitalMonthlyTracker mt where mt.reportMonth=:month and mt.hospital.id=:hospitalId");
-			query.setLong("month", currentMonth);
-			query.setLong("hospitalId", hospitalId);
-
-			List<HospitalMonthlyTracker> hospitalMonthlyTrackers = query.list();
-
-			if (hospitalMonthlyTrackers != null && !hospitalMonthlyTrackers.isEmpty()) {
-				hospitalMonthlyTracker = hospitalMonthlyTrackers.get(0);
-			}
-
-		} catch (HibernateException e) {
-			
-			throw new HibernateException("Hibernate Exception : " + e.getMessage());
-		} catch (Exception e) {
-			
-			throw new Exception("Exception : " + e.getMessage());
-
-		}
-		return hospitalMonthlyTracker;
-	}
-	
+//	private HospitalMonthlyTracker getMonthlyTrackerForTrend(Long hospitalId, int currentMonth) throws Exception {
+//
+//		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
+//		HospitalMonthlyTracker hospitalMonthlyTracker = null;
+//		try {
+//
+//			Query query = session.createQuery(
+//					"from HospitalMonthlyTracker mt where mt.reportMonth=:month and mt.hospital.id=:hospitalId");
+//			query.setLong("month", currentMonth);
+//			query.setLong("hospitalId", hospitalId);
+//
+//			List<HospitalMonthlyTracker> hospitalMonthlyTrackers = query.list();
+//
+//			if (hospitalMonthlyTrackers != null && !hospitalMonthlyTrackers.isEmpty()) {
+//				hospitalMonthlyTracker = hospitalMonthlyTrackers.get(0);
+//			}
+//
+//		} catch (HibernateException e) {
+//			
+//			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+//		} catch (Exception e) {
+//			
+//			throw new Exception("Exception : " + e.getMessage());
+//
+//		}
+//		return hospitalMonthlyTracker;
+//	}
+//	
 	private Date getReportDate(int value)  throws ParseException{
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.MONTH, value);
@@ -565,60 +629,60 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 
 	// for dashboard
 	// coding done// testing pending
-	public List<MonthlyDataFhcChc> getPhcDynamicDataForDashboard(String hospitalId) throws Exception {
-		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
-
-		List<MonthlyDataFhcChc> dataFhcChcs = null;
-		try {
-
-			String strQuery = "select forenoon_op_tot,afternoon_op_tot,total_precheck,patient_lab_test,total_lab_test,total_attendee,"
-					+ "housevisit_mo,housevisit_hs,housevisit_phns,housevisit_hi,housevisit_phn,housevisit_jhi,housevisit_jphn,"
-					+ "housevisit_asha,regular_sc_clinic from monthlydata_fhc_chc md inner join hospital_monthlytracker mt "
-					+ " on md.hospmonthlytrack_id  = mt.id inner join  hospital_master hm  on mt.hospital_id=hm.gid where "
-					+ "hm.hospital_code=:hospitalCode and mt.report_date=:reportDate";
-
-			
-
-			Query query = session.createSQLQuery(strQuery);
-			query.setString("hospitalCode", hospitalId);
-
-			Iterator iterator = query.list().iterator();
-
-			while (iterator.hasNext()) {
-
-				// Map row = (Map) iterator.next();
-				Object[] row = (Object[]) iterator.next();
-				MonthlyDataFhcChc monthlyDataFhcChc = new MonthlyDataFhcChc();
-				monthlyDataFhcChc.setForenoonOpTotal(castObjectToLong(row[0]));
-				monthlyDataFhcChc.setAfternoonOpTotal(castObjectToLong(row[1]));
-				monthlyDataFhcChc.setTotalPrecheck(castObjectToLong(row[2]));
-				monthlyDataFhcChc.setPatientLabTest(castObjectToLong(row[3]));
-				monthlyDataFhcChc.setTotalLabTest(castObjectToLong(row[4]));
-
-				monthlyDataFhcChc.setTotalAttendee(castObjectToLong(row[5]));
-				monthlyDataFhcChc.setHouseVisitMo(castObjectToLong(row[6]));
-				monthlyDataFhcChc.setHouseVisitHs(castObjectToLong(row[7]));
-
-				monthlyDataFhcChc.setHouseVisitPhns(castObjectToLong(row[8]));
-				monthlyDataFhcChc.setHouseVisitHi(castObjectToLong(row[9]));
-				monthlyDataFhcChc.setHouseVisitPhn(castObjectToLong(row[10]));
-				monthlyDataFhcChc.setHouseVisitJhi(castObjectToLong(row[11]));
-				monthlyDataFhcChc.setHouseVisitJphn(castObjectToLong(row[12]));
-				monthlyDataFhcChc.setHouseVisitAsha(castObjectToLong(row[13]));
-				monthlyDataFhcChc.setRegularScClinic(castObjectToLong(row[14]));
-
-
-			}
-			
-		} catch (HibernateException e) {
-			
-			throw new HibernateException("Hibernate Exception : " + e.getMessage());
-		} catch (Exception e) {
-			throw new Exception("Exception : " + e.getMessage());
-
-		}
-		return dataFhcChcs;
-	}
+//	public List<MonthlyDataFhcChc> getPhcDynamicDataForDashboard(String hospitalId) throws Exception {
+//		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
+//
+//		List<MonthlyDataFhcChc> dataFhcChcs = null;
+//		try {
+//
+//			String strQuery = "select forenoon_op_tot,afternoon_op_tot,total_precheck,patient_lab_test,total_lab_test,total_attendee,"
+//					+ "housevisit_mo,housevisit_hs,housevisit_phns,housevisit_hi,housevisit_phn,housevisit_jhi,housevisit_jphn,"
+//					+ "housevisit_asha,regular_sc_clinic from monthlydata_fhc_chc md inner join hospital_monthlytracker mt "
+//					+ " on md.hospmonthlytrack_id  = mt.id inner join  hospital_master hm  on mt.hospital_id=hm.gid where "
+//					+ "hm.hospital_code=:hospitalCode and mt.report_date=:reportDate";
+//
+//			
+//
+//			Query query = session.createSQLQuery(strQuery);
+//			query.setString("hospitalCode", hospitalId);
+//
+//			Iterator iterator = query.list().iterator();
+//
+//			while (iterator.hasNext()) {
+//
+//				// Map row = (Map) iterator.next();
+//				Object[] row = (Object[]) iterator.next();
+//				MonthlyDataFhcChc monthlyDataFhcChc = new MonthlyDataFhcChc();
+//				monthlyDataFhcChc.setForenoonOpTotal(castObjectToLong(row[0]));
+//				monthlyDataFhcChc.setAfternoonOpTotal(castObjectToLong(row[1]));
+//				monthlyDataFhcChc.setTotalPrecheck(castObjectToLong(row[2]));
+//				monthlyDataFhcChc.setPatientLabTest(castObjectToLong(row[3]));
+//				monthlyDataFhcChc.setTotalLabTest(castObjectToLong(row[4]));
+//
+//				monthlyDataFhcChc.setTotalAttendee(castObjectToLong(row[5]));
+//				monthlyDataFhcChc.setHouseVisitMo(castObjectToLong(row[6]));
+//				monthlyDataFhcChc.setHouseVisitHs(castObjectToLong(row[7]));
+//
+//				monthlyDataFhcChc.setHouseVisitPhns(castObjectToLong(row[8]));
+//				monthlyDataFhcChc.setHouseVisitHi(castObjectToLong(row[9]));
+//				monthlyDataFhcChc.setHouseVisitPhn(castObjectToLong(row[10]));
+//				monthlyDataFhcChc.setHouseVisitJhi(castObjectToLong(row[11]));
+//				monthlyDataFhcChc.setHouseVisitJphn(castObjectToLong(row[12]));
+//				monthlyDataFhcChc.setHouseVisitAsha(castObjectToLong(row[13]));
+//				monthlyDataFhcChc.setRegularScClinic(castObjectToLong(row[14]));
+//
+//
+//			}
+//			
+//		} catch (HibernateException e) {
+//			
+//			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+//		} catch (Exception e) {
+//			throw new Exception("Exception : " + e.getMessage());
+//
+//		}
+//		return dataFhcChcs;
+//	}
 
 //	public List<MonthlyDataFhcChc> getPhcDynamicDataTrend(String hospitalId) throws Exception {
 //		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
@@ -907,9 +971,9 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 
 			
 
-			String strQuery = "	 select hm.hospital_name,hm.hospitaltype_id,forenoon_op_tot,afternoon_op_tot,total_precheck,patient_lab_test,total_lab_test,total_attendee,housevisit_mo,"
+			String strQuery = "	 select forenoon_op_tot,afternoon_op_tot,total_precheck,patient_lab_test,total_lab_test,total_attendee,housevisit_mo,"
 		+"	 housevisit_hs,housevisit_phns,housevisit_hi,housevisit_phn,housevisit_jhi,housevisit_jphn,housevisit_asha,regular_sc_clinic,"
-		+"		 hm.subcenter_count from  hospital_master hm  inner join hospital_monthlytracker mt on mt.hospital_id=hm.gid  inner join "
+		+"		 hm.subcenter_count,ST_X((ST_Dump(hm.geometry)).geom), ST_Y((ST_Dump(hm.geometry)).geom) from  hospital_master hm  inner join hospital_monthlytracker mt on mt.hospital_id=hm.gid  inner join "
 		+"		 monthlydata_fhc_chc md  on md.hospmonthlytrack_id  = mt.id where hm.nin=:hospitalCode  and  mt.report_date between "
 		+"		 to_date(:startReportDate,'yyyy-mm-dd') and  to_date(:endReportDate,'yyyy-mm-dd') and mt.final_submit_done=true";
 			
@@ -956,6 +1020,8 @@ if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 				if(subCentreCount!=null) {
 					resultMap.put("irregularSc",String.valueOf(subCentreCount-castObjectToLong(row[14])));
 				}
+				resultMap.put("latitude", castObjectToString(row[17]));
+				resultMap.put("longitude", castObjectToString(row[16]));
 				resultList.add(resultMap);
 
 			}

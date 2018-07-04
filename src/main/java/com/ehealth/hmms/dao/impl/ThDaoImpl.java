@@ -15,6 +15,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,9 +66,19 @@ public class ThDaoImpl implements ThDao {
 					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
 				throw new Exception("Exception : " + "Hospital Monthly Tracker is missing");
 			}
+			String sql = "select id from department_wise_op_ip where hospital_track_id =:hospTrackId and category_id =:categoryId";
+			Query query = session.createSQLQuery(sql);
+						
 			for (DepartmentWiseOpIp departmentWiseOpIp : departmentWiseOpIpList) {
 				if (departmentWiseOpIp.getId() != null && departmentWiseOpIp.getId() == -1) {
 					departmentWiseOpIp.setId(null);
+				}
+				query.setParameter("hospTrackId", hospitalMonthlyTracker.getId());
+				query.setParameter("categoryId", departmentWiseOpIp.getCategoryMasterId());
+				Object deptQueryDetails = query.uniqueResult();
+				if(deptQueryDetails != null)
+				{
+					departmentWiseOpIp.setId(castObjectToLong(deptQueryDetails));
 				}
 				hospitalMonthlyTracker.setLastModified(new Date());
 				departmentWiseOpIp.setHospitalMonthlyTrackerId(hospitalMonthlyTracker);
@@ -94,9 +105,19 @@ public class ThDaoImpl implements ThDao {
 					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
 				throw new Exception("Exception : " + "Hospital Monthly Tracker is missing");
 			}
+			String sql = "select id from surgerydetails_thghdh where hosp_monthly_trackid =:hospTrackId and category_id =:categoryId";
+			Query query = session.createSQLQuery(sql);
+			
 			for (SurgeryDetailsThDhGh surgeryDetailsThDhGh : surgeryDetailsList) {
 				if (surgeryDetailsThDhGh.getId() != null && surgeryDetailsThDhGh.getId() == -1) {
 					surgeryDetailsThDhGh.setId(null);
+				}
+				query.setParameter("hospTrackId", hospitalMonthlyTracker.getId());
+				query.setParameter("categoryId", surgeryDetailsThDhGh.getCategoryMaster());
+				Object surgeryDetailsQueryDetails = query.uniqueResult();
+				if(surgeryDetailsQueryDetails != null)
+				{
+					surgeryDetailsThDhGh.setId(castObjectToLong(surgeryDetailsQueryDetails));
 				}
 				hospitalMonthlyTracker.setLastModified(new Date());
 				surgeryDetailsThDhGh.setHospitalMonthlyTracker(hospitalMonthlyTracker);
@@ -122,6 +143,17 @@ public class ThDaoImpl implements ThDao {
 					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
 				throw new Exception("Exception : " + "Hospital Monthly Tracker is missing");
 			}
+			
+			Session newSession = sessionFactory.openSession();
+			Transaction txn = newSession.beginTransaction();
+			String sql = "delete from idling_major_equipment where hosp_track_id =:hospTrackId";
+			Query query = newSession.createSQLQuery(sql);
+			
+			query.setParameter("hospTrackId", hospitalMonthlyTracker.getId());
+			query.executeUpdate();
+			txn.commit();
+			newSession.close();
+
 			for (IdlingMajorEquipment idlingMajorEquipment : IdlingMajorEquipmentList) {
 				if (idlingMajorEquipment.getId() != null && idlingMajorEquipment.getId() == -1) {
 					idlingMajorEquipment.setId(null);
@@ -130,7 +162,7 @@ public class ThDaoImpl implements ThDao {
 				idlingMajorEquipment.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 				session.saveOrUpdate(idlingMajorEquipment);
 			}
-			deleteIdilingEquipment(IdlingMajorEquipmentList,hospitalMonthlyTracker);
+			
 			logger.info("Exited ThDaoImpl: saveOrUpdateIdilingEquipment");
 			return true;
 		} catch (HibernateException e) {
@@ -152,7 +184,7 @@ public class ThDaoImpl implements ThDao {
 						idlingMajorEquipmentId.add(idlingMajorEquipment.getId());
 					}
 				}
-			String sql = "delete from idling_major_equipment where id not in (:idlingMajorEquipmentId) and hosp_track_id =:hospTrackId";
+			String sql = "delete from idling_major_equipment where hosp_track_id =:hospTrackId";
 			Query query = session.createSQLQuery(sql);
 			query.setParameter("hospTrackId", hospitalMonthlyTracker.getId());
 			query.setParameterList("idlingMajorEquipmentId", idlingMajorEquipmentId);
@@ -223,8 +255,17 @@ public class ThDaoImpl implements ThDao {
 					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
 				throw new Exception("Exception : " + "Hospital Monthly Tracker is missing");
 			}
+			String sql = "select id from servicearea_others where hosp_tracker_id =:hospTrackId";
+			Query query = session.createSQLQuery(sql);
+			
 			if (serviceAreaOthers.getId() != null && serviceAreaOthers.getId() == -1) {
 				serviceAreaOthers.setId(null);
+			}
+			query.setParameter("hospTrackId", hospitalMonthlyTracker.getId());
+			Object serviceAreaQueryDetails = query.uniqueResult();
+			if(serviceAreaQueryDetails != null)
+			{
+				serviceAreaOthers.setId(castObjectToLong(serviceAreaQueryDetails));
 			}
 			hospitalMonthlyTracker.setLastModified(new Date());
 			serviceAreaOthers.setHospitalMonthlyTracker(hospitalMonthlyTracker);
@@ -250,8 +291,16 @@ public class ThDaoImpl implements ThDao {
 					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
 				throw new Exception("Exception : " + "Hospital Monthly Tracker is missing");
 			}
+			String sql = "select id from fund_expenditure where hospital_tracker_id =:hospTrackId";
+			Query query = session.createSQLQuery(sql);
 			if (fundExpenditure.getId() != null && fundExpenditure.getId() == -1) {
 				fundExpenditure.setId(null);
+			}
+			query.setParameter("hospTrackId", hospitalMonthlyTracker.getId());
+			Object fundExpDetails = query.uniqueResult();
+			if(fundExpDetails != null)
+			{
+				fundExpenditure.setId(castObjectToLong(fundExpDetails));
 			}
 			hospitalMonthlyTracker.setLastModified(new Date());
 			fundExpenditure.setHospitalMonthlyTracker(hospitalMonthlyTracker);
@@ -375,9 +424,18 @@ public class ThDaoImpl implements ThDao {
 					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
 				throw new Exception("Exception : " + "Hospital Monthly Tracker is missing");
 			}
+			String sql = "select id from specialityclinic_data where hosp_track_id =:hospTrackId and specialityclinic_id =:specialityClinicId";
+			Query query = session.createSQLQuery(sql);
 			for (SpecialityClinicData specialityClinicData : specialityClinicDataList) {
 				if (specialityClinicData.getId() != null && specialityClinicData.getId() == -1) {
 					specialityClinicData.setId(null);
+				}
+				query.setParameter("hospTrackId", hospitalMonthlyTracker.getId());
+				query.setParameter("specialityClinicId", specialityClinicData.getSpecialityClinic());
+				Object specialityClinicDetails = query.uniqueResult();
+				if(specialityClinicDetails != null)
+				{
+					specialityClinicData.setId(castObjectToLong(specialityClinicDetails));
 				}
 				hospitalMonthlyTracker.setLastModified(new Date());
 				specialityClinicData.setHospitalMonthlyTracker(hospitalMonthlyTracker);
@@ -404,8 +462,16 @@ public class ThDaoImpl implements ThDao {
 					|| (hospitalMonthlyTracker != null && hospitalMonthlyTracker.getId() == null)) {
 				throw new Exception("Exception : " + "Hospital Monthly Tracker is missing");
 			}
+			String sql = "select id from lab_dialysis_xray_pharmacy where hospmonthlytrack_id =:hospTrackId";
+			Query query = session.createSQLQuery(sql);
 			if (labDialysis.getId() != null && labDialysis.getId() == -1) {
 				labDialysis.setId(null);
+			}
+			query.setParameter("hospTrackId", hospitalMonthlyTracker.getId());
+			Object deptQueryDetails = query.uniqueResult();
+			if(deptQueryDetails != null)
+			{
+				labDialysis.setId(castObjectToLong(deptQueryDetails));
 			}
 			hospitalMonthlyTracker.setLastModified(new Date());
 			labDialysis.setHospitalMonthlyTracker(hospitalMonthlyTracker);
@@ -427,6 +493,10 @@ public class ThDaoImpl implements ThDao {
 
 			HospitalMonthlyTracker hospitalMonthlyTracker = new HospitalMonthlyTracker();
 			hospitalMonthlyTracker = monthlyDataTh.getHospitalMonthlyTracker();
+			if((monthlyDataTh.getType() != null) && (monthlyDataTh.getType() == 11))
+			{
+				hospitalMonthlyTracker.setFinalSubmitDone(true);
+			}
 
 			List<DepartmentWiseOpIp> departmentWiseOpIpList = new ArrayList<DepartmentWiseOpIp>();
 			departmentWiseOpIpList = monthlyDataTh.getDepartmentWiseOpIp();
@@ -582,7 +652,7 @@ public class ThDaoImpl implements ThDao {
 		Session session = this.sessionFactory.getCurrentSession();
 		HospitalMonthlyTracker trackerForCurrentMonth = new HospitalMonthlyTracker();
 		try {
-		String sql ="select id ,last_modified,report_date,created_date from hospital_monthlytracker where hospital_id=:hospitalId and report_date =to_date(:date,'yyyy-mm-dd')";
+		String sql ="select id ,last_modified,report_date,created_date,final_submit_done from hospital_monthlytracker where hospital_id=:hospitalId and report_date =to_date(:date,'yyyy-mm-dd')";
 		Query query = session.createSQLQuery(sql);
 		query.setParameter("hospitalId", hospitalId);
 		query.setParameter("date", getReportDate());
@@ -599,6 +669,7 @@ public class ThDaoImpl implements ThDao {
 					trackerForCurrentMonth.setLastModified((Date)(row[1]));
 					trackerForCurrentMonth.setReport_date((Date)(row[2]));
 					trackerForCurrentMonth.setCreatedDate((Date)(row[3]));
+					trackerForCurrentMonth.setFinalSubmitDone(castObjectToBoolean(row[4]));
 					
 				}
 			}
@@ -701,8 +772,8 @@ public class ThDaoImpl implements ThDao {
 					departmentWiseOpIp = new DepartmentWiseOpIp();
 					Object[] row = (Object[]) iterator.next();
 					departmentWiseOpIp.setCategoryMasterId(castObjectToCategryMastr(row[0]));
-					departmentWiseOpIp.setTotalIpCount(castObjectToLong(row[1]));
-					departmentWiseOpIp.setTotalOpCount(castObjectToLong(row[2]));
+					departmentWiseOpIp.setTotalIpCount(castObjectToLong(row[2]));
+					departmentWiseOpIp.setTotalOpCount(castObjectToLong(row[1]));
 					departmentWiseOpIp.setHospitalMonthlyTrackerId(castObjectToHmt(row[3]));
 					departmentWiseOpIp.setId(castObjectToLong(row[4]));
 					deptOpIpListUpdated.add(departmentWiseOpIp);
@@ -796,10 +867,6 @@ public class ThDaoImpl implements ThDao {
 				SurgeryDetailsThDhGh surgeryDetailsThDhGh4 = new SurgeryDetailsThDhGh();
 				surgeryDetailsThDhGh4.setCategoryMaster(castObjectToCategryMastr(10));
 				surgeryDetailsUpdated.add(surgeryDetailsThDhGh4);
-
-				SurgeryDetailsThDhGh surgeryDetailsThDhGh5 = new SurgeryDetailsThDhGh();
-				surgeryDetailsThDhGh5.setCategoryMaster(castObjectToCategryMastr(21));
-				surgeryDetailsUpdated.add(surgeryDetailsThDhGh5);
 
 				SurgeryDetailsThDhGh surgeryDetailsThDhGh6 = new SurgeryDetailsThDhGh();
 				surgeryDetailsThDhGh6.setCategoryMaster(castObjectToCategryMastr(6));

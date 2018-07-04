@@ -8,6 +8,8 @@ public class Result {
 	
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 	
+	private HospitalMaster hospitalMaster;
+	
 	private Boolean editable;// view mode or edit mode
 
 	private Long hospitalType;
@@ -114,6 +116,16 @@ public class Result {
 	 */
 	public void setDistrictId(Integer districtId) {
 		this.districtId = districtId;
+	}
+
+
+	public HospitalMaster getHospitalMaster() {
+		return hospitalMaster;
+	}
+
+
+	public void setHospitalMaster(HospitalMaster hospitalMaster) {
+		this.hospitalMaster = hospitalMaster;
 	}
 
 	

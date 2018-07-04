@@ -103,48 +103,56 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 					logger.info("Entered autenticate service for fetching phc/chc data while user login");
 					MonthlyDataFhcChc monthlyPhcResult = phcDao.fetchPhcRecord(hospitalId);
 					HospitalMonthlyTracker hospitalMonthlyTracker = new HospitalMonthlyTracker();
-					if(monthlyPhcResult.getHospitalMonthlyTracker().getId() == null)
-					{
-						thDao.saveHospitalMonthlyTracker(hospitalId);
-						hospitalMonthlyTracker = thDao.fetchHospitalMonthlyTracker(hospitalId);
-						monthlyPhcResult.setHospitalMonthlyTracker(hospitalMonthlyTracker);
-					}
-					else
-					{
+					if(monthlyPhcResult.getHospitalMonthlyTracker() != null) {
+						monthlyPhcResult.getHospitalMonthlyTracker().setHospital(hospitalMaster);
 						hospitalMonthlyTracker = monthlyPhcResult.getHospitalMonthlyTracker();
+					}else{
+							hospitalMonthlyTracker = thDao.fetchHospitalMonthlyTracker(hospitalId);
+							if(hospitalMonthlyTracker.getId() == null) {
+							thDao.saveHospitalMonthlyTracker(hospitalId);
+							hospitalMonthlyTracker = thDao.fetchHospitalMonthlyTracker(hospitalId);
+							}							
+							monthlyPhcResult.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 					}
 					result.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+					if(hospitalMonthlyTracker.getFinalSubmitDone())
+					{
+						result.setEditable(false);
+					}
 					result.getHospitalMonthlyTracker().setHospital(hospitalMaster);
+					result.setHospitalMaster(hospitalMaster);
 					result.setValue(monthlyPhcResult);
 					result.setStatus(Constants.SUCCESS_STATUS);
+					
 				} else if (hospitalTypeId == 18 || hospitalTypeId == 19) {
 					logger.info(
 							"Entered authenticate service for fetching the taluk hospital related data on user login");
 					MonthlyDataTh monthlyDataTh = thDao.fetchMonthlyDataTh(hospitalId);
-					monthlyDataTh.getHospitalMonthlyTracker().setHospital(hospitalMaster);
 					HospitalMonthlyTracker hospitalMonthlyTracker = new HospitalMonthlyTracker();
-					if(monthlyDataTh.getHospitalMonthlyTracker().getId() == null)
-					{
-						thDao.saveHospitalMonthlyTracker(hospitalId);
-						hospitalMonthlyTracker = thDao.fetchHospitalMonthlyTracker(hospitalId);
-						monthlyDataTh.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+					if(monthlyDataTh.getHospitalMonthlyTracker() != null && monthlyDataTh.getHospitalMonthlyTracker().getId() != null) {
+						monthlyDataTh.getHospitalMonthlyTracker().setHospital(hospitalMaster);
+						hospitalMonthlyTracker = monthlyDataTh.getHospitalMonthlyTracker();
+						result.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 					}
 					else
 					{
-						hospitalMonthlyTracker = monthlyDataTh.getHospitalMonthlyTracker();
+							hospitalMonthlyTracker = thDao.fetchHospitalMonthlyTracker(hospitalId);
+							if(hospitalMonthlyTracker.getId() == null) {
+							thDao.saveHospitalMonthlyTracker(hospitalId);
+							hospitalMonthlyTracker = thDao.fetchHospitalMonthlyTracker(hospitalId);
+							}							
+							monthlyDataTh.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+							result.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 					}
 					result.setHospitalMonthlyTracker(hospitalMonthlyTracker);
+					if(hospitalMonthlyTracker.getFinalSubmitDone())
+					{
+						result.setEditable(false); 
+					}
 					result.getHospitalMonthlyTracker().setHospital(hospitalMaster);
 					result.setValue(monthlyDataTh);
+					result.setHospitalMaster(hospitalMaster);
 					result.setStatus(Constants.SUCCESS_STATUS);
-					if(monthlyDataTh.getType() == 11)
-					{
-						result.getHospitalMonthlyTracker().setFinalSubmitDone(true);
-					}
-					else
-					{
-						result.getHospitalMonthlyTracker().setFinalSubmitDone(false);
-					}
 				}
 		
 			} else {
@@ -169,7 +177,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 			if (userResult != null) {
 				userResult.setPassword(user.getNewPassword());
 				authenticationDao.changePassword(userResult);
-				
+				result.setStatus(Constants.SUCCESS_STATUS);
 			} else {
 				result.setStatus(Constants.FAILURE_STATUS);
 				result.setErrorMessage("Invalid Credentials");

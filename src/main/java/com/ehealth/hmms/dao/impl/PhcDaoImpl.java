@@ -16,11 +16,12 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-//import com.ehealth.hmms.dao.HibernatePersistence;
 import com.ehealth.hmms.dao.PhcDao;
 import com.ehealth.hmms.pojo.CategoryDetails;
 import com.ehealth.hmms.pojo.CategoryMaster;
@@ -43,7 +44,8 @@ public class PhcDaoImpl implements PhcDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<CategoryDetails> getPhcStaticData(String hospitalId) throws Exception {
+	
+	public List<CategoryDetails> getPhcStaticData(Long nin) throws Exception {
 		logger.info("Entered PhcDaoImpl : getPhcStaticData");
 		Session session = this.sessionFactory.getCurrentSession();// HibernatePersistence.getSessionFactory().openSession();
 
@@ -165,7 +167,7 @@ public class PhcDaoImpl implements PhcDao {
 			// from monthlydata_fhc_chc m inner join hospital_monthlytracker h on h.id =
 			// m.hospmonthlytrack_id where h.report_date =:to_date(date,'yyyy-mm-dd') and
 			// h.hospital_id =:hospitalId;");
-			String sql = "select m.forenoon_op_male,m.forenoon_op_female,m.forenoon_op_tg,m.forenoon_op_tot,m.afternoon_op_male,m.afternoon_op_female,m.afternoon_op_tg,m.afternoon_op_tot,m.total_precheck,m.total_postconsultncounsel,m.patient_lab_test,m.total_lab_test,m.swas_clinic_new,m.aswasam_clinic_new,m.swas_clinic_followup,m.aswasam_clinic_followup,m.ncd_clinic_new,m.ncd_clinic_followup,m.tot_sc_immunizatnclinic,m.tot_other_sc_clinic,m.tot_outreach,m.tot_ncd_clinic,m.iec_healthpromo_activities,m.whsnc_meeting,m.regular_sc_clinic,m.jagratha_activities,m.total_attendee,m.housevisit_mo,m.housevisit_hs,m.housevisit_phns,m.housevisit_hi,m.housevisit_phn,m.housevisit_jhi,m.housevisit_jphn,m.housevisit_asha,m.last_hmc_meeting,m.monthly_staff_conf,m.post_dmo_conf,m.half_day_zonal,m.full_day_zonal,m.idsp_meetingconductd,m.hospmonthlytrack_id from monthlydata_fhc_chc m inner join hospital_monthlytracker h on h.id = m.hospmonthlytrack_id where h.report_date =to_date(:date,'yyyy-mm-dd') and h.hospital_id =:hospitalId";
+			String sql = "select m.forenoon_op_male,m.forenoon_op_female,m.forenoon_op_tg,m.forenoon_op_tot,m.afternoon_op_male,m.afternoon_op_female,m.afternoon_op_tg,m.afternoon_op_tot,m.total_precheck,m.total_postconsultncounsel,m.patient_lab_test,m.total_lab_test,m.swas_clinic_new,m.aswasam_clinic_new,m.swas_clinic_followup,m.aswasam_clinic_followup,m.ncd_clinic_new,m.ncd_clinic_followup,m.tot_sc_immunizatnclinic,m.tot_other_sc_clinic,m.tot_outreach,m.tot_ncd_clinic,m.iec_healthpromo_activities,m.whsnc_meeting,m.regular_sc_clinic,m.jagratha_activities,m.total_attendee,m.housevisit_mo,m.housevisit_hs,m.housevisit_phns,m.housevisit_hi,m.housevisit_phn,m.housevisit_jhi,m.housevisit_jphn,m.housevisit_asha,m.last_hmc_meeting,m.monthly_staff_conf,m.post_dmo_conf,m.half_day_zonal,m.full_day_zonal,m.idsp_meetingconductd,m.hospmonthlytrack_id,h.last_modified, h.report_date, h.created_date, h.final_submit_done from monthlydata_fhc_chc m inner join hospital_monthlytracker h on h.id = m.hospmonthlytrack_id where h.report_date =to_date(:date,'yyyy-mm-dd') and h.hospital_id =:hospitalId";
 
 			Query query = session.createSQLQuery(sql);
 
@@ -222,7 +224,7 @@ public class PhcDaoImpl implements PhcDao {
 					monthlyDataFhcChc.setHalfDayZonal(castObjectToBoolean(row[38]));
 					monthlyDataFhcChc.setFullDayZonal(castObjectToBoolean(row[39]));
 					monthlyDataFhcChc.setIdspMeetingConductd(castObjectToLong(row[40]));
-					monthlyDataFhcChc.setHospitalMonthlyTracker(castObjectToHmt(row[41]));
+					monthlyDataFhcChc.setHospitalMonthlyTracker(castObjectToHmtObj(row[41],row[42],row[43],row[44],row[45])) ;
 				}
 			}
 		} catch (HibernateException e) {
@@ -268,6 +270,16 @@ public class PhcDaoImpl implements PhcDao {
 		hospMonTrack.setId(new Long((Integer) ((object != null) ? object : 0)));
 		return hospMonTrack;
 	}
+	
+	private HospitalMonthlyTracker castObjectToHmtObj(Object obj1,Object obj2, Object obj3,Object obj4,Object obj5) {
+		HospitalMonthlyTracker hospMonTrack = new HospitalMonthlyTracker();
+		hospMonTrack.setId(new Long((Integer) ((obj1 != null) ? obj1 : 0)));
+		hospMonTrack.setLastModified((Date) obj2);
+		hospMonTrack.setReport_date((Date)obj3);
+		hospMonTrack.setCreatedDate((Date)obj4);
+		hospMonTrack.setFinalSubmitDone(castObjectToBoolean(obj5));
+		return hospMonTrack;
+	}
 
 	/**
 	  * method to save phc functional components monthly
@@ -275,8 +287,19 @@ public class PhcDaoImpl implements PhcDao {
 	public Result saveInstitutionalData(MonthlyDataFhcChc dataFhcChc) throws Exception {
 
 		Session session = this.sessionFactory.getCurrentSession();
-		logger.info("Entered PhcDaoImpl : saveInstitutionalData");
+		String sql = "select id from monthlydata_fhc_chc where hospmonthlytrack_id =:hospmonthlytrack_id";
+		Query query = session.createSQLQuery(sql);
+		query.setParameter("hospmonthlytrack_id", dataFhcChc.getHospitalMonthlyTracker().getId());
+		Object monthlyDataFhcDetails = query.uniqueResult();
+		if(monthlyDataFhcDetails != null)
+		{
+			dataFhcChc.setId(castObjectToLong(monthlyDataFhcDetails));
+		}
+		session.saveOrUpdate(dataFhcChc);
 		Result result = new Result();
+		result.setStatus(Constants.SUCCESS_STATUS);
+		/*logger.info("Entered PhcDaoImpl : saveInstitutionalData");
+		
 		try {
 		if(dataFhcChc.getHospitalMonthlyTracker().getId()==null) {
 		
@@ -332,7 +355,7 @@ public class PhcDaoImpl implements PhcDao {
 
 		}
 		logger.info("Exited PhcDaoImpl : saveInstitutionalData");
-		return result;
+*/		return result;
 	}
 
 	public Result saveMeetings(MonthlyDataFhcChc dataFhcChc) throws Exception {
@@ -514,6 +537,7 @@ public class PhcDaoImpl implements PhcDao {
 			trackerForCurrentMonth.setHospital(hospitalMaster);
 			trackerForCurrentMonth.setLastModified(new Date());
 			trackerForCurrentMonth.setCreatedDate(new Date());
+			trackerForCurrentMonth.setFinalSubmitDone(false);
 			trackerForCurrentMonth.setReport_date(getReportDate(-1));// setReportMonth(new
 							return trackerForCurrentMonth;									   // Long(Calendar.getInstance().get(Calendar.MONTH)));
 			
@@ -545,7 +569,7 @@ public class PhcDaoImpl implements PhcDao {
 
 		}
 		logger.info("Exited PhcDaoImpl : updateHospitalMonthlyTracker");
-		return hospitalMonthlyTracker;
+		return hospitalMonthlyTrackerResult;
 	}
 
 	/**

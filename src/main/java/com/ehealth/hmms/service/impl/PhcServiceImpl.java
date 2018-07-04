@@ -39,6 +39,7 @@ public class PhcServiceImpl implements PhcService {
 		
 		try {
 			HospitalMonthlyTracker hospitalMonthlyTracker=phcDao.getHospitalTrakerForSave(dataFhcChc.getHospitalMonthlyTracker());
+			result.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 			dataFhcChc.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 				Integer type = dataFhcChc.getType();
 				switch (type) {
@@ -79,14 +80,13 @@ public class PhcServiceImpl implements PhcService {
 					result = phcDao.saveFieldWorks(dataFhcChc);
 					
 					if(result.getStatus().equals(Constants.SUCCESS_STATUS)) {
-						//todo update final submit status
-					//	hospitalMonthlyTracker.
-						phcDao.updateHospitalMonthlyTracker(dataFhcChc.getHospitalMonthlyTracker(),true);
+						result.setHospitalMonthlyTracker(phcDao.updateHospitalMonthlyTracker(dataFhcChc.getHospitalMonthlyTracker(),true));
 						break;
 					}
 					break;
 				}
 				default: {
+					result.setHospitalMonthlyTracker(hospitalMonthlyTracker);
 					result.setStatus(Constants.FAILURE_STATUS);
 					return result;
 

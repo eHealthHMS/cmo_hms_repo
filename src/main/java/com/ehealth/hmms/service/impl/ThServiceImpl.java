@@ -69,7 +69,6 @@ public class ThServiceImpl implements ThService{
 
 			if (resultFlag.equals(true)) {
 				result.setStatus(Constants.SUCCESS_STATUS);
-
 			} else {
 				result.setStatus(Constants.FAILURE_STATUS);
 			}

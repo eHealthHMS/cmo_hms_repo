@@ -11,6 +11,7 @@ import com.ehealth.hmms.dao.LookupDao;
 import com.ehealth.hmms.dao.PhcDao;
 import com.ehealth.hmms.dao.ThDao;
 import com.ehealth.hmms.pojo.DistrictMaster;
+import com.ehealth.hmms.pojo.HospitalImage;
 import com.ehealth.hmms.pojo.HospitalMaster;
 import com.ehealth.hmms.pojo.HospitalMonthlyTracker;
 import com.ehealth.hmms.pojo.MonthlyDataFhcChc;
@@ -164,6 +165,25 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 			logger.error(e);
 		}
 		logger.info("Exited AuthenticationServiceImpl:authenticate");
+		return result;
+	}
+	
+	public Result uploadImage(HospitalImage hospitalImage) throws Exception {
+		Result result = new Result();
+
+		try {
+			logger.info("Entered AuthenticationServiceImpl: uploadImage");
+			if(authenticationDao.uploadImage(hospitalImage)) {
+				result.setStatus(Constants.SUCCESS_STATUS);
+			}else {
+				result.setStatus(Constants.FAILURE_STATUS);
+			}
+
+		} catch (Exception e) {
+			result.setStatus(Constants.FAILURE_STATUS);
+			logger.error(e);
+		}
+		logger.info("Exited AuthenticationServiceImpl: uploadImage");
 		return result;
 	}
 	

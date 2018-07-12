@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ehealth.hmms.pojo.HospitalImage;
 import com.ehealth.hmms.pojo.Result;
 import com.ehealth.hmms.pojo.Users;
 import com.ehealth.hmms.service.AuthenticationService;
@@ -54,6 +55,17 @@ public class AuthenticationController {
 		logger.info("Entered AuthenticationController:changePassword");
 		Result userResult =  authenticationService.changePassword(user);
 		logger.info("Exited AuthenticationController:changePassword");
+
+		return userResult;
+
+	}
+	
+	@RequestMapping(value = "/uploadImage", method = RequestMethod.POST, headers = "Accept=application/json")
+	public Result uploadImage(@RequestBody HospitalImage hospitalImage) throws Exception {
+
+		logger.info("Entered AuthenticationController: uploadImage");
+		Result userResult =  authenticationService.uploadImage(hospitalImage);
+		logger.info("Exited AuthenticationController: uploadImage");
 
 		return userResult;
 

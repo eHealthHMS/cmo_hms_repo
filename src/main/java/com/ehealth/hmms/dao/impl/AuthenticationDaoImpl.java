@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ehealth.hmms.dao.AuthenticationDao;
+import com.ehealth.hmms.pojo.HospitalImage;
 import com.ehealth.hmms.pojo.Users;
 
 @Repository
@@ -40,7 +41,23 @@ public class AuthenticationDaoImpl implements AuthenticationDao {
 		return userResult;
 	}
 	
-	
+	public Boolean uploadImage(HospitalImage hospitalImage) throws Exception {
+
+		Session session = this.sessionFactory.getCurrentSession();
+		Boolean  isSuccess = false;
+		try {
+			logger.info("Entered AuthenticationDaoImpl: uploadImage");
+			session.saveOrUpdate(hospitalImage);
+			isSuccess = true;
+		} catch (HibernateException e) {
+			throw new HibernateException("Hibernate Exception : " + e.getMessage());
+		} catch (Exception e) {
+			throw new Exception("Exception : " + e.getMessage());
+		}
+		logger.info("Exited AuthenticationDaoImpl: uploadImage");
+		return isSuccess;
+	}
+
 	public Users authenticate(Users user) throws Exception {
 
 		Session session = this.sessionFactory.getCurrentSession();

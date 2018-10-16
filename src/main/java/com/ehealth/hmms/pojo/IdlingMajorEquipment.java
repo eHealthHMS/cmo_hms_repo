@@ -33,7 +33,7 @@ public class IdlingMajorEquipment implements Serializable{
 	@Column(name = "acquisition_date")
 	private Date acquisitionDate;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToOne( fetch=FetchType.EAGER)
 	@JoinColumn(name = "hosp_track_id", referencedColumnName="id")
 	private HospitalMonthlyTracker hospitalMonthlyTrackerId;
 

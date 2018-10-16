@@ -36,7 +36,7 @@ public class SurgeryDetailsThDhGh implements Serializable {
 	@JoinColumn(name = "category_id", referencedColumnName="id")
 	private CategoryMaster categoryMaster;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToOne( fetch=FetchType.EAGER)
 	@JoinColumn(name = "hosp_monthly_trackid", referencedColumnName="id")
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 	

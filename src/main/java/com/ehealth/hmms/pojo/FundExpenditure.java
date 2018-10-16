@@ -65,7 +65,7 @@ public class FundExpenditure implements Serializable{
 	@Column(name = "delay_reason")
 	private String delayReason;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToOne( fetch=FetchType.EAGER)
 	@JoinColumn(name = "hospital_tracker_id", referencedColumnName="id")
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 

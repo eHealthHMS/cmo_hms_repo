@@ -80,7 +80,7 @@ public class LabDialysis implements Serializable{
 	@Column(name = "functional_ambulance")
 	private Boolean functionalAmbulance;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToOne( fetch=FetchType.EAGER)
 	@JoinColumn(name = "hospmonthlytrack_id", referencedColumnName="id")
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 

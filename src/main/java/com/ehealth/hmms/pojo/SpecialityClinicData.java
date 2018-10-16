@@ -38,11 +38,11 @@ public class SpecialityClinicData implements Serializable {
 	@Column(name = "total")
 	private Long total;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToOne( fetch=FetchType.EAGER)
 	@JoinColumn(name = "specialityclinic_id", referencedColumnName="id")
 	private SpecialityClinic specialityClinic;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToOne( fetch=FetchType.EAGER)
 	@JoinColumn(name = "hosp_track_id", referencedColumnName="id")
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 	

@@ -58,7 +58,7 @@ public class ServiceAreaOthers implements Serializable {
 	@Column(name = "other_relevant_info")
 	private String otherRelevantInfo;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToOne( fetch=FetchType.EAGER)
 	@JoinColumn(name = "hosp_tracker_id", referencedColumnName="id")
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 	

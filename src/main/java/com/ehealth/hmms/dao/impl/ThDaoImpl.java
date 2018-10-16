@@ -532,6 +532,13 @@ public class ThDaoImpl implements ThDao {
 			talukOtherServiceDetails = monthlyDataTh.getTalukOtherServiceDetails();
 			saveOrUpdateServiceAreaOthers(talukOtherServiceDetails, hospitalMonthlyTracker);
 
+			boolean isFinal=false;
+			if((monthlyDataTh.getType() != null) && (monthlyDataTh.getType() == 11))
+			{
+				isFinal=true;
+			}
+			phcDao.updateHospitalMonthlyTracker(hospitalMonthlyTracker, isFinal);
+			
 		} catch (HibernateException e) {
 			throw new HibernateException("Hibernate Exception : " + e.getMessage());
 		} catch (Exception e) {

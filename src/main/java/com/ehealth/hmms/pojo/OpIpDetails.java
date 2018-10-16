@@ -88,7 +88,7 @@ public class OpIpDetails implements Serializable{
 	@Column(name = "emr_patinet_attended")
 	private Long emrPatinetAttended;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToOne( fetch=FetchType.EAGER)
 	@JoinColumn(name = "hospmonthlytrack_id", referencedColumnName="id")
 	private HospitalMonthlyTracker hospitalMonthlyTracker;
 	
